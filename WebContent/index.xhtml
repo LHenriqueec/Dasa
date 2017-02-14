@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/header.xhtml">
+
+	<ui:define name="content">
+		<h:form>
+		<h:panelGroup>
+			<p:commandButton value="Novo Lançamento" icon="fa fa-fw fa-plus" action="#{lancamentoBean.novo}" update="dataGrid" />
+			<p:commandButton value="Recibos" action="recibos" style="margin-left:5px" />		
+		</h:panelGroup>
+			
+			<p:dataGrid id="dataGrid" var="nota" value="#{notaBean.notas}" columns="3" layout="grid" rows="12"
+					paginator="true" emptyMessage="Não há Notas registradas!" style="margin-top:5px">
+					
+					<f:facet name="header">Notas Registradas</f:facet>
+					
+					<p:panelGrid columns="2">
+						<f:facet name="header">
+							<p:outputLabel value="#{nota.numeroNota}" />
+						</f:facet>
+						
+						<ui:repeat var="produto" value="#{nota.produtosPedidos}">
+							<p:outputLabel value="#{produto.produto.nome}: " style="font-weight:bold" />
+							<p:outputLabel value="#{produto.quantidade}" style="align:righ" />
+							<br/>
+						</ui:repeat>
+						
+						<h:panelGroup>
+							<p:commandLink action="#{notaBean.remover(nota)}" update="dataGrid">
+								<h:outputText styleClass="fa fa-fw fa-remove" style="color:red" />
+							</p:commandLink>
+							
+							<p:commandLink style="margin-left:5px" action="#{lancamentoBean.alterar(nota)}">
+								<h:outputText styleClass="fa fa-fw fa-edit" style="color:green" />
+							</p:commandLink>
+						</h:panelGroup>
+					</p:panelGrid>
+			</p:dataGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

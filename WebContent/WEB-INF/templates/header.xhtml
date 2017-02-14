@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Controle DASA</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:growl id="messages" />
+
+		<p:menubar style="margin-bottom: 15px">
+			<p:menuitem value="Home" icon="fa fa-fw fa-home" outcome="index"
+				style="margin-right: 15px" />
+
+			<p:submenu label="Cadastro" icon="fa fa-fw fa-user-plus">
+				<p:menuitem value="Cliente" icon="fa fa-fw fa-group"
+					outcome="cliente" />
+					
+				<p:menuitem value="Produto" icon="fa fa-fw fa-truck" outcome="produto" />
+			</p:submenu>
+
+			<f:facet name="options">
+				<p:commandButton value="Logout" icon="fa fa-fw fa-sign-out" />
+			</f:facet>
+		</p:menubar>
+
+			<ui:insert name="content" />
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/header.xhtml">
+
+	<ui:define name="content">
+	<h:form>
+		<p:commandButton value="Novo Recibo" action="lista_clientes_recibo" />
+		
+		<p:dataTable var="recibo" value="#{reciboBean.recibos}" emptyMessage="Não há recibos gerados!" style="margin-top:5px">
+			<f:facet name="header">Lista de Recibos</f:facet>
+				
+			<p:column headerText="Emissão" width="140" style="text-align:center">
+				<p:outputLabel value="#{recibo.data}" />
+			</p:column>
+				
+			<p:column headerText="Recibo" width="140" style="text-align:center">
+				<p:outputLabel value="#{recibo.numero}" />
+			</p:column>
+			
+			<p:column headerText="Cliente">
+				<p:outputLabel value="#{recibo.cliente.nome}" />
+			</p:column>
+			
+			<p:column width="120" style="text-align:center">
+				<p:commandLink value="Detalhe" action="#{reciboBean.mostrarDetalhe(recibo)}" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	</ui:define>
+</ui:composition>
+</html>

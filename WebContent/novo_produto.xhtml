@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<h:body> 
+<h:form>
+		<p:panelGrid columns="2">
+			<f:facet name="header">
+				<p:outputLabel value="Cadastro de Produto" />
+			</f:facet>
+
+			<p:outputLabel for="codigo" value="Código:" />
+			<p:inputText id="codigo" value="#{produtoBean.produto.codigo}" />
+
+			<p:outputLabel for="nome" value="Nome:"/>
+			<p:inputText id="nome" style="width: 480px" value="#{produtoBean.produto.nome}"  />
+
+			<h1 />
+			<h:panelGroup style="spacing:15px">
+				<p:commandButton value="Salvar" icon="fa fa-fw fa-check" actionListener="#{produtoBean.salvar_exit}" />
+			</h:panelGroup>
+		</p:panelGrid>
+	</h:form>
+</h:body> 
+</html>

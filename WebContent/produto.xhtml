@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/header.xhtml">
+
+	<ui:define name="content">
+		<h:form>
+			<p:commandButton value="Novo" icon="fa fa-fw fa-plus" style="margin-bottom:5px"
+				action="#{produtoBean.novo_produto}">
+			
+				<p:ajax event="dialogReturn" listener="#{produtoBean.salvar}" update="tb_produto" />	
+ 			</p:commandButton>	
+
+			<p:dataTable id="tb_produto" value="#{produtoBean.produtos}" var="produto"
+				emptyMessage="Não há Produtos cadastrados! ">
+				<f:facet name="header">
+					<p:outputLabel value="Relação de Produtos" />
+				</f:facet>
+				
+				
+				<p:column  headerText="Código">
+					<p:outputLabel value="#{produto.codigo}" />
+				</p:column>
+				
+				<p:column headerText="Produto">
+					<p:outputLabel value="#{produto.nome}" />
+				</p:column>
+				
+				<p:column width="100">
+					<p:panelGrid columns="2">
+						<p:commandButton icon="fa fa-close" update="tb_produto" actionListener="#{produtoBean.deletar(produto)}" />
+						<p:commandButton icon="fa fa-edit" actionListener="#{produtoBean.editar(produto)}">
+							<p:ajax event="dialogReturn" listener="#{produtoBean.salvar}" update="tb_produto"  />
+						</p:commandButton>
+					</p:panelGrid>
+				</p:column>
+				
+				<f:facet name="footer">
+					<p:outputLabel value="Total: #{produtoBean.produtos.size()} " />
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+</html>

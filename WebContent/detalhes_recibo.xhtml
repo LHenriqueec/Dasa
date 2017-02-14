@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<h:form>
+		<p:panelGrid columns="2">
+			<center>
+			<f:facet name="header">
+				<strong>
+					<p:outputLabel value="#{reciboBean.recibo.cliente.nome}"  style="text-align:center"/>
+				</strong>
+			</f:facet>
+			</center>
+
+			<p:outputLabel value="Data:" />
+			<p:outputLabel value="#{reciboBean.recibo.data}" />
+
+			<p:outputLabel value="Número:" />
+			<p:outputLabel value="#{reciboBean.recibo.numero}" />
+
+			<p:outputLabel value="CNPJ:" />
+			<p:outputLabel value="#{reciboBean.recibo.cliente.cnpj}" />
+
+			<p:outputLabel value="Bairro:" />
+			<p:outputLabel value="#{reciboBean.recibo.cliente.endereco.bairro}" />
+
+			<p:outputLabel value="Endereço:" />
+			<p:outputLabel
+				value="#{reciboBean.recibo.cliente.endereco.logradouro}" />
+		</p:panelGrid>
+
+		<p:dataTable var="pedido" value="#{reciboBean.recibo.pedidos}">
+			<p:column headerText="CÓDIGO">
+				<p:outputLabel value="#{pedido.pedidoProduto.produto.codigo}" />
+			</p:column>
+
+			<p:column headerText="PRODUTO">
+				<p:outputLabel value="#{pedido.pedidoProduto.produto.nome}" />
+			</p:column>
+
+			<p:column headerText="QUANTIDADE">
+				<p:outputLabel value="#{pedido.pedidoProduto.quantidade}" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>
