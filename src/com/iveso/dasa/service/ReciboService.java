@@ -36,6 +36,7 @@ public class ReciboService extends Service {
 		
 		try {
 			recibos = dao.getRecibos();
+			recibos.sort((r1, r2) -> r1.getNumero().compareTo(r2.getNumero()));
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

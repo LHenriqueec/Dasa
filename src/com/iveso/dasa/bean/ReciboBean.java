@@ -38,19 +38,23 @@ public class ReciboBean implements Serializable {
 	private void init() {
 		try {
 			pedido = new Pedido();
-			recibo = new Recibo();
 			recibos = service.listarRecibos();
-
+			
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String novoRecibo() {
+		recibo = new Recibo();
+		gerarNumeroRecibo(recibo);
+		return "lista_clientes_recibo";
 	}
 
 	public String salvar() {
 		try {
 			recibos.add(recibo);
 			service.salvar(recibo);
-			recibo = new Recibo();
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
@@ -59,7 +63,7 @@ public class ReciboBean implements Serializable {
 
 	public String selecionar(Cliente cliente) {
 		recibo.setCliente(cliente);
-
+		
 		return "novo_recibo";
 	}
 	
@@ -108,6 +112,11 @@ public class ReciboBean implements Serializable {
 
 	public Pedido getPedido() {
 		return pedido;
+	}
+	
+	private void gerarNumeroRecibo(Recibo recibo) {
+		long ultimo = recibos.stream().mapToLong(rec -> Long.parseLong(rec.getNumero())).max().getAsLong()+1;
+		recibo.setNumero(String.valueOf(ultimo));
 	}
 	
 	private void openDialog(String dialog) {

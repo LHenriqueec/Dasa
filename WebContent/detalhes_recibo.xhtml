@@ -33,6 +33,11 @@
 		</p:panelGrid>
 
 		<p:dataTable var="pedido" value="#{reciboBean.recibo.pedidos}">
+			<p:column headerText="NOTA">
+				<p:outputLabel value="#{pedido.nota.numeroNota}" />
+			</p:column>
+		
+		
 			<p:column headerText="CÓDIGO">
 				<p:outputLabel value="#{pedido.pedidoProduto.produto.codigo}" />
 			</p:column>

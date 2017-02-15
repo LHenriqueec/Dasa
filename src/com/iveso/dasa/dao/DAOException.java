@@ -1,6 +1,6 @@
 package com.iveso.dasa.dao;
 
-public class DAOException extends Throwable {
+public class DAOException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
