@@ -95,6 +95,7 @@ public class ReciboBean implements Serializable {
 
 	public void inserirPedido() {
 		recibo.getPedidos().add(pedido);
+		
 		pedido = new Pedido();
 	}
 

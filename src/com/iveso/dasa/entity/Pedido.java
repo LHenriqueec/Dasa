@@ -1,5 +1,7 @@
 package com.iveso.dasa.entity;
 
+import java.util.stream.Collectors;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +41,14 @@ public class Pedido {
 
 	public void setPedidoProduto(ProdutoPedido pedido) {
 		this.pedidoProduto = pedido;
+		
+		ProdutoPedido pedidoNota = nota.getProdutosPedidos().stream().
+			filter(ped -> ped.getProduto().getNome().toUpperCase().contains(pedido.getProduto().getNome().toUpperCase()))
+			.collect(Collectors.toList()).get(0);
+		
+		int sobra = pedidoNota.getQuantidade() - pedido.getQuantidade();
+		
+		pedidoNota.setQuantidade(sobra);
+			
 	}
-	
-	
 }
