@@ -12,7 +12,6 @@ import javax.inject.Named;
 import com.iveso.dasa.entity.Cliente;
 import com.iveso.dasa.entity.Nota;
 import com.iveso.dasa.entity.Produto;
-import com.iveso.dasa.entity.ProdutoPedido;
 import com.iveso.dasa.service.NotaService;
 import com.iveso.dasa.service.ServiceException;
 
@@ -25,13 +24,12 @@ public class LancamentoBean implements Serializable {
 	private NotaService service;
 
 	private Nota nota;
-	private ProdutoPedido produtoPedido;
 	private boolean edit;
+	private Produto produto;
 	
 	@PostConstruct
 	private void init() {
 		nota = new Nota();
-		produtoPedido = new ProdutoPedido();
 	}
 	
 	public String novo() {
@@ -68,8 +66,8 @@ public class LancamentoBean implements Serializable {
 	}
 	
 	public void inserirProduto() {
-		nota.getProdutosPedidos().add(produtoPedido);
-		produtoPedido = new ProdutoPedido();
+		nota.getProdutos().add(produto);
+		produto = new Produto();
 	}
 	
 	public List<Cliente> listarClientes() {
@@ -102,7 +100,7 @@ public class LancamentoBean implements Serializable {
 		return nota;
 	}
 	
-	public ProdutoPedido getProdutoPedido() {
-		return produtoPedido;
+	public Produto getProduto() {
+		return produto;
 	}
 }

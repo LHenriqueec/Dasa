@@ -3,13 +3,10 @@ package com.iveso.dasa.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Nota {
@@ -23,16 +20,11 @@ public class Nota {
 	@ManyToOne
 	private Cliente cliente;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<ProdutoPedido> produtosPedidos;
-
-	public Nota() {
-		produtosPedidos = new ArrayList<>();
-	}
+	//TODO: Fazer as dependências do atributo
+	private List<Produto> produtos;
 	
-	public Nota(Cliente cliente) {
-		this();
-		this.cliente = cliente;
+	public Nota() {
+		produtos = new ArrayList<>();
 	}
 
 	public Integer getId() {
@@ -42,13 +34,13 @@ public class Nota {
 	public String getNumeroNota() {
 		return numeroNota;
 	}
-	
+
 	public Cliente getCliente() {
 		return cliente;
 	}
 
-	public List<ProdutoPedido> getProdutosPedidos() {
-		return produtosPedidos;
+	public List<Produto> getProdutos() {
+		return produtos;
 	}
 
 	public void setId(Integer id) {
@@ -58,12 +50,12 @@ public class Nota {
 	public void setNumeroNota(String numeroNota) {
 		this.numeroNota = numeroNota;
 	}
-	
+
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 
-	public void setProdutosPedidos(List<ProdutoPedido> produtosPedidos) {
-		this.produtosPedidos = produtosPedidos;
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 }

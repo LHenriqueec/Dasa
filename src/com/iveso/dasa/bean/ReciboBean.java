@@ -17,7 +17,6 @@ import com.iveso.dasa.entity.Cliente;
 import com.iveso.dasa.entity.Nota;
 import com.iveso.dasa.entity.Pedido;
 import com.iveso.dasa.entity.Produto;
-import com.iveso.dasa.entity.ProdutoPedido;
 import com.iveso.dasa.entity.Recibo;
 import com.iveso.dasa.service.ReciboService;
 import com.iveso.dasa.service.ServiceException;
@@ -85,7 +84,7 @@ public class ReciboBean implements Serializable {
 
 	public List<Produto> completeProduto(String query) {
 		List<Produto> filter = null;
-		filter = pedido.getNota().getProdutosPedidos().stream().map(ProdutoPedido::getProduto)
+		filter = pedido.getNota().getProdutos().stream()
 				.filter(produto -> produto.getCodigo().contains(query)
 						|| produto.getNome().toUpperCase().contains(query.toUpperCase()))
 				.collect(Collectors.toList());
@@ -100,7 +99,7 @@ public class ReciboBean implements Serializable {
 	}
 
 	public int totalProdutos() {
-		return recibo.getPedidos().stream().map(Pedido::getPedidoProduto).mapToInt(ProdutoPedido::getQuantidade).sum();
+		return recibo.getPedidos().stream().map(Pedido::getProduto).mapToInt(Produto::getQuantidade).sum();
 	}
 
 	public List<Recibo> getRecibos() {
