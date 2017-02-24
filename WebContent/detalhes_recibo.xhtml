@@ -39,15 +39,15 @@
 		
 		
 			<p:column headerText="CÓDIGO">
-				<p:outputLabel value="#{pedido.pedidoProduto.produto.codigo}" />
+				<p:outputLabel value="#{pedido.produto.codigo}" />
 			</p:column>
 
 			<p:column headerText="PRODUTO">
-				<p:outputLabel value="#{pedido.pedidoProduto.produto.nome}" />
+				<p:outputLabel value="#{pedido.produto.nome}" />
 			</p:column>
 
 			<p:column headerText="QUANTIDADE">
-				<p:outputLabel value="#{pedido.pedidoProduto.quantidade}" />
+				<p:outputLabel value="#{pedido.produto.quantidade}" />
 			</p:column>
 		</p:dataTable>
 	</h:form>

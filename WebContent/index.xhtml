@@ -24,8 +24,8 @@
 							<p:outputLabel value="#{nota.numeroNota}" />
 						</f:facet>
 						
-						<ui:repeat var="produto" value="#{nota.produtosPedidos}">
-							<p:outputLabel value="#{produto.produto.nome}: " style="font-weight:bold" />
+						<ui:repeat var="produto" value="#{nota.produtos}">
+							<p:outputLabel value="#{produto.nome}: " style="font-weight:bold" />
 							<p:outputLabel value="#{produto.quantidade}" style="align:righ" />
 							<br/>
 						</ui:repeat>

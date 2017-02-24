@@ -58,24 +58,24 @@
 			</p:panelGrid>
 
 			<p:outputLabel value="Produto:"/>
-			<p:autoComplete id="prod" var="produto" value="#{lancamentoBean.produtoPedido.produto}" completeMethod="#{lancamentoBean.complete}"
+			<p:autoComplete id="prod" var="produto" value="#{lancamentoBean.produto}" completeMethod="#{lancamentoBean.complete}"
 					itemLabel="#{produto.nome}" itemValue="#{produto}" converter="produtoConverter" style="margin:10px 0px 10px 5px" />
 			
 			<p:outputLabel value="Quantidade:" style="margin:10px 0px 10px 5px" />
-			<p:inputText id="quantidade" value="#{lancamentoBean.produtoPedido.quantidade}" style="margin:10px 0px 10px 5px" size="2" />
+			<p:inputText id="quantidade" value="#{lancamentoBean.produto.quantidade}" style="margin:10px 0px 10px 5px" size="2" />
 			<p:commandButton value="Lançar" style="margin:10px 0px 10px 5px" actionListener="#{lancamentoBean.inserirProduto}" update="prod,quantidade,table_produtos" />
 			
-			<p:dataTable id="table_produtos" var="p" value="#{lancamentoBean.nota.produtosPedidos}" emptyMessage="Não há produtos lançados!">
+			<p:dataTable id="table_produtos" var="p" value="#{lancamentoBean.nota.produtos}" emptyMessage="Não há produtos lançados!">
 				<f:facet name="header">Produtos</f:facet>
 				
 				<p:column >
 					<f:facet name="header">CODIGO</f:facet>
-					<p:outputLabel value="#{p.produto.codigo}" />
+					<p:outputLabel value="#{p.codigo}" />
 				</p:column>
 				
 				<p:column style="width:80%">
 					<f:facet name="header">PRODUTO</f:facet>
-					<p:outputLabel value="#{p.produto.nome}" />
+					<p:outputLabel value="#{p.nome}" />
 				</p:column>
 				
 				<p:column >
@@ -86,7 +86,7 @@
 				</p:column>
 				
 				<f:facet name="footer">
-					<p:outputLabel value="Total: #{lancamentoBean.nota.produtosPedidos.size()}" />
+					<p:outputLabel value="Total: #{lancamentoBean.nota.produtos.size()}" />
 				</f:facet>
 			</p:dataTable>
 		</h:form>

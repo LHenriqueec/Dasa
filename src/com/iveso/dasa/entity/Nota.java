@@ -3,10 +3,13 @@ package com.iveso.dasa.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Nota {
@@ -20,7 +23,7 @@ public class Nota {
 	@ManyToOne
 	private Cliente cliente;
 	
-	//TODO: Fazer as dependências do atributo
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<Produto> produtos;
 	
 	public Nota() {
