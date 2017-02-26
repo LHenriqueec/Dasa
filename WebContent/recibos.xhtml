@@ -9,7 +9,7 @@
 
 	<ui:define name="content">
 	<h:form>
-		<p:commandButton value="Novo Recibo" action="#{reciboBean.novoRecibo()}" />
+		<p:commandButton value="Novo Recibo" action="#{reciboBean.novoRecibo}" />
 		
 		<p:dataTable var="recibo" value="#{reciboBean.recibos}" emptyMessage="Não há recibos gerados!" style="margin-top:5px">
 			<f:facet name="header">Lista de Recibos</f:facet>

@@ -115,8 +115,12 @@ public class ReciboBean implements Serializable {
 	}
 	
 	private void gerarNumeroRecibo(Recibo recibo) {
-		long ultimo = recibos.stream().mapToLong(rec -> Long.parseLong(rec.getNumero())).max().getAsLong()+1;
-		recibo.setNumero(String.valueOf(ultimo));
+		if (recibos.size() <= 0) {
+			recibo.setNumero("1000");
+		} else {
+			long ultimo = recibos.stream().mapToLong(rec -> Long.parseLong(rec.getNumero())).max().getAsLong()+1;
+			recibo.setNumero(String.valueOf(ultimo));
+		}
 	}
 	
 	private void openDialog(String dialog) {
