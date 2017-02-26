@@ -36,7 +36,6 @@ public class ReciboBean implements Serializable {
 	@PostConstruct
 	private void init() {
 		try {
-			pedido = new Pedido();
 			recibos = service.listarRecibos();
 			
 		} catch (ServiceException e) {
@@ -46,6 +45,7 @@ public class ReciboBean implements Serializable {
 	
 	public String novoRecibo() {
 		recibo = new Recibo();
+		pedido = new Pedido();
 		gerarNumeroRecibo(recibo);
 		return "lista_clientes_recibo";
 	}
