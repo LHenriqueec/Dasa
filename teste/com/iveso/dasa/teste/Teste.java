@@ -51,8 +51,8 @@ public class Teste {
 		pedido.setNota(nota);
 		
 		
-		pedido.inserirProduto(pedido.getNota().getProdutos().get(0));
-		pedido.inserirQuantidade(20);
+		pedido.setProduto(pedido.getNota().getProdutos().get(0));
+		pedido.setQuantidade(20);
 		
 		
 		Assert.assertEquals(new Integer(30), nota.getProdutos().get(0).getQuantidade());

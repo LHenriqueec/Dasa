@@ -16,9 +16,12 @@ public class Produto {
 	private String nome;
 	private Integer quantidade;
 	
-	public Produto() {}
+	public Produto() {
+		this.quantidade = new Integer(0);
+	}
 	
 	public Produto(String codigo, String nome) {
+		this();
 		this.codigo = codigo;
 		this.nome = nome;
 	}

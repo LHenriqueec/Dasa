@@ -21,6 +21,8 @@ public class Pedido {
 	@OneToOne
 	private Produto produto;
 	
+	private int quantidade;
+	
 	public Pedido() {
 		this.nota = new Nota();
 	}
@@ -32,20 +34,25 @@ public class Pedido {
 	public Produto getProduto() {
 		return produto;
 	}
-
+	
+	public int getQuantidade() {
+		return quantidade;
+	}
+	
 	public void setNota(Nota nota) {
 		this.nota = nota;
 	}
 
-	public void inserirProduto(Produto produto) {
+	public void setProduto(Produto produto) {
 		this.produto = new Produto(produto.getCodigo(), produto.getNome());
 	}
 	
-	public void inserirQuantidade(int quantidade) {
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
 		Produto produtoNota = nota.getProdutos().stream().filter(produto -> produto.equals(this.produto))
 					.collect(Collectors.toList()).get(0);
 		
-		produtoNota.setQuantidade(produtoNota.getQuantidade() - quantidade);
-		produto.setQuantidade(quantidade);
+		produtoNota.setQuantidade(produtoNota.getQuantidade() - this.quantidade);
+		produto.setQuantidade(this.quantidade);
 	}
 }
