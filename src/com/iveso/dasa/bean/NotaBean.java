@@ -24,11 +24,7 @@ public class NotaBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		try {
 			notas = service.listar();
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void remover(Nota nota) {

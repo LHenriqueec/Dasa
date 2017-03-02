@@ -9,7 +9,7 @@
 <ui:composition template="/WEB-INF/templates/header.xhtml">
 	<ui:define name="content">
 		<h:form>
-			<p:commandButton value="Salvar" action="#{reciboBean.salvar}" />
+			<p:commandButton value="Salvar" action="#{reciboBean.salvar}" process="@this" />
 			<p:panelGrid columns="2" style="width:100%">
 				<p:outputLabel value="Data:" />
 				<p:outputLabel value="#{reciboBean.recibo.data}" />
@@ -37,7 +37,9 @@
 				</p:autoComplete>
 				
 				<p:outputLabel value="Quantidade:" style="margin-left:5px" />
-				<p:inputText id="quantidade" value="#{reciboBean.pedido.quantidade}" style="width:5%;margin:5px 0px 0px 5px" />
+				<p:inputText id="quantidade" value="#{reciboBean.pedido.quantidade}" style="width:5%;margin:5px 0px 0px 5px">
+					<p:ajax event="blur" process="@this" />
+				</p:inputText>
 				
 				<p:commandButton value="Inserir Produto"  action="#{reciboBean.inserirPedido}" style="margin-left:5px"
 							update="table-produto, num_nota, produto, quantidade"/>
