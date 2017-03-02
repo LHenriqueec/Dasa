@@ -20,6 +20,7 @@ import com.iveso.dasa.entity.Produto;
 import com.iveso.dasa.entity.Recibo;
 import com.iveso.dasa.service.ReciboService;
 import com.iveso.dasa.service.ServiceException;
+import com.iveso.dasa.util.NotasUtils;
 
 @Named
 @SessionScoped
@@ -37,6 +38,7 @@ public class ReciboBean implements Serializable {
 	private void init() {
 		try {
 			recibos = service.listarRecibos();
+			pedido = new Pedido();
 			
 		} catch (ServiceException e) {
 			e.printStackTrace();
@@ -45,7 +47,6 @@ public class ReciboBean implements Serializable {
 	
 	public String novoRecibo() {
 		recibo = new Recibo();
-		pedido = new Pedido();
 		gerarNumeroRecibo(recibo);
 		return "lista_clientes_recibo";
 	}
@@ -72,14 +73,7 @@ public class ReciboBean implements Serializable {
 	}
 
 	public List<Nota> completeNota(String query) {
-		List<Nota> filter = null;
-		try {
-			filter = service.completeNota(query);
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}
-
-		return filter;
+		return NotasUtils.completeNota(query);
 	}
 
 	public List<Produto> completeProduto(String query) {
@@ -94,7 +88,6 @@ public class ReciboBean implements Serializable {
 
 	public void inserirPedido() {
 		recibo.getPedidos().add(pedido);
-		
 		pedido = new Pedido();
 	}
 
