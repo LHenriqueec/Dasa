@@ -1,23 +1,18 @@
 package com.iveso.dasa.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Produto {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 	private String codigo;
 	private String nome;
-	private Integer quantidade;
 	
 	public Produto() {
-		this.quantidade = new Integer(0);
 	}
 	
 	public Produto(String codigo, String nome) {
@@ -38,10 +33,6 @@ public class Produto {
 		return nome;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -52,10 +43,6 @@ public class Produto {
 
 	public void setNome(String nome) {
 		this.nome = nome.toUpperCase();
-	}
-
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
 	}
 
 	@Override

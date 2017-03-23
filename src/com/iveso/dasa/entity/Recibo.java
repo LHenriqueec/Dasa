@@ -23,10 +23,11 @@ public class Recibo {
 	private Cliente cliente;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<Pedido> pedidos;
+	private List<Item> pedidos;
 
 	private String numero;
 	private LocalDate data;
+	private boolean gerado;
 	
 	public Recibo() {
 		pedidos = new ArrayList<>();
@@ -49,8 +50,12 @@ public class Recibo {
 		return cliente;
 	}
 
-	public List<Pedido> getPedidos() {
+	public List<Item> getPedidos() {
 		return pedidos;
+	}
+	
+	public boolean isGerado() {
+		return gerado;
 	}
 
 	public void setId(Integer id) {
@@ -69,7 +74,11 @@ public class Recibo {
 		this.cliente = cliente;
 	}
 
-	public void setPedidos(List<Pedido> pedidos) {
+	public void setPedidos(List<Item> pedidos) {
 		this.pedidos = pedidos;
+	}
+	
+	public void setGerado(boolean gerado) {
+		this.gerado = gerado;
 	}
 }

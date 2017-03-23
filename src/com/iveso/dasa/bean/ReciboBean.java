@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -14,13 +13,12 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 import com.iveso.dasa.entity.Cliente;
+import com.iveso.dasa.entity.Item;
 import com.iveso.dasa.entity.Nota;
-import com.iveso.dasa.entity.Pedido;
 import com.iveso.dasa.entity.Produto;
 import com.iveso.dasa.entity.Recibo;
 import com.iveso.dasa.service.ReciboService;
 import com.iveso.dasa.service.ServiceException;
-import com.iveso.dasa.util.NotasUtils;
 
 @Named
 @SessionScoped
@@ -32,13 +30,13 @@ public class ReciboBean implements Serializable {
 
 	private Recibo recibo;
 	private List<Recibo> recibos;
-	private Pedido pedido;
+	private Item pedido;
 
 	@PostConstruct
 	private void init() {
 		try {
 			recibos = service.listarRecibos();
-			pedido = new Pedido();
+			pedido = new Item();
 			
 		} catch (ServiceException e) {
 			e.printStackTrace();
@@ -73,26 +71,35 @@ public class ReciboBean implements Serializable {
 	}
 
 	public List<Nota> completeNota(String query) {
-		return NotasUtils.completeNota(query);
+		List<Nota> complete = null;
+		try {
+			complete = service.completeNotas(query);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		
+		return complete;
 	}
 
 	public List<Produto> completeProduto(String query) {
 		List<Produto> filter = null;
-		filter = pedido.getNota().getProdutos().stream()
-				.filter(produto -> produto.getCodigo().contains(query)
-						|| produto.getNome().toUpperCase().contains(query.toUpperCase()))
-				.collect(Collectors.toList());
+		//TODO: Refazer o Complete de Produtos
+//		filter = pedido.getNota().getProdutos().stream()
+//				.filter(produto -> produto.getCodigo().contains(query)
+//						|| produto.getNome().toUpperCase().contains(query.toUpperCase()))
+//				.collect(Collectors.toList());
 
 		return filter;
 	}
 
 	public void inserirPedido() {
 		recibo.getPedidos().add(pedido);
-		pedido = new Pedido();
+		pedido = new Item();
 	}
 
 	public int totalProdutos() {
-		return recibo.getPedidos().stream().map(Pedido::getProduto).mapToInt(Produto::getQuantidade).sum();
+		//TODO: Refazer o Cálculo do Total no Recibo
+		return 0;
 	}
 
 	public List<Recibo> getRecibos() {
@@ -103,7 +110,7 @@ public class ReciboBean implements Serializable {
 		return recibo;
 	}
 
-	public Pedido getPedido() {
+	public Item getPedido() {
 		return pedido;
 	}
 	

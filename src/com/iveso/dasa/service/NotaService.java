@@ -13,7 +13,6 @@ import com.iveso.dasa.dao.ProdutoDAO;
 import com.iveso.dasa.entity.Cliente;
 import com.iveso.dasa.entity.Nota;
 import com.iveso.dasa.entity.Produto;
-import com.iveso.dasa.util.NotasUtils;
 
 @ManagedBean(name="notaService",eager=true)
 @ApplicationScoped
@@ -79,8 +78,12 @@ public class NotaService extends Service {
 		}
 	}
 
-	public List<Nota> listar() {
-			return NotasUtils.getNotas();
+	public List<Nota> listar() throws ServiceException {
+		try {
+			return dao.getNotas();
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
 	}
 	
 	public List<Produto> listarProdutos() throws ServiceException {

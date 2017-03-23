@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,14 +26,10 @@ public class LancamentoBean implements Serializable {
 	private boolean edit;
 	private Produto produto;
 	
-	@PostConstruct
-	private void init() {
-		nota = new Nota();
-	}
 	
 	public String novo() {
 		edit = false;
-		init();
+		nota = new Nota();
 		return "lancamento_produto";
 	}
 	
@@ -66,7 +61,8 @@ public class LancamentoBean implements Serializable {
 	}
 	
 	public void inserirProduto() {
-		nota.getProdutos().add(produto);
+		//TODO: Refazer a inserção dos Produtos no Sistema
+//		nota.getProdutos().add(produto);
 		produto = new Produto();
 	}
 	

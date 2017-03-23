@@ -24,10 +24,10 @@ public class Nota {
 	private Cliente cliente;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	private List<Produto> produtos;
+	private List<Item> itens;
 	
 	public Nota() {
-		produtos = new ArrayList<>();
+		itens = new ArrayList<>();
 	}
 
 	public Integer getId() {
@@ -42,8 +42,8 @@ public class Nota {
 		return cliente;
 	}
 
-	public List<Produto> getProdutos() {
-		return produtos;
+	public List<Item> getItens() {
+		return itens;
 	}
 
 	public void setId(Integer id) {
@@ -58,7 +58,7 @@ public class Nota {
 		this.cliente = cliente;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setItens(List<Item> itens) {
+		this.itens = itens;
 	}
 }
