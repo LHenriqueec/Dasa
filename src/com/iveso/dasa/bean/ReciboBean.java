@@ -30,13 +30,13 @@ public class ReciboBean implements Serializable {
 
 	private Recibo recibo;
 	private List<Recibo> recibos;
-	private Item pedido;
+	private Item item;
 
 	@PostConstruct
 	private void init() {
 		try {
 			recibos = service.listarRecibos();
-			pedido = new Item();
+			item = new Item();
 			
 		} catch (ServiceException e) {
 			e.printStackTrace();
@@ -83,23 +83,22 @@ public class ReciboBean implements Serializable {
 
 	public List<Produto> completeProduto(String query) {
 		List<Produto> filter = null;
-		//TODO: Refazer o Complete de Produtos
-//		filter = pedido.getNota().getProdutos().stream()
-//				.filter(produto -> produto.getCodigo().contains(query)
-//						|| produto.getNome().toUpperCase().contains(query.toUpperCase()))
-//				.collect(Collectors.toList());
+		try {
+			filter = service.completeProduto(query);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
 
 		return filter;
 	}
 
-	public void inserirPedido() {
-		recibo.getPedidos().add(pedido);
-		pedido = new Item();
+	public void inserirItem() {
+		recibo.getItens().add(item);
+		item = new Item();
 	}
 
 	public int totalProdutos() {
-		//TODO: Refazer o Cálculo do Total no Recibo
-		return 0;
+		return recibo.getItens().stream().mapToInt(item -> item.getQuantidade()).sum();
 	}
 
 	public List<Recibo> getRecibos() {
@@ -110,8 +109,8 @@ public class ReciboBean implements Serializable {
 		return recibo;
 	}
 
-	public Item getPedido() {
-		return pedido;
+	public Item getItem() {
+		return item;
 	}
 	
 	private void gerarNumeroRecibo(Recibo recibo) {

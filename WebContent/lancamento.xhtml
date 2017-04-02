@@ -58,35 +58,35 @@
 			</p:panelGrid>
 
 			<p:outputLabel value="Produto:"/>
-			<p:autoComplete id="prod" var="produto" value="#{lancamentoBean.produto}" completeMethod="#{lancamentoBean.complete}"
+			<p:autoComplete id="prod" var="produto" value="#{lancamentoBean.item.produto}" completeMethod="#{lancamentoBean.complete}"
 					itemLabel="#{produto.nome}" itemValue="#{produto}" converter="produtoConverter" style="margin:10px 0px 10px 5px" />
 			
 			<p:outputLabel value="Quantidade:" style="margin:10px 0px 10px 5px" />
-			<p:inputText id="quantidade" value="#{lancamentoBean.produto.quantidade}" style="margin:10px 0px 10px 5px" size="2" />
-			<p:commandButton value="Lançar" style="margin:10px 0px 10px 5px" actionListener="#{lancamentoBean.inserirProduto}" update="prod,quantidade,table_produtos" />
+			<p:inputText id="quantidade" value="#{lancamentoBean.item.quantidade}" style="margin:10px 0px 10px 5px" size="2" />
+			<p:commandButton value="Lançar" style="margin:10px 0px 10px 5px" actionListener="#{lancamentoBean.inserirItem}" update="prod,quantidade,table_produtos" />
 			
-			<p:dataTable id="table_produtos" var="p" value="#{lancamentoBean.nota.produtos}" emptyMessage="Não há produtos lançados!">
+			<p:dataTable id="table_produtos" var="item" value="#{lancamentoBean.nota.itens}" emptyMessage="Não há produtos lançados!">
 				<f:facet name="header">Produtos</f:facet>
 				
 				<p:column >
 					<f:facet name="header">CODIGO</f:facet>
-					<p:outputLabel value="#{p.codigo}" />
+					<p:outputLabel value="#{item.produto.codigo}" />
 				</p:column>
 				
 				<p:column style="width:80%">
 					<f:facet name="header">PRODUTO</f:facet>
-					<p:outputLabel value="#{p.nome}" />
+					<p:outputLabel value="#{item.produto.nome}" />
 				</p:column>
 				
 				<p:column >
 					<f:facet name="header">QUANTIDADE</f:facet>
 					<p:inplace editor="true">
-						<p:inputNumber decimalPlaces="0" value="#{p.quantidade}" />
+						<p:inputNumber decimalPlaces="0" value="#{item.quantidade}" />
 					</p:inplace>
 				</p:column>
 				
 				<f:facet name="footer">
-					<p:outputLabel value="Total: #{lancamentoBean.nota.produtos.size()}" />
+					<p:outputLabel value="Total: #{lancamentoBean.nota.itens.size()}" />
 				</f:facet>
 			</p:dataTable>
 		</h:form>

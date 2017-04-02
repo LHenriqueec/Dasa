@@ -7,8 +7,6 @@ import javax.persistence.Id;
 public class Produto {
 
 	@Id
-	private Integer id;
-	
 	private String codigo;
 	private String nome;
 	
@@ -21,20 +19,12 @@ public class Produto {
 		this.nome = nome;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
 	public String getCodigo() {
 		return codigo;
 	}
 
 	public String getNome() {
 		return nome;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public void setCodigo(String codigo) {

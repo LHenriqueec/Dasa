@@ -43,7 +43,7 @@ public class ProdutoService extends Service {
 	public void deletar(Produto produto) throws ServiceException {
 		try {
 			beginTransaction();
-			Produto produtoDB = dao.carregar(produto.getId(), Produto.class);
+			Produto produtoDB = dao.carregar(produto.getCodigo(), Produto.class);
 			dao.deletar(produtoDB);
 			commitTransaction();
 		} catch (DAOException e) {

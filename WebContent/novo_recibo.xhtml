@@ -22,40 +22,23 @@
 				<p:outputLabel value="#{reciboBean.recibo.cliente.nome}" style="width:80%" />
 			</p:panelGrid>
 			
-				<p:outputLabel value="Nota:" style="width:5px" />
-				<p:autoComplete id="num_nota" size="8" var="nota" value="#{reciboBean.pedido.nota}" completeMethod="#{reciboBean.completeNota}"
-							itemLabel="#{nota.numeroNota}" itemValue="#{nota}" converter="notaConverter" style="margin-left:5px">
-				
-					<p:ajax event="blur" process="@this" />
-				</p:autoComplete>
-				
 				<p:outputLabel value="Produto:" style="margin-left:5px" />
-				<p:autoComplete id="produto" var="produto" value="#{reciboBean.pedido.produto}" completeMethod="#{reciboBean.completeProduto}"
-							itemLabel="#{produto.nome}" itemValue="#{produto}" converter="produtoConverter" size="36" style="margin-left:5px">
-				
-					<p:ajax event="blur" process="@this" />		
-				</p:autoComplete>
+				<p:autoComplete id="produto" var="produto" value="#{reciboBean.item.produto}" completeMethod="#{reciboBean.completeProduto}"
+							itemLabel="#{produto.nome}" itemValue="#{produto}" converter="produtoConverter" size="36" style="margin-left:5px" />
 				
 				<p:outputLabel value="Quantidade:" style="margin-left:5px" />
-				<p:inputText id="quantidade" value="#{reciboBean.pedido.produto.quantidade}" style="width:5%;margin:5px 0px 0px 5px">
-					<p:ajax event="blur" process="@this" />
-				</p:inputText>
+				<p:inputText id="quantidade" value="#{reciboBean.item.quantidade}" style="width:5%;margin:5px 0px 0px 5px" />
 				
-				<p:commandButton value="Inserir Produto"  action="#{reciboBean.inserirPedido}" style="margin-left:5px"
-							update="table-produto, num_nota, produto, quantidade"/>
+				<p:commandButton value="Inserir Produto"  actionListener="#{reciboBean.inserirItem()}" style="margin-left:5px" />
 				
-				<p:dataTable id="table-produto" var="pedido" value="#{reciboBean.recibo.pedidos}" style="margin-top:5px"
+				<p:dataTable id="table-produto" var="item" value="#{reciboBean.recibo.itens}" style="margin-top:5px"
 							emptyMessage="Não há produtos inseridos!">
-					<p:column headerText="Nota">
-						<p:outputLabel value="#{pedido.nota.numeroNota}" />
-					</p:column>
-					
 					<p:column headerText="Produto">
-						<p:outputLabel value="#{pedido.produto.nome}" />
+						<p:outputLabel value="#{item.produto.nome}" />
 					</p:column>
 					
 					<p:column headerText="Quantidade">
-						<p:outputLabel value="#{pedido.produto.quantidade}" />
+						<p:outputLabel value="#{item.quantidade}" />
 					</p:column>
 					
 					<f:facet name="footer">

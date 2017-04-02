@@ -54,15 +54,15 @@ public class ProdutoBean implements Serializable {
 				service.alterar(produto);
 				produtos.set(index, produto);
 				edit = false;
-				produto = null;
 			} else {
-				produtos.add(produto);
 				service.salvar(produto);
-				produto = null;
+				produtos.add(produto);
 			}
 		} catch (ServiceException e) {
+			produtos.remove(produto);
 			e.printStackTrace();
 		}
+		produto = null;
 	}
 	
 	public void salvar_exit() {

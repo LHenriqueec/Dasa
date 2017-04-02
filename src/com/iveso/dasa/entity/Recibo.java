@@ -23,14 +23,14 @@ public class Recibo {
 	private Cliente cliente;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<Item> pedidos;
+	private List<Item> itens;
 
 	private String numero;
 	private LocalDate data;
 	private boolean gerado;
 	
 	public Recibo() {
-		pedidos = new ArrayList<>();
+		itens = new ArrayList<>();
 		data = LocalDate.now();
 	}
 
@@ -50,8 +50,8 @@ public class Recibo {
 		return cliente;
 	}
 
-	public List<Item> getPedidos() {
-		return pedidos;
+	public List<Item> getItens() {
+		return itens;
 	}
 	
 	public boolean isGerado() {
@@ -74,8 +74,8 @@ public class Recibo {
 		this.cliente = cliente;
 	}
 
-	public void setPedidos(List<Item> pedidos) {
-		this.pedidos = pedidos;
+	public void setItens(List<Item> itens) {
+		this.itens = itens;
 	}
 	
 	public void setGerado(boolean gerado) {

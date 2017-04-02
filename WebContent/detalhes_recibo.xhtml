@@ -32,22 +32,17 @@
 				value="#{reciboBean.recibo.cliente.endereco.logradouro}" />
 		</p:panelGrid>
 
-		<p:dataTable var="pedido" value="#{reciboBean.recibo.pedidos}">
-			<p:column headerText="NOTA">
-				<p:outputLabel value="#{pedido.nota.numeroNota}" />
-			</p:column>
-		
-		
+		<p:dataTable var="item" value="#{reciboBean.recibo.itens}">
 			<p:column headerText="CÓDIGO">
-				<p:outputLabel value="#{pedido.produto.codigo}" />
+				<p:outputLabel value="#{item.produto.codigo}" />
 			</p:column>
 
 			<p:column headerText="PRODUTO">
-				<p:outputLabel value="#{pedido.produto.nome}" />
+				<p:outputLabel value="#{item.produto.nome}" />
 			</p:column>
 
 			<p:column headerText="QUANTIDADE">
-				<p:outputLabel value="#{pedido.produto.quantidade}" />
+				<p:outputLabel value="#{item.quantidade}" />
 			</p:column>
 		</p:dataTable>
 	</h:form>

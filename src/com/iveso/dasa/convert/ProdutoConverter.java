@@ -35,7 +35,7 @@ public class ProdutoConverter implements Converter, Serializable {
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
 		if (object != null) {
-			return String.valueOf(((Produto) object).getId());
+			return String.valueOf(((Produto) object).getCodigo());
 		}
 		return null;
 	}

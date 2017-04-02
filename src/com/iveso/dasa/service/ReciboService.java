@@ -7,8 +7,10 @@ import javax.inject.Inject;
 
 import com.iveso.dasa.dao.DAOException;
 import com.iveso.dasa.dao.NotaDAO;
+import com.iveso.dasa.dao.ProdutoDAO;
 import com.iveso.dasa.dao.ReciboDAO;
 import com.iveso.dasa.entity.Nota;
+import com.iveso.dasa.entity.Produto;
 import com.iveso.dasa.entity.Recibo;
 
 public class ReciboService extends Service {
@@ -18,6 +20,8 @@ public class ReciboService extends Service {
 	private ReciboDAO dao;
 	@Inject
 	private NotaDAO notaDAO;
+	@Inject
+	private ProdutoDAO produtoDAO;
 
 	public void salvar(Recibo recibo) throws ServiceException {
 		try {
@@ -60,6 +64,17 @@ public class ReciboService extends Service {
 		}
 
 		return recibos;
+	}
+	
+	public List<Produto> completeProduto(String query) throws ServiceException {
+		try {
+			return produtoDAO.getProdutos().stream()
+					.filter(produto -> produto.getCodigo().contains(query) 
+							|| produto.getNome().toUpperCase().contains(query.toUpperCase()))
+					.collect(Collectors.toList());
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
 	}
 	
 	public List<Nota> completeNotas(String query) throws ServiceException {
