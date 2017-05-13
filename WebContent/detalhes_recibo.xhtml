@@ -4,9 +4,11 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
+	
+<h:head/>
 <h:body>
 	<h:form>
-		<p:panelGrid columns="2">
+		<p:panelGrid columns="2" style="width:100%">
 			<center>
 			<f:facet name="header">
 				<strong>
@@ -32,7 +34,7 @@
 				value="#{reciboBean.recibo.cliente.endereco.logradouro}" />
 		</p:panelGrid>
 
-		<p:dataTable var="item" value="#{reciboBean.recibo.itens}">
+		<p:dataTable var="item" value="#{reciboBean.recibo.itens}" style="margin-top:20px">
 			<p:column headerText="CÓDIGO">
 				<p:outputLabel value="#{item.produto.codigo}" />
 			</p:column>

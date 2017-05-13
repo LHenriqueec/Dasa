@@ -22,14 +22,17 @@
 				<p:outputLabel value="#{reciboBean.recibo.cliente.nome}" style="width:80%" />
 			</p:panelGrid>
 			
-				<p:outputLabel value="Produto:" style="margin-left:5px" />
+				<p:outputLabel for="produto" value="Produto:" style="margin-left:5px" />
 				<p:autoComplete id="produto" var="produto" value="#{reciboBean.item.produto}" completeMethod="#{reciboBean.completeProduto}"
-							itemLabel="#{produto.nome}" itemValue="#{produto}" converter="produtoConverter" size="36" style="margin-left:5px" />
+								itemLabel="#{produto.nome}" itemValue="#{produto}" converter="produtoConverter" size="36" style="margin-left:5px">
+
+					<p:ajax event="blur" update="@this" />
+				</p:autoComplete>
 				
 				<p:outputLabel value="Quantidade:" style="margin-left:5px" />
 				<p:inputText id="quantidade" value="#{reciboBean.item.quantidade}" style="width:5%;margin:5px 0px 0px 5px" />
 				
-				<p:commandButton value="Inserir Produto"  actionListener="#{reciboBean.inserirItem()}" style="margin-left:5px" />
+				<p:commandButton value="Inserir Produto"  actionListener="#{reciboBean.inserirItem}" style="margin-left:5px" update="produto quantidade table-produto" />
 				
 				<p:dataTable id="table-produto" var="item" value="#{reciboBean.recibo.itens}" style="margin-top:5px"
 							emptyMessage="Não há produtos inseridos!">

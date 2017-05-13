@@ -8,29 +8,41 @@
 <ui:composition template="/WEB-INF/templates/header.xhtml">
 
 	<ui:define name="content">
-	<h:form>
-		<p:commandButton value="Novo Recibo" action="#{reciboBean.novoRecibo}" />
-		
-		<p:dataTable var="recibo" value="#{reciboBean.recibos}" emptyMessage="Não há recibos gerados!" style="margin-top:5px">
-			<f:facet name="header">Lista de Recibos</f:facet>
-				
-			<p:column headerText="Emissão" width="140" style="text-align:center">
-				<p:outputLabel value="#{recibo.data}" />
-			</p:column>
-				
-			<p:column headerText="Recibo" width="140" style="text-align:center">
-				<p:outputLabel value="#{recibo.numero}" />
-			</p:column>
-			
-			<p:column headerText="Cliente">
-				<p:outputLabel value="#{recibo.cliente.nome}" />
-			</p:column>
-			
-			<p:column width="120" style="text-align:center">
-				<p:commandLink value="Detalhe" action="#{reciboBean.mostrarDetalhe(recibo)}" />
-			</p:column>
-		</p:dataTable>
-	</h:form>
+		<h:form>
+			<p:commandButton value="Novo Recibo"
+				action="#{reciboBean.novoRecibo}" />
+
+			<p:dataTable var="recibo" value="#{reciboBean.recibos}"
+				emptyMessage="Não há recibos gerados!" style="margin-top:5px">
+				<f:facet name="header">Lista de Recibos</f:facet>
+
+				<p:column headerText="Emissão" width="140" style="text-align:center">
+					<p:outputLabel value="#{recibo.data}" />
+				</p:column>
+
+				<p:column headerText="Recibo" width="140" style="text-align:center">
+					<p:outputLabel value="#{recibo.numero}" />
+				</p:column>
+
+				<p:column headerText="Cliente">
+					<p:outputLabel value="#{recibo.cliente.nome}" />
+				</p:column>
+
+				<p:column width="120" style="text-align:center">
+					<p:commandLink action="#{reciboBean.mostrarDetalhe(recibo)}">
+						<h:outputText styleClass="fa fa-fw fa-align-justify"/>
+					</p:commandLink>
+
+					<p:commandLink action="#{reciboBean.imprimir(recibo)}" style="padding-left:5px;padding-right:5px">
+						<h:outputText styleClass="fa fa-fw fa-print" />
+					</p:commandLink>
+
+					<p:commandLink>
+						<h:outputText styleClass="fa fa-fw fa-remove" style="color:red" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

@@ -1,5 +1,8 @@
 package com.iveso.dasa.service;
 
+import com.iveso.dasa.dao.DAO;
+import com.iveso.dasa.dao.DAOException;
+
 import java.io.Serializable;
 
 import javax.annotation.Resource;
@@ -36,6 +39,28 @@ public abstract class Service implements Serializable {
 			ut.rollback();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	protected void salvar(DAO dao, Object obj) throws ServiceException {
+		try {
+			beginTransaction();
+			dao.salvar(obj);
+			commitTransaction();
+		} catch (DAOException e) {
+			rollbackTransaction();
+			throw new ServiceException(e);
+		}
+	}
+
+	protected void alterar(DAO dao, Object obj) throws ServiceException {
+		try {
+			beginTransaction();
+			dao.alterar(obj);
+			commitTransaction();
+		} catch (DAOException e) {
+			rollbackTransaction();
+			throw new ServiceException(e);
 		}
 	}
 }

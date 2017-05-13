@@ -31,7 +31,8 @@ public class LancamentoBean implements Serializable {
 	public String novo() {
 		edit = false;
 		nota = new Nota();
-		return "lancamento_Item";
+		item = new Item();
+		return "lancamento_produto";
 	}
 	
 	public String alterar(Nota nota) {
@@ -63,7 +64,7 @@ public class LancamentoBean implements Serializable {
 	
 	public void inserirItem() {
 		//TODO: Refazer a inserção dos Items no Sistema
-//		nota.getItems().add(Item);
+		nota.getItens().add(item);
 		item = new Item();
 	}
 	

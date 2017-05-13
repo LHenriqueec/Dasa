@@ -29,20 +29,13 @@ public class NotaService extends Service {
 	private ClienteDAO clienteDAO;
 
 	public void salvar(Nota nota) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.salvar(nota);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
+		salvar(dao, nota);
 	}
 
 	public void deletar(Nota nota) throws ServiceException {
 		try {
 			beginTransaction();
-			Nota notaDB = dao.carregar(nota.getId(), Nota.class);
+			Nota notaDB = dao.carregar(nota.getNumeroNota(), Nota.class);
 			dao.deletar(notaDB);
 			commitTransaction();
 		} catch (DAOException e) {
@@ -52,14 +45,7 @@ public class NotaService extends Service {
 	}
 
 	public void alterar(Nota nota) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.alterar(nota);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
+		alterar(dao, nota);
 	}
 	
 	public Nota carregar(String id) throws ServiceException {

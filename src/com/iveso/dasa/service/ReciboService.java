@@ -1,5 +1,6 @@
 package com.iveso.dasa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import com.iveso.dasa.dao.DAOException;
 import com.iveso.dasa.dao.NotaDAO;
 import com.iveso.dasa.dao.ProdutoDAO;
 import com.iveso.dasa.dao.ReciboDAO;
+import com.iveso.dasa.entity.Item;
 import com.iveso.dasa.entity.Nota;
 import com.iveso.dasa.entity.Produto;
 import com.iveso.dasa.entity.Recibo;
@@ -25,30 +27,11 @@ public class ReciboService extends Service {
 
 	public void salvar(Recibo recibo) throws ServiceException {
 		try {
-			beginTransaction();
-			//TODO: Refazer o cálculo da quantidade disponível dos produtos de uma Nota.
+			salvar(dao, recibo);
+			List<Nota> notasRecibo = recalcularProdutosNota(notaDAO.getNotas(), recibo);
+			recibo.setNotas(notasRecibo);
 			
-			dao.salvar(recibo);
-//
-//			recibo.getPedidos().forEach(pedido -> {
-//				try {
-//					
-//					Nota notaDB = notaDAO.carregar(pedido.getNota().getId(), Nota.class);
-//					Produto produtoNota = notaDB.getProdutos().stream().filter(produto -> produto.equals(pedido.getProduto()))
-//								.collect(Collectors.toList()).get(0);
-//					
-//					int quantidade = produtoNota.getQuantidade();
-//					produtoNota.setQuantidade(quantidade - pedido.getProduto().getQuantidade());
-//					
-//					notaDAO.alterar(notaDB);
-//				} catch (DAOException e) {
-//					e.printStackTrace();
-//				}
-//			});
-
-			commitTransaction();
 		} catch (DAOException e) {
-			rollbackTransaction();
 			throw new ServiceException(e);
 		}
 	}
@@ -69,7 +52,7 @@ public class ReciboService extends Service {
 	public List<Produto> completeProduto(String query) throws ServiceException {
 		try {
 			return produtoDAO.getProdutos().stream()
-					.filter(produto -> produto.getCodigo().contains(query) 
+					.filter(produto -> produto.getCodigo().contains(query)
 							|| produto.getNome().toUpperCase().contains(query.toUpperCase()))
 					.collect(Collectors.toList());
 		} catch (DAOException e) {
@@ -84,5 +67,54 @@ public class ReciboService extends Service {
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}
+	}
+	
+	private List<Nota> recalcularProdutosNota(List<Nota> notas, Recibo recibo) {
+		List<Nota> notasAlteradas = new ArrayList<>();
+		List<Item> itens = recibo.getItens();
+		
+		for (int i = 0; i < itens.size(); i++) {
+			Item itemRecibo = itens.get(i);
+			int qtdRecibo = itemRecibo.getQuantidade();
+			int n = 0;
+			
+			while (qtdRecibo > 0) {
+				Nota nota = notas.get(n);
+				
+					for (Item itemNota : nota.getItens()) {
+						if (itemNota.getProduto().equals(itemRecibo.getProduto())) {
+							
+							if (itemNota.getQuantidade() > qtdRecibo) {
+								int qtdNota = itemNota.getQuantidade();
+								
+								itemNota.setQuantidade(qtdNota - qtdRecibo);
+								
+								qtdRecibo = 0;
+								
+								if (!notasAlteradas.contains(nota)) notasAlteradas.add(nota);
+								
+							} else {
+								qtdRecibo -= itemNota.getQuantidade();
+								itemNota.setQuantidade(0);
+								if (!notasAlteradas.contains(nota)) notasAlteradas.add(nota);
+							}
+						}
+					};
+					
+					n++;
+			}
+			
+			recibo.getNotas().addAll(notasAlteradas);
+			
+			notasAlteradas.forEach(nota -> {
+				try {
+					alterar(notaDAO, nota);
+				} catch (ServiceException e) {
+					e.printStackTrace();
+				}
+			});
+		};
+		
+		return notasAlteradas;
 	}
 }

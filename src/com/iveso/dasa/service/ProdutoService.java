@@ -19,25 +19,11 @@ public class ProdutoService extends Service {
 	private ProdutoDAO dao;
 	
 	public void salvar(Produto produto) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.salvar(produto);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
+		salvar(dao, produto);
 	}
 	
 	public void alterar(Produto produto) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.alterar(produto);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
+		alterar(dao, produto);
 	}
 	
 	public void deletar(Produto produto) throws ServiceException {
@@ -51,10 +37,10 @@ public class ProdutoService extends Service {
 			throw new ServiceException(e);
 		}
 	}
-	
-	public Produto carregar(int id) throws ServiceException {
+
+	public Produto carregar(String codigo) throws ServiceException {
 		try {
-			return dao.carregar(id, Produto.class);
+			return dao.carregar(codigo, Produto.class);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

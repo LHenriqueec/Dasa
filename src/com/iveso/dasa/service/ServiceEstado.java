@@ -13,14 +13,7 @@ public class ServiceEstado extends Service {
 	private EstadoDAO dao;
 	
 	public void salvar(Estado estado) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.salvar(estado);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
+		salvar(dao, estado);
 	}
 	
 	public void searchEstadoByNome(String uf) throws ServiceException {

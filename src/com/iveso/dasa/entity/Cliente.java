@@ -11,9 +11,6 @@ import javax.persistence.OneToOne;
 public class Cliente {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	
 	private String cnpj;
 	private String nome;
 	
@@ -30,10 +27,7 @@ public class Cliente {
 		this.contato = contato;
 	}
 	
-	public Integer getId() {
-		return id;
-	}
-	
+
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -48,10 +42,6 @@ public class Cliente {
 	
 	public Contato getContato() {
 		return contato;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	public void setCnpj(String cnpj) {

@@ -69,7 +69,24 @@ public class ReciboBean implements Serializable {
 		this.recibo = recibo;
 		openDialog("detalhes_recibo");
 	}
-
+	
+	public String imprimir(Recibo recibo) {
+		this.recibo = recibo;
+		return "recibo_dialog";
+	}
+	
+	public String notasRecibo() {
+		StringBuffer buff = new StringBuffer();
+		recibo.getNotas().forEach(nota -> {
+			buff.append(nota.getNumeroNota());
+			buff.append(";");
+		});
+		
+		int index = buff.lastIndexOf(";");
+		buff.deleteCharAt(index);
+		return buff.toString();
+	}
+	
 	public List<Nota> completeNota(String query) {
 		List<Nota> complete = null;
 		try {
@@ -104,7 +121,7 @@ public class ReciboBean implements Serializable {
 	public List<Recibo> getRecibos() {
 		return recibos;
 	}
-
+	
 	public Recibo getRecibo() {
 		return recibo;
 	}

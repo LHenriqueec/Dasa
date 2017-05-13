@@ -24,7 +24,7 @@ public class ProdutoConverter implements Converter, Serializable {
 		if (value != null && value.trim().length() > 0) {
 			try {
 				ProdutoService service = (ProdutoService) context.getExternalContext().getApplicationMap().get("produtoService");
-				produto = service.carregar(Integer.parseInt(value));
+				produto = service.carregar(value);
 			} catch (NumberFormatException | ServiceException e) {
 				e.printStackTrace();
 			}

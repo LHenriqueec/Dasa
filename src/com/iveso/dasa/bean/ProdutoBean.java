@@ -29,6 +29,7 @@ public class ProdutoBean implements Serializable {
 	private Produto produto;
 	private boolean edit;
 	private int index;
+	private String codigoProduto;
 
 	public ProdutoBean() {
 		produtos = new ArrayList<>();
@@ -79,7 +80,8 @@ public class ProdutoBean implements Serializable {
 	}
 	
 	public void editar(Produto produto) {
-		this.produto = produto; 
+		this.produto = produto;
+		codigoProduto = produto.getCodigo();
 		index = produtos.indexOf(produto);
 		edit = true;
 		openDialog();

@@ -33,7 +33,7 @@ public class ClienteConverter implements Converter, Serializable {
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object object) {
 		if (object != null) {
-			return String.valueOf(((Cliente) object).getId());
+			return String.valueOf(((Cliente) object).getCnpj());
 		}
 		return null;
 	}
