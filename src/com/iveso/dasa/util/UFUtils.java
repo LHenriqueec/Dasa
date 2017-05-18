@@ -13,7 +13,7 @@ import java.util.Properties;
 public class UFUtils {
 
 	private static Properties props = new Properties();
-	private static Path path = Paths.get("/home/luiz/workspace/Dasa/src/uf.properties");
+	private static Path path = Paths.get(System.getProperty("user.home") + "/uf.properties");
 	private static List<String> ufs = new ArrayList<>();
 	private static long lastModified = -1;
 	

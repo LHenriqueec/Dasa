@@ -36,8 +36,12 @@
 					<p:commandLink action="#{reciboBean.imprimir(recibo)}" style="padding-left:5px;padding-right:5px">
 						<h:outputText styleClass="fa fa-fw fa-print" />
 					</p:commandLink>
+					
+					<p:commandLink action="#{reciboBean.alterarRecibo(recibo)}">
+						<h:outputText styleClass="fa fa-fw fa-edit" />
+					</p:commandLink>
 
-					<p:commandLink>
+					<p:commandLink action="#{reciboBean.excluir(recibo)}">
 						<h:outputText styleClass="fa fa-fw fa-remove" style="color:red" />
 					</p:commandLink>
 				</p:column>

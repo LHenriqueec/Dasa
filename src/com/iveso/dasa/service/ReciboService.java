@@ -35,6 +35,10 @@ public class ReciboService extends Service {
 			throw new ServiceException(e);
 		}
 	}
+	
+	public void alterar(Recibo recibo) throws ServiceException {
+			alterar(dao, recibo);
+	}
 
 	public List<Recibo> listarRecibos() throws ServiceException {
 		List<Recibo> recibos = null;
