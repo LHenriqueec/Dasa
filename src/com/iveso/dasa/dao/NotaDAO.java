@@ -1,13 +1,8 @@
 package com.iveso.dasa.dao;
 
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.iveso.dasa.entity.Nota;
-import com.iveso.dasa.entity.Produto;
 
 public class NotaDAO extends DAO {
 	private static final long serialVersionUID = 1L;

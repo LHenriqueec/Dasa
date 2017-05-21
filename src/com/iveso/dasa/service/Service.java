@@ -1,8 +1,5 @@
 package com.iveso.dasa.service;
 
-import com.iveso.dasa.dao.DAO;
-import com.iveso.dasa.dao.DAOException;
-
 import java.io.Serializable;
 
 import javax.annotation.Resource;
