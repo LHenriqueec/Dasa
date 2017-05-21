@@ -63,7 +63,6 @@ public class LancamentoBean implements Serializable {
 	}
 	
 	public void inserirItem() {
-		//TODO: Refazer a inserção dos Items no Sistema
 		nota.getItens().add(item);
 		item = new Item();
 	}

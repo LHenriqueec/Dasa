@@ -72,6 +72,10 @@ public class ReciboBean implements Serializable {
 		return "recibos";
 	}
 
+	public void excluir(Recibo recibo) {
+		
+	}
+
 	public String selecionar(Cliente cliente) {
 		recibo.setCliente(cliente);
 

@@ -74,6 +74,7 @@ public class ReciboService extends Service {
 	}
 	
 	private List<Nota> recalcularProdutosNota(List<Nota> notas, Recibo recibo) {
+		//TODO: Refazer código utilizando Map para controlar a quantidade que sai de cada Nota
 		List<Nota> notasAlteradas = new ArrayList<>();
 		List<Item> itens = recibo.getItens();
 		
@@ -94,6 +95,7 @@ public class ReciboService extends Service {
 								itemNota.setQuantidade(qtdNota - qtdRecibo);
 								
 								qtdRecibo = 0;
+								
 								
 								if (!notasAlteradas.contains(nota)) notasAlteradas.add(nota);
 								
