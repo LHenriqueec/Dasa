@@ -42,25 +42,25 @@ public abstract class Service implements Serializable {
 		}
 	}
 
-	protected void salvar(DAO dao, Object obj) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.salvar(obj);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
-	}
-
-	protected void alterar(DAO dao, Object obj) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.alterar(obj);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
-	}
+//	protected void salvar(DAO dao, Object obj) throws ServiceException {
+//		try {
+//			beginTransaction();
+//			dao.salvar(obj);
+//			commitTransaction();
+//		} catch (DAOException e) {
+//			rollbackTransaction();
+//			throw new ServiceException(e);
+//		}
+//	}
+//
+//	protected void alterar(DAO dao, Object obj) throws ServiceException {
+//		try {
+//			beginTransaction();
+//			dao.alterar(obj);
+//			commitTransaction();
+//		} catch (DAOException e) {
+//			rollbackTransaction();
+//			throw new ServiceException(e);
+//		}
+//	}
 }

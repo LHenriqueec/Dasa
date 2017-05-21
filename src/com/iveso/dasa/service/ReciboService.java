@@ -27,17 +27,33 @@ public class ReciboService extends Service {
 
 	public void salvar(Recibo recibo) throws ServiceException {
 		try {
-			salvar(dao, recibo);
 			List<Nota> notasRecibo = recalcularProdutosNota(notaDAO.getNotas(), recibo);
 			recibo.setNotas(notasRecibo);
 			
+			beginTransaction();
+			dao.salvar(recibo);
+			commitTransaction();
+			
+			
 		} catch (DAOException e) {
+			rollbackTransaction();
 			throw new ServiceException(e);
 		}
 	}
 	
 	public void alterar(Recibo recibo) throws ServiceException {
-			alterar(dao, recibo);
+			try {
+				beginTransaction();
+				dao.alterar(recibo);
+				commitTransaction();
+			} catch (DAOException e) {
+				rollbackTransaction();
+				throw new ServiceException(e);
+			}
+	}
+	
+	public void deletar(Recibo recibo) {
+		//TODO: Criar método de exclusão do Recibo
 	}
 
 	public List<Recibo> listarRecibos() throws ServiceException {
@@ -114,8 +130,11 @@ public class ReciboService extends Service {
 			
 			notasAlteradas.forEach(nota -> {
 				try {
-					alterar(notaDAO, nota);
-				} catch (ServiceException e) {
+					beginTransaction();
+					dao.alterar(nota);
+					commitTransaction();
+				} catch (DAOException e) {
+					rollbackTransaction();
 					e.printStackTrace();
 				}
 			});

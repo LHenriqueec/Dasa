@@ -10,7 +10,7 @@
 	<ui:define name="content">
 		<h:form>
 			<p:commandButton value="Novo Recibo"
-				action="#{reciboBean.novoRecibo}" />
+				action="#{reciboBean.novo}" />
 
 			<p:dataTable var="recibo" value="#{reciboBean.recibos}"
 				emptyMessage="Não há recibos gerados!" style="margin-top:5px">
@@ -37,7 +37,7 @@
 						<h:outputText styleClass="fa fa-fw fa-print" />
 					</p:commandLink>
 					
-					<p:commandLink action="#{reciboBean.alterarRecibo(recibo)}">
+					<p:commandLink action="#{reciboBean.alterar(recibo)}">
 						<h:outputText styleClass="fa fa-fw fa-edit" />
 					</p:commandLink>
 

@@ -44,14 +44,14 @@ public class ReciboBean implements Serializable {
 		}
 	}
 
-	public String novoRecibo() {
+	public String novo() {
 		edit = false;
 		recibo = new Recibo();
 		gerarNumeroRecibo(recibo);
 		return "lista_clientes_recibo";
 	}
 
-	public String alterarRecibo(Recibo recibo) {
+	public String alterar(Recibo recibo) {
 		edit = true;
 		this.recibo = recibo;
 		return "lista_clientes_recibo";

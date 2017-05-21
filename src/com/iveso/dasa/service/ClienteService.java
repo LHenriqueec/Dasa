@@ -20,11 +20,25 @@ public class ClienteService extends Service {
 	
 	
 	public void salvar(Cliente cliente) throws ServiceException {
-		salvar(dao, cliente);
+		try {
+			beginTransaction();
+			dao.salvar(cliente);
+			commitTransaction();
+		} catch (DAOException e) {
+			rollbackTransaction();
+			throw new ServiceException(e);
+		}
 	}
 	
 	public void alterar(Cliente cliente) throws ServiceException {
-		alterar(dao, cliente);
+		try {
+			beginTransaction();
+			dao.alterar(cliente);
+			commitTransaction();
+		} catch (DAOException e) {
+			rollbackTransaction();
+			throw new ServiceException(e);
+		}
 	}
 	
 	public void deletar(Cliente cliente) throws ServiceException {
