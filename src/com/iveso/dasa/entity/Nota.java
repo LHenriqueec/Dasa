@@ -17,6 +17,9 @@ public class Nota {
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Item> itens;
 	
+	@ManyToMany
+	private List<Recibo> recibos;
+	
 	public Nota() {
 		itens = new ArrayList<>();
 	}
@@ -33,6 +36,10 @@ public class Nota {
 		return itens;
 	}
 
+	public List<Recibo> getRecibos() {
+		return recibos;
+	}
+	
 	public void setNumeroNota(String numeroNota) {
 		this.numeroNota = numeroNota;
 	}
@@ -43,5 +50,9 @@ public class Nota {
 
 	public void setItens(List<Item> itens) {
 		this.itens = itens;
+	}
+
+	public void setRecibos(List<Recibo> recibos) {
+		this.recibos = recibos;
 	}
 }

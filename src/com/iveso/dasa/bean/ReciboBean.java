@@ -73,7 +73,12 @@ public class ReciboBean implements Serializable {
 	}
 
 	public void excluir(Recibo recibo) {
-		
+		try {
+			recibos.remove(recibo);
+			service.deletar(recibo);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String selecionar(Cliente cliente) {

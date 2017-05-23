@@ -24,10 +24,10 @@ public class ReciboService extends Service {
 	private NotaDAO notaDAO;
 	@Inject
 	private ProdutoDAO produtoDAO;
-
+	
 	public void salvar(Recibo recibo) throws ServiceException {
 		try {
-			List<Nota> notasRecibo = recalcularProdutosNota(notaDAO.getNotas(), recibo);
+			List<Nota> notasRecibo = recalcularNotasProdutosAdicionados(notaDAO.getNotas(), recibo);
 			recibo.setNotas(notasRecibo);
 			
 			beginTransaction();
@@ -52,8 +52,18 @@ public class ReciboService extends Service {
 			}
 	}
 	
-	public void deletar(Recibo recibo) {
-		//TODO: Criar método de exclusão do Recibo
+	public void deletar(Recibo recibo) throws ServiceException {
+		try {
+			recalcularNotasRecibosDeletados(recibo);
+			
+			beginTransaction();
+			Recibo reciboDB = dao.carregar(recibo.getNumero(), Recibo.class);
+			dao.deletar(reciboDB);
+			commitTransaction();
+		} catch (DAOException e) {
+			rollbackTransaction();
+			throw new ServiceException(e);
+		}
 	}
 
 	public List<Recibo> listarRecibos() throws ServiceException {
@@ -89,7 +99,7 @@ public class ReciboService extends Service {
 		}
 	}
 	
-	private List<Nota> recalcularProdutosNota(List<Nota> notas, Recibo recibo) {
+	private List<Nota> recalcularNotasProdutosAdicionados(List<Nota> notas, Recibo recibo) {
 		//TODO: Refazer código utilizando Map para controlar a quantidade que sai de cada Nota
 		List<Nota> notasAlteradas = new ArrayList<>();
 		List<Item> itens = recibo.getItens();
@@ -102,6 +112,7 @@ public class ReciboService extends Service {
 			while (qtdRecibo > 0) {
 				Nota nota = notas.get(n);
 				
+				
 					for (Item itemNota : nota.getItens()) {
 						if (itemNota.getProduto().equals(itemRecibo.getProduto())) {
 							
@@ -109,20 +120,20 @@ public class ReciboService extends Service {
 								int qtdNota = itemNota.getQuantidade();
 								
 								itemNota.setQuantidade(qtdNota - qtdRecibo);
+								itemRecibo.add(nota.getNumeroNota(), qtdRecibo);
 								
 								qtdRecibo = 0;
-								
 								
 								if (!notasAlteradas.contains(nota)) notasAlteradas.add(nota);
 								
 							} else {
 								qtdRecibo -= itemNota.getQuantidade();
+								itemRecibo.add(nota.getNumeroNota(), itemNota.getQuantidade());
 								itemNota.setQuantidade(0);
 								if (!notasAlteradas.contains(nota)) notasAlteradas.add(nota);
 							}
 						}
 					};
-					
 					n++;
 			}
 			
@@ -141,5 +152,42 @@ public class ReciboService extends Service {
 		};
 		
 		return notasAlteradas;
+	}
+	
+	private void recalcularNotasRecibosDeletados(Recibo recibo) {
+		List<Nota> notasAlteradas = new ArrayList<>();
+		recibo.getItens().forEach(item -> {
+			String[] dados = item.getDados().toString().split("-");
+			
+			for (int i = 0; i< dados.length; i++) {
+				String numNota = dados[i].split(":")[0].toString();
+				int quantidade = Integer.parseInt(dados[i].split(":")[1].toString());
+				recibo.getNotas().forEach(nota -> {
+					if (nota.getNumeroNota().equals(numNota)) {
+						nota.getItens().forEach(itemNota -> {
+							if (itemNota.getProduto().equals(item.getProduto())) {
+								int qtdNota =itemNota.getQuantidade();
+								
+								itemNota.setQuantidade(qtdNota + quantidade);
+							}; 
+						});
+					}
+					
+					notasAlteradas.add(nota);
+				});
+				
+			}
+		});
+		
+		notasAlteradas.forEach(nota -> {
+			try {
+				beginTransaction();
+				notaDAO.alterar(nota);
+				commitTransaction();
+			} catch (DAOException e) {
+				rollbackTransaction();
+				e.printStackTrace();
+			}
+		});
 	}
 }

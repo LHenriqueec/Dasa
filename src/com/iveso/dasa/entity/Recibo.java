@@ -24,10 +24,12 @@ public class Recibo {
 	@ManyToOne
 	private Cliente cliente;
 
-	@ManyToMany
+	@ManyToMany(mappedBy="recibos")
 	private List<Nota> notas;
+	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Item> itens;
+	
 	private LocalDate data;
 	private boolean gerado;
 	
@@ -35,8 +37,6 @@ public class Recibo {
 		notas = new ArrayList<>();
 		itens = new ArrayList<>();
 		data = LocalDate.now();
-		
-		
 	}
 
 	public String getNumero() {
