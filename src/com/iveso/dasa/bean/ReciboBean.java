@@ -93,7 +93,11 @@ public class ReciboBean implements Serializable {
 	}
 
 	public String imprimir(Recibo recibo) {
-		this.recibo = recibo;
+		try {
+			this.recibo = service.carregar(recibo);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
 		return "recibo_dialog";
 	}
 
@@ -154,7 +158,7 @@ public class ReciboBean implements Serializable {
 
 	private void gerarNumeroRecibo(Recibo recibo) {
 		if (recibos.size() <= 0) {
-			recibo.setNumero("1407");
+			recibo.setNumero("1426");
 		} else {
 			long ultimo = recibos.stream().mapToLong(rec -> Long.parseLong(rec.getNumero())).max().getAsLong() + 1;
 			recibo.setNumero(String.valueOf(ultimo));

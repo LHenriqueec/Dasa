@@ -1,12 +1,14 @@
 package com.iveso.dasa.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
-public class Nota {
+public class Nota implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String numeroNota;
@@ -17,7 +19,7 @@ public class Nota {
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Item> itens;
 	
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Recibo> recibos;
 	
 	public Nota() {

@@ -13,6 +13,7 @@ public class NotaDAO extends DAO {
 	}
 
 	public Nota carregarByNumeroNota(String numeroNota) throws DAOException {
-		return (Nota) query("FROM Nota as n WHERE n.numeroNota :numeroNota").getResultList().get(0);
+		return (Nota) query("select n from Nota n WHERE n.numeroNota :numeroNota")
+					.setParameter("numeroNota", numeroNota).getSingleResult();
 	}
 }

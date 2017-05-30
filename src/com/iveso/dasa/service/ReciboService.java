@@ -41,6 +41,17 @@ public class ReciboService extends Service {
 		}
 	}
 	
+	public Recibo carregar(Recibo recibo) throws ServiceException {
+		Recibo reciboDB = null;
+		try {
+			dao.carregar(recibo.getNumero());
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+		
+		return reciboDB;
+	}
+	
 	public void alterar(Recibo recibo) throws ServiceException {
 			try {
 				beginTransaction();
@@ -137,6 +148,7 @@ public class ReciboService extends Service {
 					n++;
 			}
 			
+			//TODO: Atrelar Recibo nas Notas alteradas
 			recibo.getNotas().addAll(notasAlteradas);
 			
 			notasAlteradas.forEach(nota -> {
