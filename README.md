@@ -1,5 +1,4 @@
 # Dasa
 Sistema Web que controlará as solicitações de sorvete de uma rede de Laboratório (DASA). O sistema será capaz de emitir os Recibos que serão enviados junto com a mercadoria!
-[Diagrama](https://goo.gl/photos/gjMgRHAgmduAgnRC8)
-![](https://lh3.googleusercontent.com/WV_l-U0sGuab-EjLE9ctkw-HiRqoCxHkGEGk2k1lHluhKIZTh3lo81Y5JZM8jJQdUCPxulshskcq1bMMAhLnjKVyyvS30OGRh8Bb7WCe6PoQSpGa4PfX1yiN1-R7P94EqQCeHIluxq5VNNsc2vpza5bo9WHIDPLjywMKCpkLCWW_Irp6K5Uvj4exAKDNaX5Q5xyEtPIJnEExVkktxwkZUn_e3zeKgZO3DkQPSvMz9JOgyVLc6Yc03y4-NvPhnSPMSu77QjFnf6WgS6Hd9O3EzyRiZrMly7y34Vo8FFP_W_itJZbY6w9eVVBDO2HCa17axdH2PrDsJb9xno2kB_1WpYpAGeGniPhfZj6JZUHOTLh5zLcFFa8d_IG2D0a8rVOw2NcmHhF3itriMYcJMe2F0cbYIy2hvlXtGxkxWQvnluV119LCkH1RJVL0TxalzgUWWmC1EwLE7tZZvYzRcV2g_sAiNUl0O6eIU4kk_X6Plhkqw5RA_IE3oMoR-yqFnJDV2upfloL49ZxdNYanx3qPPckZzF_TSSKdXkWaVrpW9-Ftir3jlXIz3ubEfjgK5ixqshaM48YgwqXqvHIDipDVueZ2vUuH4jGMe7rTVtShBaGgzZTJMl-Y=w1234-h783-no)
+![](https://github.com/LHenriqueec/Dasa/blob/master/Diagramas/ControleDASA.jpg)
 
