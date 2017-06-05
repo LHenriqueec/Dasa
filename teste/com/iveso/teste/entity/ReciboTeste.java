@@ -1,4 +1,4 @@
-package com.iveso.teste;
+package com.iveso.teste.entity;
 
 public class ReciboTeste {
 
