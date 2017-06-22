@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @RequestScoped
 public abstract class DAO implements Serializable {
@@ -35,15 +35,18 @@ public abstract class DAO implements Serializable {
 		}
 	}
 
-	public <T> void alterar(T obj) throws DAOException {
+	public <T> T alterar(T obj) throws DAOException {
+		T t = null;
 		try {
-			entity.merge(obj);
+			t = entity.merge(obj);
 		} catch (Exception e) {
 			throw new DAOException(e);
 		}
+		
+		return t;
 	}
 
-	protected Query query(String jpql) throws DAOException {
-		return entity.createQuery(jpql);
+	protected <T> TypedQuery<T> query(String jpql, Class<T> clazz) throws DAOException {
+		return entity.createQuery(jpql, clazz);
 	}
 }

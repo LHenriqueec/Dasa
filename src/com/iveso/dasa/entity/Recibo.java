@@ -7,9 +7,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -26,17 +24,13 @@ public class Recibo {
 	@ManyToOne
 	private Cliente cliente;
 
-	@ManyToMany(mappedBy="recibos")
-	private List<Nota> notas;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<Item> itens;
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="recibo")
+	private List<ItemRecibo> itens;
 	
 	private LocalDate data;
 	private boolean gerado;
 	
 	public Recibo() {
-		notas = new ArrayList<>();
 		itens = new ArrayList<>();
 		data = LocalDate.now();
 	}
@@ -53,11 +47,7 @@ public class Recibo {
 		return cliente;
 	}
 	
-	public List<Nota> getNotas() {
-		return notas;
-	}
-
-	public List<Item> getItens() {
+	public List<ItemRecibo> getItens() {
 		return itens;
 	}
 	
@@ -77,11 +67,7 @@ public class Recibo {
 		this.cliente = cliente;
 	}
 	
-	public void setNotas(List<Nota> notas) {
-		this.notas = notas;
-	}
-
-	public void setItens(List<Item> itens) {
+	public void setItens(List<ItemRecibo> itens) {
 		this.itens = itens;
 	}
 	

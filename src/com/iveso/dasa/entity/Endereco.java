@@ -1,23 +1,16 @@
 package com.iveso.dasa.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
-@Entity
+@Embeddable
 public class Endereco {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
 	private String logradouro;
 	private String cidade;
 	private String bairro;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@Embedded
 	private Estado estado;
 	
 	public Endereco() {}
@@ -27,10 +20,6 @@ public class Endereco {
 	}
 	
 
-	public Integer getId() {
-		return id;
-	}
-	
 	public String getLogradouro() {
 		return logradouro;
 	}

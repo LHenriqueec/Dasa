@@ -4,20 +4,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Nota implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String numeroNota;
+	private String numero;
 	
 	@ManyToOne
 	private Cliente cliente;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<Item> itens;
+	@OneToMany(mappedBy="nota", fetch=FetchType.EAGER)
+	private List<ItemNota> itens;
 	
 	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Recibo> recibos;
@@ -27,14 +33,14 @@ public class Nota implements Serializable {
 	}
 
 	public String getNumeroNota() {
-		return numeroNota;
+		return numero;
 	}
 
 	public Cliente getCliente() {
 		return cliente;
 	}
 
-	public List<Item> getItens() {
+	public List<ItemNota> getItens() {
 		return itens;
 	}
 
@@ -43,14 +49,14 @@ public class Nota implements Serializable {
 	}
 	
 	public void setNumeroNota(String numeroNota) {
-		this.numeroNota = numeroNota;
+		this.numero = numeroNota;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 
-	public void setItens(List<Item> itens) {
+	public void setItens(List<ItemNota> itens) {
 		this.itens = itens;
 	}
 

@@ -1,9 +1,8 @@
 package com.iveso.dasa.entity;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Cliente {
@@ -12,10 +11,10 @@ public class Cliente {
 	private String cnpj;
 	private String nome;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@Embedded
 	private Endereco endereco;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@Embedded
 	private Contato contato;
 	
 	public Cliente() {}

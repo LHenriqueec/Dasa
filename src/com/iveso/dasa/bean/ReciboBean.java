@@ -14,6 +14,7 @@ import org.primefaces.context.RequestContext;
 
 import com.iveso.dasa.entity.Cliente;
 import com.iveso.dasa.entity.Item;
+import com.iveso.dasa.entity.ItemRecibo;
 import com.iveso.dasa.entity.Nota;
 import com.iveso.dasa.entity.Produto;
 import com.iveso.dasa.entity.Recibo;
@@ -30,14 +31,14 @@ public class ReciboBean implements Serializable {
 
 	private Recibo recibo;
 	private List<Recibo> recibos;
-	private Item item;
+	private ItemRecibo item;
 	private boolean edit;
 
 	@PostConstruct
 	private void init() {
 		try {
 			recibos = service.listarRecibos();
-			item = new Item();
+			item = new ItemRecibo(recibo);
 
 		} catch (ServiceException e) {
 			e.printStackTrace();
@@ -103,13 +104,15 @@ public class ReciboBean implements Serializable {
 
 	public String notasRecibo() {
 		StringBuffer buff = new StringBuffer();
-		recibo.getNotas().forEach(nota -> {
-			buff.append(nota.getNumeroNota());
-			buff.append(";");
-		});
-
-		int index = buff.lastIndexOf(";");
-		buff.deleteCharAt(index);
+		
+		int i = 0;
+		do {
+			
+			buff.append(recibo.getItens().get(i).getNota().getNumeroNota());
+			if (i < recibo.getItens().size()) buff.append(";");
+			i++;
+		} while(i < recibo.getItens().size());
+		
 		return buff.toString();
 	}
 
@@ -125,19 +128,24 @@ public class ReciboBean implements Serializable {
 	}
 
 	public List<Produto> completeProduto(String query) {
-		List<Produto> filter = null;
+		List<Produto> complete = null;
 		try {
-			filter = service.completeProduto(query);
+			complete = service.completeProduto(query);
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 
-		return filter;
+		return complete;
 	}
 
 	public void inserirItem() {
-		recibo.getItens().add(item);
-		item = new Item();
+		try {
+			//TODO: Corrigir a maneira que os produtos são exibidos na hora da inserção. *Produtos aparecendo duplicados
+			service.inserirItem(recibo, item);
+			item = new ItemRecibo(recibo);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public int totalProdutos() {

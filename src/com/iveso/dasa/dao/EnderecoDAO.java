@@ -7,8 +7,7 @@ import com.iveso.dasa.entity.Endereco;
 public class EnderecoDAO extends DAO {
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unchecked")
 	public List<Endereco> getEnderecos() throws DAOException {
-		return query("SELECT e FROM Endereco e").getResultList();
+		return query("SELECT e FROM Endereco e", Endereco.class).getResultList();
 	}
 }

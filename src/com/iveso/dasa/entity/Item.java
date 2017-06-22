@@ -1,49 +1,37 @@
 package com.iveso.dasa.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 
 @Entity
-public class Item {
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+public abstract class Item {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue
+	private int id;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Produto produto;
-	
-	private Integer quantidade;
-	
-	private StringBuffer dados;
-	
-	public Item() {
-		dados = new StringBuffer();
-	}
+	@OneToOne
+	protected Produto produto;
+	protected int quantidade;
 	
 	public Produto getProduto() {
 		return produto;
 	}
 	
-	public Integer getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
-	}
-	
-	public StringBuffer getDados() {
-		return dados;
 	}
 	
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
 	
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
-	}
-	
-	public void add(String numNota, int quantidade) {
-		if (dados.length() > 0) dados.append('-');
-		dados.append(numNota);
-		dados.append(':');
-		dados.append(quantidade);
 	}
 }
