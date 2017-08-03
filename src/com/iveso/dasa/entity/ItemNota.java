@@ -18,6 +18,14 @@ public class ItemNota extends Item {
 		this.quantidade = quantidade;
 	}
 	
+	public void debitar(int quantidade) {
+		this.quantidade -= quantidade;
+	}
+	
+	public void creditar(int quantidade) {
+		this.quantidade += quantidade;
+	}
+	
 	public Nota getNota() {
 		return nota;
 	}

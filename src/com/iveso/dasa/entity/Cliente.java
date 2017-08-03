@@ -17,7 +17,10 @@ public class Cliente {
 	@Embedded
 	private Contato contato;
 	
-	public Cliente() {}
+	public Cliente() {
+		this.endereco = new Endereco();
+		this.contato = new Contato();
+	}
 	
 	public Cliente(Endereco endereco, Contato contato) {
 		this.endereco = endereco;

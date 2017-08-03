@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/header.xhtml">
+	<ui:define name="content">
+		<h:form id="form">
+			<p:growl id="mensagens" />
+
+
+			<div class="ui-g">
+				<div class="ui-lg-4 ui-g-12">
+					<p:fieldset legend="Dados">
+					
+						<p:panelGrid columns="2" styleClass="semBorda">
+							<p:outputLabel for="cnpj" value="CNPJ" />
+							<p:inputMask id="cnpj" mask="99.999.999/9999-99" value="#{clienteBean.cliente.cnpj}" />
+							
+							<p:outputLabel for="nome" value="Nome" />
+							<p:inputText id="nome" value="#{clienteBean.cliente.nome}"  />
+						</p:panelGrid>
+					</p:fieldset>
+				</div>
+				<div class="ui-lg-4 ui-g-12">
+					<p:fieldset legend="Endereço">
+						<p:panelGrid columns="2" styleClass="semBorda">
+							<p:outputLabel for="uf" value="UF" />
+							<p:inputText id="uf" value="#{clienteBean.cliente.endereco.estado.uf}" />
+							
+							<p:outputLabel for="cidade" value="Cidade" />
+							<p:inputText id="cidade" value="#{clienteBean.cliente.endereco.cidade}" />
+							
+							<p:outputLabel for="bairro" value="Bairro" />
+							<p:inputText id="bairro" value="#{clienteBean.cliente.endereco.bairro}" />
+							
+							<p:outputLabel for="logradouro" value="Endereço" />
+							<p:inputText id="logradouro" value="#{clienteBean.cliente.endereco.logradouro}" />
+						</p:panelGrid>
+					</p:fieldset>
+				</div>
+				<div class="ui-lg-4 ui-g-12">
+					<p:fieldset legend="Contato">
+						<p:panelGrid columns="2" styleClass="semBorda">
+							<p:outputLabel for="telefone" value="Telefone" />
+							<p:inputMask id="telefone" mask="(99) 9999-9999" value="#{clienteBean.cliente.contato.telefone}" />
+							
+							<p:outputLabel for="celular" value="Celular" />
+							<p:inputMask id="celular" mask="(99) 9 9999-9999" value="#{clienteBean.cliente.contato.celular}" />
+							
+							<p:outputLabel for="email" value="E-mail" />
+							<p:inputText id="email" value="#{clienteBean.cliente.contato.email}" />
+							
+							<p:outputLabel for="responsavel" value="Responsável" />
+							<p:inputText id="responsavel" value="#{clienteBean.cliente.contato.responsavel}" />
+						</p:panelGrid>
+					</p:fieldset>
+				</div>
+				
+			</div>
+			
+			<p:commandButton value="Salvar" action="#{clienteBean.salvar()}" style="float:right; margin-right: 7px" 
+			update="mensagens cnpj nome uf cidade bairro logradouro telefone celular email responsavel table-clientes" />
+
+			<div class="panel-table">
+				<p:dataTable id="table-clientes" value="#{clienteBean.clientes}" var="cliente"
+					scrollable="true" scrollHeight="350"
+					emptyMessage="Não há clientes cadastrados!">
+					<p:column headerText="CNPJ">
+						<p:outputLabel value="#{cliente.cnpj}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<p:outputLabel value="#{cliente.nome}" />
+					</p:column>
+
+					<p:column styleClass="column-menu" width="10%">
+						<p:panelGrid columns="2" styleClass="semBorda">
+							<p:commandLink action="#{clienteBean.alterar(cliente)}" value="Alterar" style="padding-right: 20px"
+							update=":form:cnpj :form:nome :form:uf :form:cidade :form:bairro :form:logradouro :form:telefone :form:celular :form:email :form:responsavel" />
+							<p:commandLink action="#{clienteBean.deletar(cliente)}" value="Excluir" update="table-clientes :form:cnpj :form:nome :form:uf :form:cidade
+								:form:bairro :form:logradouro :form:telefone :form:celular :form:email :form:responsavel :form:mensagens" />
+						</p:panelGrid>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,72 +1,61 @@
 package com.iveso.dasa.service;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import com.iveso.dasa.dao.ClienteDAO;
 import com.iveso.dasa.dao.DAOException;
 import com.iveso.dasa.entity.Cliente;
 
-@ManagedBean(name="clienteService", eager=true)
-@ApplicationScoped
-public class ClienteService extends Service {
+public class ClienteService implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private ClienteDAO dao;
 	
-	
-	public void salvar(Cliente cliente) throws ServiceException {
+	@Transactional
+	public List<Cliente> allClientes() {
+		List<Cliente> clientes = null;
 		try {
-			beginTransaction();
+			clientes = dao.getClientes();
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+		
+		return clientes;
+	}
+	
+	@Transactional
+	public void salvar(Cliente cliente) {
+		try {
 			dao.salvar(cliente);
-			commitTransaction();
 		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
+			e.printStackTrace();
 		}
 	}
 	
-	public void alterar(Cliente cliente) throws ServiceException {
+	@Transactional
+	public void alterar(Cliente cliente) {
 		try {
-			beginTransaction();
 			dao.alterar(cliente);
-			commitTransaction();
 		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
+			e.printStackTrace();
 		}
 	}
 	
-	public void deletar(Cliente cliente) throws ServiceException {
+	@Transactional
+	public boolean deletar(Cliente cliente) {
+		boolean isDeleted = false;
 		try {
-			beginTransaction();
 			Cliente clienteDB = dao.carregar(cliente.getCnpj(), Cliente.class);
-			dao.deletar(clienteDB);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
+			isDeleted = dao.deletar(clienteDB);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		System.out.println(isDeleted);
+		return isDeleted;
 	}
-	
-	public Cliente getClienteById(int id) throws ServiceException {
-		try {
-			return dao.carregar(id, Cliente.class);
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
-	}
-	
-	public List<Cliente> getClientes() throws ServiceException {
-		try {
-			return dao.getClientes();
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
-	}
-
 }

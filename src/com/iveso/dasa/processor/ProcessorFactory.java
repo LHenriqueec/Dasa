@@ -1,6 +1,5 @@
 package com.iveso.dasa.processor;
 
-import com.iveso.dasa.entity.ItemRecibo;
 import com.iveso.dasa.entity.Recibo;
 
 public class ProcessorFactory{
@@ -17,11 +16,15 @@ public class ProcessorFactory{
 		return instance;
 	}
 	
-	public ItemProcessor getItemProcessor(ItemRecibo item) {
-		return new ItemProcessor(item);
+	public ItemProcessor getItemProcessor() {
+		return new ItemProcessor();
 	}
 	
 	public ReciboProcessor getReciboProcessor(Recibo recibo) {
 		return new ReciboProcessor(recibo);
+	}
+	
+	public NotaProcessor getNotaProcessor() {
+		return new NotaProcessor();
 	}
 }

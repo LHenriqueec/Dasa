@@ -16,12 +16,23 @@ public class ReciboProcessor extends Processor {
 		this.recibo = recibo;
 	}
 	
-	public void salvarRecibo(ReciboDAO reciboDAO) throws DAOException {
+	public void salvarRecibo(ReciboDAO reciboDAO, ItemNotaDAO itemDAO) throws DAOException {
+		ProcessorFactory.getInstance().getItemProcessor().processarItens(recibo.getItens(), itemDAO, "salvar");
 		reciboDAO.salvar(recibo);
 	}
 	
+	public void deletar(ReciboDAO reciboDAO, ItemNotaDAO itemDAO) throws DAOException {
+		ProcessorFactory.getInstance().getItemProcessor().processarItens(recibo.getItens(), itemDAO, "deletar");
+		Recibo reciboDB = reciboDAO.carregar(recibo.getNumero(), Recibo.class);
+		reciboDAO.deletar(reciboDB);
+	}
+	
+	public void alterar(List<ItemRecibo> itens) throws DAOException {
+		ProcessorFactory.getInstance().getItemProcessor().processarItensAlterados(recibo.getItens(), itens);
+	}
+	
 	public void processarItem(ItemRecibo item, ItemNotaDAO dao) throws DAOException {
-		List<ItemRecibo> itensRecibo = ProcessorFactory.getInstance().getItemProcessor(item).processorItem(dao);
+		List<ItemRecibo> itensRecibo = ProcessorFactory.getInstance().getItemProcessor().setItem(item).processorItem(dao);
 		recibo.getItens().addAll(itensRecibo);
 	}
 }

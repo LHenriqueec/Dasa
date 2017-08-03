@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<ui:composition template="/WEB-INF/templates/header.xhtml">
+
+	<ui:define name="content">
+		<p:growl id="mensagens" />
+	
+		<h:form id="form">
+			<div>
+				<p:panelGrid columns="2" styleClass="panel-cadastro-produto semBorda">
+					<p:outputLabel for="codigo" value="Código:" />
+					<p:inputText id="codigo" value="#{produtoBean.produto.codigo}" />
+					<p:outputLabel for="produto" value="Produto:" />
+					<p:inputText id="produto" value="#{produtoBean.produto.nome}" />
+					
+					<div></div>
+					<p:commandButton styleClass="button-plus" action="#{produtoBean.salvar()}" value="Salvar"
+						update="table codigo produto mensagens"  />
+				</p:panelGrid>
+			</div>
+
+			<p:dataTable id="table"  columnClasses="column-codigo, column-produto"
+				styleClass="table-produto" var="produto" paginator="true"
+				value="#{produtoBean.produtos}">
+				
+				<p:column>
+					<f:facet name="header">Código</f:facet>
+					<h:outputText value="#{produto.codigo}" />
+				</p:column>
+				<p:column headerClass="header-column-produto">
+					<f:facet name="header">Produto</f:facet>
+					<h:outputText value="#{produto.nome}" />
+				</p:column>
+				<p:column width="10%">
+					<p:panelGrid columns="2" styleClass="semBorda">
+						<p:commandLink action="#{produtoBean.alterar(produto)}" value="Alterar" update="table form:codigo form:produto"/>
+						<p:commandLink action="#{produtoBean.deletar(produto)}" value="Excluir" update="table form:codigo form:produto mensagens" />
+					</p:panelGrid>
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

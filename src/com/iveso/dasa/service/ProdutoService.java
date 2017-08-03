@@ -1,70 +1,59 @@
 package com.iveso.dasa.service;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import com.iveso.dasa.dao.DAOException;
 import com.iveso.dasa.dao.ProdutoDAO;
 import com.iveso.dasa.entity.Produto;
 
-@ManagedBean(name="produtoService", eager=true)
-@ApplicationScoped
-public class ProdutoService extends Service {
+@Dependent
+public class ProdutoService implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private ProdutoDAO dao;
-	
-	public void salvar(Produto produto) throws ServiceException {
+
+	public List<Produto> todosProdutos() {
+		List<Produto> produtos = null;
 		try {
-			beginTransaction();
+			produtos = dao.getProdutos();
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+
+		return produtos;
+	}
+
+	@Transactional
+	public void salvar(Produto produto) {
+		try {
 			dao.salvar(produto);
-			commitTransaction();
 		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
-	}
-	
-	public void alterar(Produto produto) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.alterar(produto);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
-	}
-	
-	public void deletar(Produto produto) throws ServiceException {
-		try {
-			beginTransaction();
-			Produto produtoDB = dao.carregar(produto.getCodigo(), Produto.class);
-			dao.deletar(produtoDB);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
+			e.printStackTrace();
 		}
 	}
 
-	public Produto carregar(String codigo) throws ServiceException {
+	@Transactional
+	public void alterar(Produto produto) {
 		try {
-			return dao.carregar(codigo, Produto.class);
+			dao.alterar(produto);
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			e.printStackTrace();
 		}
 	}
-	
-	public List<Produto> listarProdutos() throws ServiceException {
+
+	@Transactional
+	public void deletar(Produto produto) {
 		try {
-			return dao.getProdutos();
+			Produto produtoDB = dao.carregar(produto.getCodigo(), Produto.class);
+			dao.deletar(produtoDB);
 		} catch (DAOException e) {
-			throw new ServiceException(e);
+			e.printStackTrace();
 		}
 	}
 }

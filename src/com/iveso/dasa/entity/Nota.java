@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -25,14 +24,14 @@ public class Nota implements Serializable {
 	@OneToMany(mappedBy="nota", fetch=FetchType.EAGER)
 	private List<ItemNota> itens;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany
 	private List<Recibo> recibos;
 	
 	public Nota() {
 		itens = new ArrayList<>();
 	}
 
-	public String getNumeroNota() {
+	public String getNumero() {
 		return numero;
 	}
 
@@ -48,8 +47,8 @@ public class Nota implements Serializable {
 		return recibos;
 	}
 	
-	public void setNumeroNota(String numeroNota) {
-		this.numero = numeroNota;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public void setCliente(Cliente cliente) {

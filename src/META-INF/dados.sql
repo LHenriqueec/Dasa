@@ -1,3 +1,4 @@
+
 insert into Cliente (cnpj, nome, celular, email, responsavel, telefone, bairro, cidade, logradouro, uf) values ('21.339.044/0001-10', 'ULTRA FRIOS COMERCIO DE PRODUTOS INDUSTRIALIZADOS LTDA', '(61) 9 9133-1375', 'distribuicao.ultrafrios@gmail.com', 'Wellington', '(61) 3036-7789', 'VICENTE PIRES', 'BRASILIA', 'SHVP CHACARA 134 GALPOES 02 E 03', 'DF');	
 insert into Cliente (cnpj, nome, celular, email, responsavel, telefone, bairro, cidade, logradouro, uf) values ('99.999.999/9999-99', 'MEGA FRIOS TRANSPORTES E COMERCIO LTDA', '(61) 9 9133-1375', 'distribuicao.ultrafrios@gmail.com', 'Wellington', '(61) 3036-7789', 'CEILANDIA', 'BRASILIA', 'QNM 25 CONJUNTO 3', 'GO');
 

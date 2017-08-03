@@ -13,7 +13,9 @@ public class Endereco {
 	@Embedded
 	private Estado estado;
 	
-	public Endereco() {}
+	public Endereco() {
+		this.estado = new Estado();
+	}
 	
 	public Endereco(Estado estado) {
 		this.estado = estado;

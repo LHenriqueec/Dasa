@@ -1,105 +1,44 @@
 package com.iveso.dasa.service;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
-import com.iveso.dasa.dao.ClienteDAO;
 import com.iveso.dasa.dao.DAOException;
 import com.iveso.dasa.dao.NotaDAO;
-import com.iveso.dasa.dao.ProdutoDAO;
-import com.iveso.dasa.entity.Cliente;
 import com.iveso.dasa.entity.Nota;
-import com.iveso.dasa.entity.Produto;
 
-@ManagedBean(name="notaService",eager=true)
-@ApplicationScoped
-public class NotaService extends Service {
+@Dependent
+public class NotaService implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Inject
 	private NotaDAO dao;
 	
-	@Inject
-	private ProdutoDAO produtoDAO;
-	
-	@Inject
-	private ClienteDAO clienteDAO;
-
-	public void salvar(Nota nota) throws ServiceException {
+	public List<Nota> todasNotas() {
+		List<Nota> notas = null;
 		try {
-			beginTransaction();
-			dao.salvar(nota);
-			commitTransaction();
+			notas = dao.getNotas();
 		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		} 
+			e.printStackTrace();
+		}
 		
-	}
-
-	public void alterar(Nota nota) throws ServiceException {
-		try {
-			beginTransaction();
-			dao.alterar(nota);
-			commitTransaction();
-		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
-		}
+		return notas;
 	}
 	
-	public void deletar(Nota nota) throws ServiceException {
+	@Transactional
+	public boolean excluir(Nota nota) {
+		boolean isDeleted = false;
 		try {
-			beginTransaction();
-			Nota notaDB = dao.carregar(nota.getNumeroNota(), Nota.class);
-			dao.deletar(notaDB);
-			commitTransaction();
+			Nota notaDB = dao.carregar(nota.getNumero(), Nota.class);
+			isDeleted = dao.deletar(notaDB);
 		} catch (DAOException e) {
-			rollbackTransaction();
-			throw new ServiceException(e);
+			e.printStackTrace();
 		}
-	}
-
-	public Nota carregar(String id) throws ServiceException {
-		try {
-			return dao.carregar(id, Nota.class);
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
-	}
-	
-	public Nota carregarByNumeroNota(String numeroNota) throws ServiceException {
-		try {
-			return dao.carregarByNumeroNota(numeroNota);
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
-	}
-
-	public List<Nota> listar() throws ServiceException {
-		try {
-			return dao.getNotas();
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
-	}
-	
-	public List<Produto> listarProdutos() throws ServiceException {
-		try {
-			return produtoDAO.getProdutos();
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
-	}
-	
-	public List<Cliente> listarClientes() throws ServiceException {
-		try {
-			return clienteDAO.getClientes();
-		} catch (DAOException e) {
-			throw new ServiceException(e);
-		}
+		
+		return isDeleted;
 	}
 }

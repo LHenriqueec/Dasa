@@ -16,7 +16,7 @@ public class Produto {
 	public Produto(String codigo, String nome) {
 		this();
 		this.codigo = codigo;
-		this.nome = nome;
+		this.nome = nome.toUpperCase();
 	}
 
 	public String getCodigo() {
@@ -49,7 +49,7 @@ public class Produto {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if(getClass() != obj.getClass()) 
 			return false;
 		Produto other = (Produto) obj;
 		if (codigo == null) {
@@ -59,4 +59,23 @@ public class Produto {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buff = new StringBuffer();
+		buff.append(codigo)
+		.append(" - ")
+		.append(nome);
+		return buff.toString();
+	}
 }
+
+
+
+
+
+
+
+
+
+

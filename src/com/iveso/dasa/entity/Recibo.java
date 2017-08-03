@@ -1,5 +1,6 @@
 package com.iveso.dasa.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -14,8 +16,9 @@ import javax.persistence.OneToMany;
 
 
 @Entity
-public class Recibo {
-	
+public class Recibo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	@Id
@@ -24,7 +27,7 @@ public class Recibo {
 	@ManyToOne
 	private Cliente cliente;
 
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="recibo")
+	@OneToMany(mappedBy="recibo", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<ItemRecibo> itens;
 	
 	private LocalDate data;
@@ -34,7 +37,7 @@ public class Recibo {
 		itens = new ArrayList<>();
 		data = LocalDate.now();
 	}
-
+	
 	public String getNumero() {
 		return numero;
 	}

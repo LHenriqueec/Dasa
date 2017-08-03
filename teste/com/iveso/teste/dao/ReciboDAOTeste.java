@@ -16,7 +16,7 @@ public class ReciboDAOTeste {
 	public void carregar_recibo_banco() throws DAOException {
 		dao = mock(ReciboDAO.class);
 		
-		Recibo recibo = dao.carregar("1401");
+		Recibo recibo = dao.carregar("1401", Recibo.class);
 		
 		System.out.println(recibo);
 	}

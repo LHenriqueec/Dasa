@@ -26,13 +26,16 @@ public abstract class DAO implements Serializable {
 		}
 	}
 
-	public <T> void deletar(T obj) throws DAOException {
+	public <T> boolean deletar(T obj) throws DAOException {
+		boolean isDeleted = false;
 		try {
 			entity.remove(obj);
-			
+			isDeleted = true;
 		} catch (Exception e) {
 			throw new DAOException(e);
 		}
+		
+		return isDeleted;
 	}
 
 	public <T> T alterar(T obj) throws DAOException {

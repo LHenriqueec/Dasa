@@ -14,7 +14,7 @@ public class Contato {
 		return telefone;
 	}
 
-	public String getCelcular() {
+	public String getCelular() {
 		return celular;
 	}
 
@@ -30,8 +30,8 @@ public class Contato {
 		this.telefone = telefone;
 	}
 
-	public void setCelcular(String celcular) {
-		this.celular = celcular;
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 	public void setEmail(String email) {
