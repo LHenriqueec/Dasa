@@ -1,18 +1,196 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"> 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
 
-<h:head></h:head> 
-<h:body> 
+<h:head></h:head>
+<h:body>
 
 	<ui:composition template="/WEB-INF/template/header.xhtml">
 		<ui:define name="title">Cadastro: Cliente</ui:define>
 		<ui:define name="content">
-			<h1>Cadastro Cliente</h1>
+
+			<div id="cadastro-cliente" class="modal fade" tabindex="-1"
+				role="dialog" aria-labelledby="cadastro-cliente-label">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 id="cadastro-cliente-label" class="modal-title">Cadastro
+								de Cliente</h4>
+						</div>
+
+						<div class="body">
+							<form class="form-horizontal">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<h4>Cliente</h4>
+
+										<div class="row">
+											<div class="col-md-4">
+												<h5>Dados</h5>
+
+												<div class="form-group">
+													<h:outputText value="CNPJ" for="cnpj"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="cnpj" value="#{clienteBean.cliente.cnpj}"
+															styleClass="form-control" />
+													</div>
+												</div>
+
+												<div class="form-group">
+													<h:outputText for="nome" value="Nome"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="nome" value="#{clienteBean.cliente.nome}"
+															styleClass="form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<h5>Endereço</h5>
+
+												<div class="form-group">
+													<h:outputText value="UF"
+														styleClass="control-label col-md-1" />
+													<div class="col-md-12">
+														<!-- 														<h:selectOneMenu -->
+														<!-- 															value="#{clienteBean.cliente.endereco.uf}" -->
+														<!-- 															styleClass="form-control" style="width:40%"> -->
+														<!-- 															<f:selectItem value="Selecione" itemDisabled="true" /> -->
+														<!-- 															<f:selectItems var="uf" value="#{clienteBean.todosUFs()}" -->
+														<!-- 																itemLabel="#{uf}" itemValue="#{uf}" /> -->
+														<!-- 														</h:selectOneMenu> -->
+													</div>
+												</div>
+
+												<div class="form-group">
+													<h:outputText for="cidade" value="Cidade"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="cidade"
+															value="#{clienteBean.cliente.endereco.cidade}"
+															styleClass="form-control" />
+													</div>
+												</div>
+
+												<div class="form-group">
+													<h:outputText for="bairro" value="Bairro"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="bairro"
+															value="#{clienteBean.cliente.endereco.bairro}"
+															styleClass="form-control" />
+													</div>
+												</div>
+
+												<div class="form-group">
+													<h:outputText for="logradouro" value="Logradouro"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="logradouro"
+															value="#{clienteBean.cliente.endereco.logradouro}"
+															styleClass="form-control" />
+														>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<h5>Contato</h5>
+
+												<div class="form-group">
+													<h:outputText for="telefone" value="Telefone"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="telefone"
+															value="#{clienteBean.cliente.contato.telefone}"
+															styleClass="form-control" />
+													</div>
+												</div>
+
+												<div class="form-group">
+													<h:outputText for="celular" value="Celular"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="celular"
+															value="#{clienteBean.cliente.contato.celular}"
+															styleClass="form-control" />
+													</div>
+												</div>
+
+												<div class="form-group">
+													<h:outputText for="email" value="E-mail"
+														styleClass="control-label col-md-2" />
+													<div class="col-md-12">
+														<h:inputText id="email"
+															value="#{clienteBean.cliente.contato.email}"
+															styleClass="form-control" />
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancelar</button>
+							<h:commandButton value="Salvar" action="#{clienteBean.salvar()}"
+								styleClass="btn btn-primary" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<button class="btn btn-primary btn-sm"
+				style="float: right; margin-right: 6px" ng-click="novo()"
+				data-toggle="modal" data-target="#cadastro-cliente">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			</button>
+
+			<div class="panel" style="width: 20%">
+				<h:inputText value="TODO: filter da tabela"
+					styleClass="form-control" />
+			</div>
+
+			<h:dataTable var="cliente" value="#{clienteBean.clientes}"
+				styleClass="table table-hover">
+				<h:column>
+					<f:facet name="header">CNPJ</f:facet>
+					<h:outputText value="#{cliente.cnpj}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{cliente.nome}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Bairro</f:facet>
+					<h:outputText value="#{cliente.endereco.bairro}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Endereço</f:facet>
+					<h:outputText value="#{cliente.endereco.logradouro}" />
+				</h:column>
+				<h:column>
+					<h:commandButton value="Alterar"
+						action="#{clienteBean.alterar(cliente)}" class="btn btn-info"
+						data-toggle="modal" data-target="#cadastro-cliente" />
+					<h:commandButton value="Deletar"
+						action="#{clienteBean.deletar(cliente)}" class="btn btn-danger" />
+				</h:column>
+			</h:dataTable>
+
 		</ui:define>
 	</ui:composition>
 
-</h:body> 
+</h:body>
 </html>
