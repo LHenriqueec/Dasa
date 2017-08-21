@@ -2,6 +2,7 @@ package br.com.iveso.dasa.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class ConnectionUtils {
@@ -34,5 +35,19 @@ public class ConnectionUtils {
 	
 	public static void rollbackTransaction() {
 		threadEntityManager.get().getTransaction().rollback();
+	}
+	
+	public static void closeEntityManager() {
+		EntityManager em = threadEntityManager.get();
+		if (em != null) {
+			EntityTransaction transaction = em.getTransaction();
+			
+			if (transaction.isActive()) {
+				transaction.commit();
+			}
+			
+			em.close();
+			threadEntityManager.set(null);;
+		}
 	}
 }

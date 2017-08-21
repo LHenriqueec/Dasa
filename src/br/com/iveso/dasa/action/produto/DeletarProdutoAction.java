@@ -1,7 +1,6 @@
 package br.com.iveso.dasa.action.produto;
 
 import br.com.iveso.dasa.action.Action;
-import br.com.iveso.dasa.entity.Produto;
 import br.com.iveso.dasa.service.ProdutoService;
 
 public class DeletarProdutoAction extends Action {
@@ -11,10 +10,8 @@ public class DeletarProdutoAction extends Action {
 		ProdutoService service = serviceFactory.getService(ProdutoService.class);
 		String codigo = getRequest().getParameter("codigo");
 		
-		Produto produto = service.getProduto(codigo);
-		
-		service.deletar(produto);
-		System.out.println("Produto:" + produto + " deletado!");
+		service.deletar(codigo);
+		System.out.println("Produto:" + codigo + " deletado!");
 	}
 
 }

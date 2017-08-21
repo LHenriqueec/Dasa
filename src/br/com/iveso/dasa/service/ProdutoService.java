@@ -46,11 +46,11 @@ public class ProdutoService extends Service {
 		}
 	}
 	
-	public void deletar(Produto produto) throws ServiceException {
+	public void deletar(String codigo) throws ServiceException {
 		try {
 			dao = daoFactory.getDAO(ProdutoDAO.class);
-			Produto produtoDB = dao.load(produto.getCodigo());
-			dao.delete(produtoDB);
+			Produto produto = dao.load(codigo);
+			dao.delete(produto);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

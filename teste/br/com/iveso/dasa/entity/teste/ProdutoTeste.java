@@ -44,7 +44,7 @@ public class ProdutoTeste {
 		ProdutoService service = ServiceFactory.getInstance().getService(ProdutoService.class);
 		try { 
 			ConnectionUtils.beginTransaction();
-			service.deletar(new Produto("13", "Produto Teste"));
+			service.deletar("13");
 			ConnectionUtils.commitTransaction();
 		} catch (Exception e) {
 			ConnectionUtils.rollbackTransaction();
