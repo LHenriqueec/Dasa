@@ -72,10 +72,11 @@ app.controller("produtoController", function($scope, $http) {
 app.controller("clienteCotnroller", function($scope, $http) {
 
 	var isEdit = false;
+	$scope.clientes = [];
 
-	$http.post('classes/actions/ClienteActions/CarregarClientes.php')
+	$http.post('/Dasa/CarregarClientes.action')
 		.then(function(response) {
-			$scope.clientes = response.data.clientes;
+			$scope.clientes = response.data;
 		});
 
 	$scope.novo = function() {
@@ -84,19 +85,25 @@ app.controller("clienteCotnroller", function($scope, $http) {
 	}
 
 	$scope.salvar = function() {
-		var json = angular.toJson($scope.cliente);
+		var req = '';
 		
 		if(isEdit) {
-			$http.post('classes/actions/ClienteActions/AlterarCliente.php', json);
-			console.info(json);
+			req = {
+					metode: 'POST',
+					url: '/Dasa/AlterarCliente.action',
+					params: {cliente:$scope.cliente}
+			};
 		} else {
-			$http.post('classes/actions/ClienteActions/SalvarCliente.php', json)
-				.then(function(response) {
-					console.info(response.data);
-				});
+			req = {
+					metode: 'POST',
+					url: '/Dasa/SalvarCliente.action',
+					params: {cliente:$scope.cliente}
+			};
 			$scope.clientes.push($scope.cliente);
+			console.info($scope.cliente);
 		}
 		
+		$http(req);
 		$scope.cliente = {};
 		isEdit = false;
 	};
@@ -107,9 +114,14 @@ app.controller("clienteCotnroller", function($scope, $http) {
 	};
 
 	$scope.remover = function(cliente) {
-		$http.post('classes/actions/ClienteActions/DeletarCliente.php', {"cnpj":cliente.cnpj});
 		$scope.clientes.splice($scope.clientes.indexOf(cliente), 1);
 		$scope.cliente = {};
 		isEdit = false;
+		var req = {
+				method: 'GET',
+				url: '/Dasa/DeletarCliente.action',
+				params: {cnpj:cliente.cnpj}
+			};
+			$http(req);
 	};
 });

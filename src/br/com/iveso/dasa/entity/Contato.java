@@ -1,5 +1,8 @@
 package br.com.iveso.dasa.entity;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Contato {
 	
 	private String telefone;

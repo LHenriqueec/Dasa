@@ -1,10 +1,16 @@
 package br.com.iveso.dasa.entity;
 
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@Embeddable
 public class Endereco {
 	enum UF {
 		DF, GO
 	}
 	
+	@Enumerated(EnumType.STRING)
 	private UF uf;
 	private String cidade;
 	private String bairro;

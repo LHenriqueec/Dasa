@@ -1,10 +1,21 @@
 package br.com.iveso.dasa.entity;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Cliente {
 
+	@Id
 	private String cnpj;
 	private String nome;
+	private String responsavel;
+	
+	@Embedded
 	private Endereco endereco;
+	
+	@Embedded
 	private Contato contato;
 
 	public String getCnpj() {
@@ -15,6 +26,10 @@ public class Cliente {
 		return nome;
 	}
 
+	public String getResponsavel() {
+		return responsavel;
+	}
+	
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -29,6 +44,10 @@ public class Cliente {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public void setResponsavel(String responsavel) {
+		this.responsavel = responsavel;
 	}
 
 	public void setEndereco(Endereco endereco) {
