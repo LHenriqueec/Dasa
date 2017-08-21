@@ -1,7 +1,12 @@
 package br.com.iveso.dasa.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Produto {
 
+	@Id
 	private String codigo;
 	private String nome;
 	

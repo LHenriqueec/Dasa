@@ -1,13 +1,9 @@
-.codigo {
-	text-align:center
-	width:10%;
+.panel {
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
-.produto {
-	width:80%;
-}
-
-.quantidade {
-	text-align:center
-	width:10%;
+.navbar {
+	border-radius: 0px;
+	box-shadow: 0px 1px 9px 0px black;
 }
