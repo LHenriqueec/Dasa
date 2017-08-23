@@ -1,0 +1,102 @@
+
+<div class="row" style="margin: 5px;">
+
+	<div class="panel panel-default col-md-12">
+		<div class="panel-body">
+			<div class="panel panel-default col-md-12"
+				style="margin: 0px 0px 15px 0px; padding-top: 10px; text-align: center">
+				<div class="panel-body">
+
+					<div class="col-md-3">
+
+						<div class="form-group">
+							<label>Nº da Nota:</label> {{nota.numero}}
+						</div>
+
+						<div class="form-group">
+							<label>Data:</label> {{nota.data | date : "dd/MM/y"}}
+						</div>
+
+					</div>
+					<div class="col-md-5">
+
+						<div class="form-group">
+							<label>Cliente:</label> {{nota.cliente.nome | uppercase}}
+						</div>
+
+						<div class="form-group">
+							<label>Endereço:</label> {{nota.cliente.endereco.logradouro | uppercase}}
+						</div>
+
+					</div>
+					<div class="col-md-4">
+
+						<div class="form-group">
+							<label>UF:</label> {{nota.cliente.endereco.uf | uppercase}} <label>Cidade:</label> {{nota.cliente.endereco.cidade | uppercase}}
+						</div>
+
+						<div class="form-group">
+							<label>Bairro:</label> {{nota.cliente.endereco.bairro | uppercase}}
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default col-md-12"
+				style="margin: 0px; padding-top: 10px">
+				<div class="panel-body">
+
+					<div class="col-md-8 form-inline">
+						<div class="form-group">
+							<label for="produto">Produto</label> <input id="produto"
+								ng-model="searchProduto" ng-blur="buscarProduto()"
+								class="form-control" placeholder="Produto"> <label
+								for="produto">Quantidade</label> <input id="produto"
+								ng-model="item.quantidade" class="form-control"
+								placeholder="Quantidade">
+						</div>
+
+						<button class="btn btn-primary btn-sm" ng-click="inserir()"
+							ng-disabled="!item.produto || !item.quantidade">Inserir</button>
+					</div>
+
+					<div>
+						<table class="table table-hover">
+							<thead>
+								<th>Código</th>
+								<th width="80%">Produto</th>
+								<th align="center">Quantidade</th>
+								<th width="10%"></th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in itens">
+									<td>{{item.produto.codigo}}</td>
+									<td>{{item.produto.nome}}</td>
+									<td align="center">{{item.quantidade}}</td>
+									<td align="center">
+										<button class="btn btn-danger btn-sm"
+											ng-click="remover($index)">Deletar</button>
+									</td>
+								</tr>
+								<tr ng-show="!itens">
+									<td colspan="4" align="center">Nenhum produto lançado.</td>
+								</tr>
+								<tr ng-show="itens">
+									<td colspan="2" style="font-weight: bold">Total</td>
+									<td colspan="1" align="center">{{total}}</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class=panel-footer align="right">
+			<button class="btn btn-default">Cancelar</button>
+			<button class="btn btn-primary" ng-disabled="!itens" ng-click="salvar()">Salvar</button>
+		</div>
+	</div>
+</div>
