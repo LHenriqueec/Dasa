@@ -14,4 +14,18 @@ public class ProdutoDAO extends DAO<Produto> {
 		return list("from Produto");
 	}
 
+	public Produto buscar(String search) throws DAOException {
+		String sql = null;
+		Produto produto = null;
+		try {
+			int codigo = Integer.parseInt(search);
+			sql = "from Produto p where p.codigo like :codigo";
+			produto = query(sql).setParameter("codigo", "%" + String.valueOf(codigo) + "%").getSingleResult();
+		} catch (NumberFormatException e) {
+			sql = "from Produto as p where p.nome like :nome";
+			produto = query(sql).setParameter("nome", "%" + search + "%").getSingleResult();
+		}
+		return produto;
+	}
+
 }

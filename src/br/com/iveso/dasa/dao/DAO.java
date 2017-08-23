@@ -12,7 +12,7 @@ import br.com.iveso.dasa.util.ConnectionUtils;
 
 public class DAO<T> {
 
-	private EntityManager em;
+	protected EntityManager em;
 	private Class<T> clazz;
 	
 	protected DAO(Class<T> clazz) {

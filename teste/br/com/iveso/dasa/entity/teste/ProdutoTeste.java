@@ -21,6 +21,12 @@ public class ProdutoTeste {
 	public void started() {
 		dao = new ProdutoDAO();
 	}
+	
+	@Test
+	public void buscar_produto_por_texto_digitado() throws DAOException {
+		Produto produto = dao.buscar("0010");
+		System.out.println(produto);
+	}
 
 	@Test
 	public void carregar_todos_produtos() throws DAOException {

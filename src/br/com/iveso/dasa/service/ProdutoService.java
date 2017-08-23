@@ -55,4 +55,15 @@ public class ProdutoService extends Service {
 			throw new ServiceException(e);
 		}
 	}
+
+	public Produto buscar(String search) throws ServiceException {
+		Produto produto = null;
+		try {
+			dao = daoFactory.getDAO(ProdutoDAO.class);
+			produto = dao.buscar(search);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+		return produto;
+	}
 }
