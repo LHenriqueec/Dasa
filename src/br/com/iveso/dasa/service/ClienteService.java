@@ -11,6 +11,15 @@ public class ClienteService extends Service {
 	
 	ClienteDAO dao;
 	
+	public Cliente carregarByNome(String nome) throws ServiceException {
+		try {
+			ClienteDAO dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
+			return dao.carregarByNome(nome);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+	}
+	
 	public List<Cliente> carregarClientes() throws ServiceException {
 		try {
 			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);

@@ -9,6 +9,11 @@ public class ClienteDAO extends DAO<Cliente> {
 	protected ClienteDAO() {
 		super(Cliente.class);
 	}
+	
+	public Cliente carregarByNome(String nome) throws DAOException {
+		return query("from Cliente where nome like :nome")
+			.setParameter("nome", "%" + nome + "%").getSingleResult();
+	}
 
 	public List<Cliente> carregarClientes() throws DAOException {
 		return query("from Cliente").getResultList();
