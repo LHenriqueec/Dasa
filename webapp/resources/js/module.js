@@ -2,7 +2,8 @@ var app = angular.module("menuApp", [ "ngRoute" ]);
 
 app.config(function($routeProvider) {
 	$routeProvider.when("/", {
-		templateUrl : "views/main.html"
+		templateUrl : "views/main.html",
+		controller : "mainController as main"
 	}).when("/clientes", {
 		templateUrl : "views/clientes.html",
 		controller : "clienteCotnroller"
@@ -17,6 +18,7 @@ app.config(function($routeProvider) {
 		controller: "itensNotaController"
 	});
 });
+
 
 app.service("container", function() {
 	this.notas = undefined;
@@ -33,11 +35,39 @@ app.service("container", function() {
 	}
 });
 
+// CONTROLLER: MAIN
+app.controller("mainController", function($http) {
+	var ctrl = this;
+	ctrl.total = 0;
+	ctrl.itens = [];
+
+	var req = {
+		method : "POST",
+		url : "/Dasa/CarregarItensNotas.action"
+	};
+
+	$http(req).then(function(response) {
+		ctrl.itens = response.data;
+		
+		for (var i = 0; i < ctrl.itens.length; i++) {
+			ctrl.total += ctrl.itens[i].quantidade;
+			console.info(ctrl.total);
+		}
+	});
+
+});
+
 // CONTROLLER: NOTA
 app.controller("notaController", function($scope, $http, $rootScope, container) {
 	$scope.isNew = false;
 	$scope.nota = undefined;
-	$scope.notas = container.notas;
+	$scope.notas = undefined;
+	
+	$http.post('/Dasa/CarregarNotas.action').then(function(response) {
+		console.info('carregado');
+		console.info(response.data);
+		$scope.notas = response.data;
+	});
 
 	$scope.novo = function() {
 		$scope.isNew = true;
@@ -58,10 +88,6 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 
 	$scope.confirmar = function() {
 		container.nota = $scope.nota;
-	};
-
-	$scope.alterar = function() {
-
 	};
 
 	$scope.deletar = function(index) {
@@ -133,6 +159,14 @@ app.controller("itensNotaController", function($rootScope, $scope, $http, contai
 	
 	$scope.salvar = function() {
 		$scope.nota.itens = $scope.itens;
+		var req = {
+			method: 'POST',
+			url: '/Dasa/SalvarNota.action',
+			params: {nota: $scope.nota}
+		};
+		
+		$http(req);
+		
 		container.inserir($scope.nota);
 		container.nota = undefined;
 		$scope.nota = {};

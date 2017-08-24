@@ -1,13 +1,24 @@
 package br.com.iveso.dasa.entity;
 
-public class Item {
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
+public abstract class Item {
+
+	@Id
+	@GeneratedValue
+	private int id;
+	
+	@ManyToOne
 	private Produto produto;
-	private Integer quantidade;
+	private int quantidade;
 	
 	public Item() {}
 	
-	public Item(Produto produto, Integer quantidade) {
+	public Item(Produto produto, int quantidade) {
 		this.produto = produto;
 		this.quantidade = quantidade;
 	}
@@ -16,7 +27,7 @@ public class Item {
 		return produto;
 	}
 
-	public Integer getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
 
@@ -24,7 +35,7 @@ public class Item {
 		this.produto = produto;
 	}
 
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 	

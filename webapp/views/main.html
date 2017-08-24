@@ -9,18 +9,19 @@
 			<div class="panel-body">
 				<table class="table table-hover table-condensed">
 					<tbody>
-						<tr ng-repeat="produto in produtos">
-							<td>{{produto.codigo}}</td>
-							<td>{{produto.nome | uppercase}}</td>
-							<td>{{produto.quantidade}}</td>
+						<tr ng-repeat="item in main.itens">
+							<td>{{item.produto.codigo}}</td>
+							<td>{{item.produto.nome | uppercase}}</td>
+							<td>{{item.quantidade}}</td>
 							<td>#</td>
 						</tr>
-						<tr ng-show="!produtos">
-							<td colspan="4" align="center">Nenhum produto lançado</td>
+						<tr ng-show="!main.itens">
+							<td colspan="4" align="center">Nenhum item lançado</td>
 						</tr>
-						<tr ng-show="produtos">
-							<th>Total:</th>
-							<th colspan="3" style="text-align:right">{{total}}</th>
+						<tr ng-show="main.itens">
+							<th colspan="2">Total:</th>
+							<th>{{main.total}}</th>
+							<th></th>
 						</tr>
 					</tbody>
 				</table>
