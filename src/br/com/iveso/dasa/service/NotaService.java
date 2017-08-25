@@ -23,6 +23,18 @@ public class NotaService extends Service {
 		}
 	}
 	
+	public void deletar(String numero) throws ServiceException {
+		
+		try {
+			NotaDAO dao = DAOFactory.getInstance().getDAO(NotaDAO.class);
+			Nota nota = dao.load(numero);
+			dao.delete(nota);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+		
+	}
+	
 	public List<Nota> carregarNotas() throws ServiceException {
 		try {
 			NotaDAO dao = DAOFactory.getInstance().getDAO(NotaDAO.class);

@@ -91,6 +91,13 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 	};
 
 	$scope.deletar = function(index) {
+		var req = {
+			method: 'GET',
+			url: '/Dasa/DeletarNota.action',
+			params: {nota:$scope.notas[index].numero}
+		};
+
+		$http(req);
 		$scope.notas.splice(index, 1);
 		if($scope.notas.length == 0) $scope.notas = undefined;
 		
