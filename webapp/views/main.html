@@ -33,31 +33,15 @@
 			<div class="panel-body">
 				<table class="table table-hover table-condensed">
 					<tbody>
-						<tr>
-							<td>G18 EXAME MEGA TAGUATINGA</td>
-							<td>TAGUATINGA</td>
-							<td>(61) 3036-7789</td>
-							<td>VANESSA</td>
+						<tr ng-repeat="cliente in main.clientesSemCompra">
+							<td>{{cliente.nome | uppercase}}</td>
+							<td>{{cliente.endereco.bairro | uppercase}}</td>
+							<td>{{cliente.contato.telefone}}</td>
+							<td>{{cliente.contato.responsavel | uppercase}}</td>
 						</tr>
 						<tr>
-							<td>G18 EXAME MEGA TAGUATINGA</td>
-							<td>TAGUATINGA</td>
-							<td>(61) 3036-7789</td>
-							<td>VANESSA</td>
+							<td ng-show='!main.clientesSemCompra' colspan="4" align="center">Nenhum cliente sem compra</td>
 						</tr>
-						<tr>
-							<td>G18 EXAME MEGA TAGUATINGA</td>
-							<td>TAGUATINGA</td>
-							<td>(61) 3036-7789</td>
-							<td>VANESSA</td>
-						</tr>
-						<tr>
-							<td>G18 EXAME MEGA TAGUATINGA</td>
-							<td>TAGUATINGA</td>
-							<td>(61) 3036-7789</td>
-							<td>VANESSA</td>
-						</tr>
-
 					</tbody>
 				</table>
 			</div>
@@ -81,43 +65,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td style="text-align:center;">16701</td>
-						<td>O30 EXAME SEDE</td>
-						<td style="text-align:center;">13/08/2017</td>
+					<tr ng-repeat='recibo in main.recibos'>
+						<td style="text-align:center;">{{recibo.numero}}</td>
+						<td>{{recibo.cliente.nome}}</td>
+						<td style="text-align:center;">{{recibo.data | date : "dd/MM/y"}}</td>
 						<td style="text-align:center;">
+							<!-- TODO: Criar funções no controller angular -->
 							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
 							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
 						</td>
 					</tr>
 					<tr>
-						<td style="text-align:center;">16701</td>
-						<td>O30 EXAME SEDE</td>
-						<td style="text-align:center;">13/08/2017</td>
-						<td style="text-align:center;">
-							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
-						</td>
+						<td ng-show='!main.recibos' colspan="4" align="center">Nenhum recibo registrado</td>
 					</tr>
-					<tr>
-						<td style="text-align:center;">16701</td>
-						<td>O30 EXAME SEDE</td>
-						<td style="text-align:center;">13/08/2017</td>
-						<td style="text-align:center;">
-							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align:center;">16701</td>
-						<td>O30 EXAME SEDE</td>
-						<td style="text-align:center;">13/08/2017</td>
-						<td style="text-align:center;">
-							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
-						</td>
-					</tr>
-
 				</tbody>
 			</table>
 		</div>
@@ -202,7 +162,7 @@
 
 					<div class="col-md-4">
 						<div class="form-group">
-							<label>Responsável</label> {{main.cliente.contato.responsavel | uppercase}} <!-- TODO: Adicionar campo no banco de dados -->
+							<label>Responsável</label> {{main.cliente.contato.responsavel | uppercase}}
 						</div>
 						<div class="form-group">
 							<label>Telefone</label> {{main.cliente.contato.telefone}} / {{main.cliente.contato.celular}}
@@ -223,10 +183,9 @@
 						<label for='quantidade'>Quantidade</label>
 						<input id='quantidade' class="form-control" placeholder="Quantidade" ng-model='main.item.quantidade'>
 					</div>
-					<button class="btn btn-info btn-sm" ng-disabled='!main.item.produto || !main.item.quantidade'>Inserir</button>
+					<button class="btn btn-info btn-sm" ng-disabled='!main.item.produto || !main.item.quantidade' ng-click="main.inserir()">Inserir</button>
 
 					<div style="float:right" ng-show='main.item.produto'>
-						<!-- TODO: Buscar informação do servidor -->
 						<label>Disponível:</label>  {{main.disponivel}}
 					</div>
 				</div>
@@ -244,12 +203,12 @@
 								<td>{{item.produto.nome}}</td>
 								<td>{{item.quantidade}}</td>
 								<td align="right">
-								<!-- TODO: Crirar funções no controller angular -->
+									<!-- TODO: Crirar funções no controller angular -->
 									<button class="btn btn-warning btn-sm">Alterar</button>
-									<button class="btn btn-danger btn-sm">Excluír</button>
+									<button class="btn btn-danger btn-sm" ng-click='main.deletar($index)'>Excluír</button>
 								</td>
 							</tr>
-							<tr ng-show="!main.itens">
+							<tr ng-show="!main.recibo.itens">
 								<td colspan="4" align="center">Nenhum produto inserido</td>
 							</tr>
 						</tbody>

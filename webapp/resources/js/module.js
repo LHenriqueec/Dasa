@@ -61,6 +61,10 @@ app.controller("mainController", function($http) {
 		}
 	});
 
+	// TODO: Carregar cliente sem compra da semana
+
+	// TODO: Carregar Recibos Gerados
+
 	ctrl.novoRecibo = function() {
 		ctrl.recibo = {};
 		ctrl.recibo.data = new Date();
@@ -84,6 +88,19 @@ app.controller("mainController", function($http) {
 	ctrl.cancelar = function() {
 		ctrl.isNew = false;
 	};
+
+	ctrl.inserir = function() {
+		if(!ctrl.recibo.itens) ctrl.recibo.itens = [];
+		ctrl.recibo.itens.push(ctrl.item);
+		ctrl.item = {};
+		ctrl.searchProduto = '';
+	}
+
+	ctrl.deletar = function(index) {
+		// TODO: Caso seja uma lateração do recibo, deletar item no banco de dados, caso contrário, apenas remover da lista
+		ctrl.recibo.itens.splice(index, 1);
+		if(ctrl.recibo.itens.length == 0) ctrl.recibo.itens = undefined;
+	}
 
 	ctrl.selecionarCliente = function(cliente) {
 		ctrl.cliente = cliente;
