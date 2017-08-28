@@ -13,6 +13,24 @@ public class ItemNotaDAO extends DAO<ItemNota> {
 		super(ItemNota.class);
 	}
 	
+	public ItemNota carregarItemByProduto(String search) throws DAOException {
+		Object[] result = null;
+		try {
+			int codigo = Integer.parseInt(search);
+			result = (Object[]) em.createQuery("select produto, sum(item.quantidade) as quantidade from ItemNota item inner join Produto produto"
+					+ " on item.produto = produto where produto.codigo like :codigo group by produto")
+					.setParameter("codigo", "%" + String.valueOf(codigo) + "%").getSingleResult();
+		} catch (NumberFormatException e) {
+			result = (Object[]) em.createQuery("select produto, sum(item.quantidade) as quantidade from ItemNota item inner join Produto produto"
+					+ " on item.produto = produto where produto.nome like :nome group by produto")
+					.setParameter("nome", "%" + search + "%").getSingleResult();
+		}
+		
+		
+		
+		return new ItemNota((Produto) result[0], Integer.valueOf(result[1].toString()));
+	}
+	
 	public List<ItemNota> carregarItens() throws DAOException {
 		List<ItemNota> itens = new ArrayList<>();
 		Iterator<?> iterator = em.createQuery("select produto, sum(item.quantidade) as quantidade from ItemNota item group by item.produto")

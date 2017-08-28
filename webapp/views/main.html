@@ -1,11 +1,10 @@
-<div class="row panel-head-main" style="margin:0px">
+<div ng-show="!main.isNew">
 	
 	<div class="col-md-6">
 		<div class="panel panel-primary">
-		<div class="panel-heading">
-			<h4>Produtos</h4>
-		</div>
-
+			<div class="panel-heading">
+				<h4>Produtos</h4>
+			</div>
 			<div class="panel-body">
 				<table class="table table-hover table-condensed">
 					<tbody>
@@ -13,7 +12,6 @@
 							<td>{{item.produto.codigo}}</td>
 							<td>{{item.produto.nome | uppercase}}</td>
 							<td>{{item.quantidade}}</td>
-							<td>#</td>
 						</tr>
 						<tr ng-show="!main.itens">
 							<td colspan="4" align="center">Nenhum item lançado</td>
@@ -21,20 +19,17 @@
 						<tr ng-show="main.itens">
 							<th colspan="2">Total:</th>
 							<th>{{main.total}}</th>
-							<th></th>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-		
 	</div>
 	<div class="col-md-6">
 		<div class="panel panel-danger">
 			<div class="panel-heading">
 				<h4>Clientes sem compra na semana</h4>
 			</div>
-
 			<div class="panel-body">
 				<table class="table table-hover table-condensed">
 					<tbody>
@@ -67,59 +62,206 @@
 				</table>
 			</div>
 		</div>
+	</div>
+	
 
+	<div class="panel panel-success col-md-12" style="padding:10px">
+		<div class="panel-heading">
+			<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal-novo-recibo" ng-click="main.novoRecibo()"><span class="glyphicon glyphicon-plus"></span></button>
+			<h4>Recibo</h4>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th width="10%" style="text-align:center;">Recibo</th>
+						<th>Cliente</th>
+						<th width="10%" style="text-align:center;">Data</th>
+						<th width="10%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="text-align:center;">16701</td>
+						<td>O30 EXAME SEDE</td>
+						<td style="text-align:center;">13/08/2017</td>
+						<td style="text-align:center;">
+							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:center;">16701</td>
+						<td>O30 EXAME SEDE</td>
+						<td style="text-align:center;">13/08/2017</td>
+						<td style="text-align:center;">
+							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:center;">16701</td>
+						<td>O30 EXAME SEDE</td>
+						<td style="text-align:center;">13/08/2017</td>
+						<td style="text-align:center;">
+							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:center;">16701</td>
+						<td>O30 EXAME SEDE</td>
+						<td style="text-align:center;">13/08/2017</td>
+						<td style="text-align:center;">
+							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- MODAL: NOVO RECIBO -->
+<div class="modal fade" id="modal-novo-recibo" tabindex="-1" role="dialog" aria-labelledby="modal-novo-recibo-label">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modal-novo-recibo-label">Novo Recibo</h4>
+			</div>
+			<div class="modal-body">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h5>Selecione o Cliente</h5>
+					</div>
+					<div class="panel-body">
+						<input class="form-control" placeholder="Pesquisar Cliente" ng-modal="clienteFilter"></input>
+						<table class="table table-hover">
+							<thead>
+								<th>Cliente</th>
+								<th>Bairro</th>
+								<th>Endereço</th>
+								<th align="right"></th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="cliente in main.clientes">
+									<td>{{cliente.nome | uppercase}}</td>
+									<td>{{cliente.endereco.bairro | uppercase}}</td>
+									<td>{{cliente.endereco.logradouro | uppercase}}</td>
+									<td align="right">
+										<button class="btn btn-info btn-sm" ng-click="main.selecionarCliente(cliente)" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span></button>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4" align="center" ng-show="!main.clientes">Nenhum cliente carregado!</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
+<div ng-show="main.isNew">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 style="margin-top:10px">Novo Recibo</h3>
+		</div>
 
-<div id="panel-table-recibos" style="padding:10px">
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th width="10%" style="text-align:center;">Recibo</th>
-				<th>Cliente</th>
-				<th width="10%" style="text-align:center;">Data</th>
-				<th width="10%"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td style="text-align:center;">16701</td>
-				<td>O30 EXAME SEDE</td>
-				<td style="text-align:center;">13/08/2017</td>
-				<td style="text-align:center;">
-					<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-					<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align:center;">16701</td>
-				<td>O30 EXAME SEDE</td>
-				<td style="text-align:center;">13/08/2017</td>
-				<td style="text-align:center;">
-					<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-					<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align:center;">16701</td>
-				<td>O30 EXAME SEDE</td>
-				<td style="text-align:center;">13/08/2017</td>
-				<td style="text-align:center;">
-					<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-					<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
-				</td>
-			</tr>
-			<tr>
-				<td style="text-align:center;">16701</td>
-				<td>O30 EXAME SEDE</td>
-				<td style="text-align:center;">13/08/2017</td>
-				<td style="text-align:center;">
-					<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-					<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
-				</td>
-			</tr>
+		<div class="panel-body">
+			<div class="panel panel-info">
+				<div class="panel-heading"><h2>Recibo</h2></div>
+				<div class="panel-body">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Nº</label> {{main.recibo.numero}}
+						</div>
+						<div class="form-group">
+							<label>Data</label> {{main.recibo.data | date : "dd/MM/y"}}
+						</div>
+						<div class="form-group" ng-show="false">
+							<label>Notas</label> 17123, 17358 <!-- TODO: Exiber, caso seja uma visualização do recibo -->
+						</div>
+					</div>
 
-		</tbody>
-	</table>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Cliente</label> {{main.cliente.nome | uppercase}}
+						</div>
+						<div class="form-group">
+							<label>Bairro</label> {{main.cliente.endereco.bairro | uppercase}}
+						</div>
+						<div class="form-group">
+							<label>Endereço</label> {{main.cliente.endereco.logradouro | uppercase}}
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="form-group">
+							<label>Responsável</label> {{main.cliente.contato.responsavel | uppercase}} <!-- TODO: Adicionar campo no banco de dados -->
+						</div>
+						<div class="form-group">
+							<label>Telefone</label> {{main.cliente.contato.telefone}} / {{main.cliente.contato.celular}}
+						</div>
+						<div class="form-group">
+							<label>E-mail</label> {{main.cliente.contato.email}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-info">
+				<div class="panel-heading form-inline">
+					<div class="form-group">
+						<label for='produto'>Produto</label>
+						<input id='produto' class="form-control" placeholder="Produto" ng-blur='main.buscarProduto()' ng-model='main.searchProduto'>
+					</div>
+					<div class="form-group">
+						<label for='quantidade'>Quantidade</label>
+						<input id='quantidade' class="form-control" placeholder="Quantidade" ng-model='main.item.quantidade'>
+					</div>
+					<button class="btn btn-info btn-sm" ng-disabled='!main.item.produto || !main.item.quantidade'>Inserir</button>
+
+					<div style="float:right" ng-show='main.item.produto'>
+						<!-- TODO: Buscar informação do servidor -->
+						<label>Disponível:</label>  {{main.disponivel}}
+					</div>
+				</div>
+				<div class="panel-body">
+					<table class="table table-hover">
+						<thead>
+							<th>Código</th>
+							<th>Produto</th>
+							<th>Quantidade</th>
+							<th></th>
+						</thead>
+						<tbody>
+							<tr ng-repeat='item in main.recibo.itens'>
+								<td>{{item.produto.codigo}}</td>
+								<td>{{item.produto.nome}}</td>
+								<td>{{item.quantidade}}</td>
+								<td align="right">
+								<!-- TODO: Crirar funções no controller angular -->
+									<button class="btn btn-warning btn-sm">Alterar</button>
+									<button class="btn btn-danger btn-sm">Excluír</button>
+								</td>
+							</tr>
+							<tr ng-show="!main.itens">
+								<td colspan="4" align="center">Nenhum produto inserido</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel-footer" align="right">
+			<button class="btn btn-default" ng-click="main.cancelar()">Cancelar</button>
+			<!-- TODO: Crirar função no controller angular -->
+			<button class="btn btn-primary" ng-disabled="!main.itens">Salvar</button>
+		</div>
+	</div>	
 </div>

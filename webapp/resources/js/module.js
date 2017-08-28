@@ -6,7 +6,7 @@ app.config(function($routeProvider) {
 		controller : "mainController as main"
 	}).when("/clientes", {
 		templateUrl : "views/clientes.html",
-		controller : "clienteCotnroller"
+		controller : "clienteCotnroller as cliente"
 	}).when("/produtos", {
 		templateUrl : "views/produtos.html",
 		controller : "produtoController"
@@ -23,7 +23,7 @@ app.config(function($routeProvider) {
 app.service("container", function() {
 	this.notas = undefined;
 	this.nota = undefined;
-	
+
 	this.inserir = function(nota) {
 		if (!this.notas) this.notas = [];
 		this.notas.push(nota);
@@ -40,20 +40,81 @@ app.controller("mainController", function($http) {
 	var ctrl = this;
 	ctrl.total = 0;
 	ctrl.itens = [];
+	ctrl.isNew = false;
+	ctrl.clientes = undefined;
+	ctrl.recibo = undefined;
+	ctrl.recibos = undefined;
+	ctrl.item = {};
 
-	var req = {
-		method : "POST",
-		url : "/Dasa/CarregarItensNotas.action"
-	};
-
-	$http(req).then(function(response) {
+	// Carrega o total de itens disponívels lançados pelas Notas
+	$http.post("/Dasa/CarregarItensNotas.action").then(function(response) {
 		ctrl.itens = response.data;
+
+		if(ctrl.itens.length == 0) {
+			ctrl.itens = undefined;
+			return;
+		}
 		
 		for (var i = 0; i < ctrl.itens.length; i++) {
 			ctrl.total += ctrl.itens[i].quantidade;
 			console.info(ctrl.total);
 		}
 	});
+
+	ctrl.novoRecibo = function() {
+		ctrl.recibo = {};
+		ctrl.recibo.data = new Date();
+		
+		$http.post('/Dasa/CarregarClientes.action').then(function(response) {
+			ctrl.clientes = response.data;
+
+			if(ctrl.clientes.length == 0) ctrl.clientes = undefined;
+
+		});
+
+		if(!ctrl.recibos || ctrl.recibos.length == 0) {
+			ctrl.recibo.numero = '17001';
+		} else {
+			var index = ctrl.recibos.length;
+			console.info(Number.parseLong(ctrl.recibos[index].numero) + 1);
+		}
+
+	};
+
+	ctrl.cancelar = function() {
+		ctrl.isNew = false;
+	};
+
+	ctrl.selecionarCliente = function(cliente) {
+		ctrl.cliente = cliente;
+		ctrl.isNew = true;
+	};
+
+	ctrl.buscarProduto = function() {
+		if (!ctrl.searchProduto)
+			return;
+
+		var req = {
+			method : 'GET',
+			url : '/Dasa/BuscarItem.action',
+			params : {
+				search : ctrl.searchProduto
+			}
+		};
+		$http(req).then(
+			function(response) {
+				var item = response.data;
+				ctrl.item.produto = item.produto;
+				ctrl.disponivel = item.quantidade;
+
+				if (!ctrl.item.produto) {
+					ctrl.searchProduto = 'Não encontrado';
+				} else {
+					ctrl.searchProduto = ctrl.item.produto.codigo
+					+ " - " + ctrl.item.produto.nome;
+				}
+			});
+	};
 
 });
 
@@ -67,6 +128,7 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 		console.info('carregado');
 		console.info(response.data);
 		$scope.notas = response.data;
+		if($scope.notas.length == 0) $scope.notas = undefined;
 	});
 
 	$scope.novo = function() {
@@ -74,8 +136,8 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 		$scope.nota = {};
 		$scope.nota.data = new Date();
 		var req = {
-				method: 'POST',
-				url: '/Dasa/CarregarClientes.action',
+			method: 'POST',
+			url: '/Dasa/CarregarClientes.action',
 		};
 		$http(req).then(function(response) {
 			$scope.clientes = response.data;
@@ -132,17 +194,17 @@ app.controller("itensNotaController", function($rootScope, $scope, $http, contai
 			}
 		};
 		$http(req).then(
-				function(response) {
-					var produto = response.data;
-					$scope.item.produto = produto;
+			function(response) {
+				var produto = response.data;
+				$scope.item.produto = produto;
 
-					if (!$scope.item.produto) {
-						$scope.searchProduto = 'Não encontrado';
-					} else {
-						$scope.searchProduto = $scope.item.produto.codigo
-								+ " - " + $scope.item.produto.nome;
-					}
-				});
+				if (!$scope.item.produto) {
+					$scope.searchProduto = 'Não encontrado';
+				} else {
+					$scope.searchProduto = $scope.item.produto.codigo
+					+ " - " + $scope.item.produto.nome;
+				}
+			});
 	};
 
 	$scope.inserir = function() {
@@ -150,14 +212,14 @@ app.controller("itensNotaController", function($rootScope, $scope, $http, contai
 			$scope.itens = [];
 		$scope.itens.push($scope.item);
 		$scope.total = Number.parseInt($scope.total)
-				+ Number.parseInt($scope.item.quantidade);
+		+ Number.parseInt($scope.item.quantidade);
 		limpa();
 
 	};
 
 	$scope.remover = function(item) {
 		$scope.total = Number.parseInt($scope.total)
-				- Number.parseInt($scope.itens[item].quantidade);
+		- Number.parseInt($scope.itens[item].quantidade);
 		$scope.itens.splice(item, 1);
 		limpa();
 		if ($scope.itens.length == 0)
