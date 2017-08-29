@@ -61,8 +61,11 @@ app.controller("mainController", function($http) {
 		}
 	});
 
-	// TODO: Carregar cliente sem compra da semana
-
+	// Carrega os clientes que não compraram na semana
+	$http.post('/Dasa/CarregarClientesSemCompra.action').then(function(response) {
+		ctrl.clientesSemCompra = response.data;
+		if(ctrl.clientesSemCompra.length == 0) ctrl.clientesSemCompra = undefined;
+	});
 	// TODO: Carregar Recibos Gerados
 
 	ctrl.novoRecibo = function() {

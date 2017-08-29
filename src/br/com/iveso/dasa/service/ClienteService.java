@@ -20,6 +20,15 @@ public class ClienteService extends Service {
 		}
 	}
 	
+	public List<Cliente> carregarClientesSemCompra() throws ServiceException {
+		try {
+			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
+			return dao.carregarClientesSemCompra();
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+	}
+	
 	public List<Cliente> carregarClientes() throws ServiceException {
 		try {
 			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);

@@ -48,6 +48,12 @@ public class Cliente {
 	public void setContato(Contato contato) {
 		this.contato = contato;
 	}
+	
+//	TODO: Alterr toString()
+	@Override
+	public String toString() {
+		return nome;
+	}
 
 	@Override
 	public int hashCode() {

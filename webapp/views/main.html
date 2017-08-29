@@ -70,7 +70,8 @@
 						<td>{{recibo.cliente.nome}}</td>
 						<td style="text-align:center;">{{recibo.data | date : "dd/MM/y"}}</td>
 						<td style="text-align:center;">
-							<!-- TODO: Criar funções no controller angular -->
+							<!-- TODO: Criar funções 'Visualizar', 'Alterar', 'Excluir' Recibos no controller angular -->
+							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
 							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
 							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
 						</td>
@@ -203,7 +204,7 @@
 								<td>{{item.produto.nome}}</td>
 								<td>{{item.quantidade}}</td>
 								<td align="right">
-									<!-- TODO: Crirar funções no controller angular -->
+									<!-- TODO: Crirar funções 'Alterar' e 'Excluir' item do Recibo no controller angular -->
 									<button class="btn btn-warning btn-sm">Alterar</button>
 									<button class="btn btn-danger btn-sm" ng-click='main.deletar($index)'>Excluír</button>
 								</td>
@@ -219,7 +220,7 @@
 
 		<div class="panel-footer" align="right">
 			<button class="btn btn-default" ng-click="main.cancelar()">Cancelar</button>
-			<!-- TODO: Crirar função no controller angular -->
+			<!-- TODO: Criar função 'Salvar Recibo' no controller angular -->
 			<button class="btn btn-primary" ng-disabled="!main.itens">Salvar</button>
 		</div>
 	</div>	
