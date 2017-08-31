@@ -1,6 +1,8 @@
 package br.com.iveso.dasa.dao;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import br.com.iveso.dasa.entity.Cliente;
 
@@ -18,9 +20,16 @@ public class ClienteDAO extends DAO<Cliente> {
 		return query("from Cliente").getResultList();
 	}
 
-	public List<Cliente> carregarClientesSemCompra() throws DAOException {
-		String sql = "select c from Cliente c where not exists (select numero from Recibo r where r.cliente = c or week(r.data) = week(now()))";
-		return query(sql).getResultList();
+	public Set<Cliente> carregarClientesSemCompra() throws DAOException {
+		Set<Cliente> clientes = new HashSet<>();
+		
+		clientes.addAll(query("select c from Cliente c where not exists (select r.numero from Recibo r where r.cliente = c and week(r.data) = week(now()))")
+			.getResultList());
+		
+		clientes.addAll(query("select c from Cliente c where not exists (select r.numero from Recibo r where r.cliente = c)")
+			.getResultList());
+		
+		return clientes;
 	}
 
 }

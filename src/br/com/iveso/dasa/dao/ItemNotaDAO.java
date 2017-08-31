@@ -13,7 +13,12 @@ public class ItemNotaDAO extends DAO<ItemNota> {
 		super(ItemNota.class);
 	}
 	
-	public ItemNota carregarItemByProduto(String search) throws DAOException {
+	public List<ItemNota> buscarItenByProduto(Produto produto) throws DAOException {
+		return query("from ItemNota i where i.produto = :produto")
+				.setParameter("produto", produto).getResultList();
+	}
+	
+	public ItemNota buscarItemByProduto(String search) throws DAOException {
 		Object[] result = null;
 		try {
 			int codigo = Integer.parseInt(search);
