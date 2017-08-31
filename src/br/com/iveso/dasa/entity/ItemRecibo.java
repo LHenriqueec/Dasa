@@ -23,5 +23,20 @@ public class ItemRecibo extends Item {
 	public ItemRecibo(Produto produto, int quantidade) {
 		super(produto, quantidade);
 	}
-
+	
+	public Recibo getRecibo() {
+		return recibo;
+	}
+	
+	public List<Nota> getNotas() {
+		return notas;
+	}
+	
+	public void setRecibo(Recibo recibo) {
+		this.recibo = recibo;
+	}
+	
+	public void setNotas(List<Nota> notas) {
+		this.notas = notas;
+	}
 }
