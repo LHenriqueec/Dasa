@@ -18,7 +18,6 @@ public class SalvarNotaAction extends Action {
 		service.salvar(nota);
 		nota.getItens().forEach(item -> item.setNota(nota));
 		
-		//TODO: a data não está sendo enviada pelo json
 	}
 
 }

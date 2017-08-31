@@ -1,6 +1,6 @@
 package br.com.iveso.dasa.action.cliente;
 
-import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 
@@ -14,7 +14,7 @@ public class CarregarClientesSemCompraAction extends Action {
 	@Override
 	public void process() throws Exception {
 		ClienteService service = ServiceFactory.getInstance().getService(ClienteService.class);
-		List<Cliente> clientes = service.carregarClientesSemCompra();
+		Set<Cliente> clientes = service.carregarClientesSemCompra();
 		
 		Gson gson = new Gson();
 		

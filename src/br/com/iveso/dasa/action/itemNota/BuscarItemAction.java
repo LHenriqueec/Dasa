@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 
 import br.com.iveso.dasa.action.Action;
 import br.com.iveso.dasa.entity.ItemNota;
-import br.com.iveso.dasa.service.IndexService;
+import br.com.iveso.dasa.service.ItemNotaService;
 
 public class BuscarItemAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		IndexService service = serviceFactory.getService(IndexService.class);
+		ItemNotaService service = serviceFactory.getService(ItemNotaService.class);
 		String search = getRequest().getParameter("search");
 		ItemNota item = service.carregarItemByProduto(search);
 		
