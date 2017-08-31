@@ -1,0 +1,130 @@
+
+<div class="col-md-6" ng-controller="main:produtos as controlProduto">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h4>Produto</h4>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover table-condensed">
+				<tbody>
+					<tr ng-repeat="item in controlProduto.itens">
+						<td>{{item.produto.codigo}}</td>
+						<td>{{item.produto.nome | uppercase}}</td>
+						<td>{{item.quantidade}}</td>
+					</tr>
+					<tr ng-show="!controlProduto.itens">
+						<td colspan="4" align="center">Nenhum item lançado</td>
+					</tr>
+					<tr ng-show="controlProduto.itens">
+						<th colspan="2">Total:</th>
+						<th>{{controlProduto.total}}</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-6" ng-controller="main:clientes as controlCliente">
+	<div class="panel panel-danger">
+		<div class="panel-heading">
+			<h4>Clientes sem compra na semana</h4>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover table-condensed">
+				<tbody>
+					<tr ng-repeat="cliente in controlCliente.clientesSemCompra">
+						<td>{{cliente.nome | uppercase}}</td>
+						<td>{{cliente.endereco.bairro | uppercase}}</td>
+						<td>{{cliente.contato.telefone}}</td>
+						<td>{{cliente.contato.responsavel | uppercase}}</td>
+					</tr>
+					<tr>
+						<td ng-show='!controlCliente.clientesSemCompra' colspan="4" align="center">Nenhum cliente sem compra</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div ng-controller="main:recibos as controlRecibo">
+
+	<div class="panel panel-success col-md-12" style="padding:10px">
+		<div class="panel-heading">
+			<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal-novo-recibo" ng-click="controlRecibo.novo()"><span class="glyphicon glyphicon-plus"></span></button>
+			<h4>Recibo</h4>
+		</div>
+		<div class="panel-body">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th width="10%" style="text-align:center;">Recibo</th>
+						<th>Cliente</th>
+						<th width="10%" style="text-align:center;">Data</th>
+						<th width="10%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat='recibo in controlRecibo.recibos'>
+						<td style="text-align:center;">{{recibo.numero}}</td>
+						<td>{{recibo.cliente.nome | uppercase}}</td>
+						<td style="text-align:center;">{{recibo.data | date: "dd/MM/y"}}</td>
+						<td style="text-align:center;">
+							<!-- TODO: Criar funções 'Visualizar', 'Alterar', 'Excluir' Recibos no controller angular -->
+							<a href="#"><span class="glyphicon glyphicon-th"></span></a>
+							<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+						</td>
+					</tr>
+					<tr>
+						<td ng-show='!controlRecibo.recibos' colspan="4" align="center">Nenhum recibo registrado</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<!-- MODAL: NOVO RECIBO -->
+	<div class="modal fade" id="modal-novo-recibo" tabindex="-1" role="dialog" aria-labelledby="modal-novo-recibo-label">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modal-novo-recibo-label">Novo Recibo</h4>
+				</div>
+				<div class="modal-body">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h5>Selecione o Cliente</h5>
+						</div>
+						<div class="panel-body">
+							<input type="text" class="form-control" placeholder="Pesquisar Cliente" ng-modal="clienteFilter">
+							<table class="table table-hover">
+								<thead>
+									<th>Cliente</th>
+									<th>Bairro</th>
+									<th>Endereço</th>
+									<th align="right"></th>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cliente in controlRecibo.clientes">
+										<td>{{cliente.nome | uppercase}}</td>
+										<td>{{cliente.endereco.bairro | uppercase}}</td>
+										<td>{{cliente.endereco.logradouro | uppercase}}</td>
+										<td align="right">
+											<a href="#!novo_cliente" class="btn btn-info btn-sm" ng-click="controlRecibo.selecionarCliente(cliente)" ><span class="glyphicon glyphicon-ok"></span></a>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4" align="center" ng-show="!controlRecibo.clientes">Nenhum cliente carregado!</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

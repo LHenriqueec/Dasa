@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="resources/css/style.css">
+
+
+	<title>Projeto Estudo</title>
+</head>
+<body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+	<script src="module.js"></script>
+
+	<div ng-app="menuApp">
+
+		<div class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="dropdown-cadastro" aria-expanded="false">
+						<span class="sr-only">Toggle Navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+
+					<a href="#!/" class="navbar-brand">Home</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="dropdown-cadastro">
+					<ul class="nav navbar-nav">
+						<li><a href="#!notas">Notas</a></li>
+						<li class="dropdown">
+							<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastro<span class="caret"></span></a>
+
+							<ul class="dropdown-menu">
+								<li><a href="#!clientes">Cliente</a></li>
+								<li><a href="#!produtos">Produto</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div ng-view></div>
+
+	</div>
+</body>
+</html>
