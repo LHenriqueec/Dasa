@@ -1,6 +1,7 @@
 package br.com.iveso.dasa.service;
 
 import java.util.List;
+import java.util.Set;
 
 import br.com.iveso.dasa.dao.ClienteDAO;
 import br.com.iveso.dasa.dao.DAOException;
@@ -20,7 +21,7 @@ public class ClienteService extends Service {
 		}
 	}
 	
-	public List<Cliente> carregarClientesSemCompra() throws ServiceException {
+	public Set<Cliente> carregarClientesSemCompra() throws ServiceException {
 		try {
 			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
 			return dao.carregarClientesSemCompra();
