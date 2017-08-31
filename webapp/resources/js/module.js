@@ -36,7 +36,7 @@ app.service("container", function() {
 });
 
 // CONTROLLER: MAIN
-app.controller("mainController", function($http) {
+app.controller("mainController", function($rootScope, $http) {
 	var ctrl = this;
 	ctrl.total = 0;
 	ctrl.itens = [];
@@ -47,26 +47,12 @@ app.controller("mainController", function($http) {
 	ctrl.item = {};
 
 	// Carrega o total de itens disponívels lançados pelas Notas
-	$http.post("/Dasa/CarregarItensNotas.action").then(function(response) {
-		ctrl.itens = response.data;
-
-		if(ctrl.itens.length == 0) {
-			ctrl.itens = undefined;
-			return;
-		}
-		
-		for (var i = 0; i < ctrl.itens.length; i++) {
-			ctrl.total += ctrl.itens[i].quantidade;
-			console.info(ctrl.total);
-		}
-	});
+	carregarItensNotas();
 
 	// Carrega os clientes que não compraram na semana
-	$http.post('/Dasa/CarregarClientesSemCompra.action').then(function(response) {
-		ctrl.clientesSemCompra = response.data;
-		if(ctrl.clientesSemCompra.length == 0) ctrl.clientesSemCompra = undefined;
-	});
+	carregarClientesSemCompra();
 	// TODO: Carregar Recibos Gerados
+	carregarRecibos();
 
 	ctrl.novoRecibo = function() {
 		ctrl.recibo = {};
@@ -82,13 +68,17 @@ app.controller("mainController", function($http) {
 		if(!ctrl.recibos || ctrl.recibos.length == 0) {
 			ctrl.recibo.numero = '17001';
 		} else {
-			var index = ctrl.recibos.length;
-			console.info(Number.parseLong(ctrl.recibos[index].numero) + 1);
+			index = ctrl.recibos.length - 1;
+			ctrl.recibo.numero = Number.parseInt(ctrl.recibos[index].numero) + 1;
+			console.info(ctrl.recibo.numero);
 		}
 
 	};
 
 	ctrl.cancelar = function() {
+		ctrl.total = 0;
+		carregarClientesSemCompra();
+		carregarItensNotas();
 		ctrl.isNew = false;
 	};
 
@@ -99,14 +89,34 @@ app.controller("mainController", function($http) {
 		ctrl.searchProduto = '';
 	}
 
-	ctrl.deletar = function(index) {
+	ctrl.salvar = function() {
+		var req = {
+			method : 'POST',
+			url : '/Dasa/SalvarRecibo.action',
+			params: {recibo:ctrl.recibo}
+		};
+
+		$rootScope.$broadcast('recibo:salvar', 'Luiz Henrique');
+		$http(req);
+		if(!ctrl.recibos) ctrl.recibos = [];
+		ctrl.recibos.push(ctrl.recibo);
+		limpar();
+	}
+
+	ctrl.deletar_recibo = function(index) {
+		ctrl.recibos.splice(index, 1);
+		if(ctrl.recibos.length == 0) ctrl.recibos = undefined;
+		// carregarClientesSemCompra();
+	}
+
+	ctrl.deletar_item_recibo = function(index) {
 		// TODO: Caso seja uma lateração do recibo, deletar item no banco de dados, caso contrário, apenas remover da lista
 		ctrl.recibo.itens.splice(index, 1);
 		if(ctrl.recibo.itens.length == 0) ctrl.recibo.itens = undefined;
 	}
 
 	ctrl.selecionarCliente = function(cliente) {
-		ctrl.cliente = cliente;
+		ctrl.recibo.cliente = cliente;
 		ctrl.isNew = true;
 	};
 
@@ -136,6 +146,42 @@ app.controller("mainController", function($http) {
 			});
 	};
 
+	function carregarRecibos() {
+		$http.post('/Dasa/CarregarRecibos.action').then(function(response) {
+			ctrl.recibos = response.data;
+			if(ctrl.recibos.length == 0) ctrl.recibos = undefined;
+		});
+	}
+
+	function carregarClientesSemCompra() {
+		ctrl.clientesSemCompra = undefined;
+		$http.post('/Dasa/CarregarClientesSemCompra.action').then(function(response) {
+			ctrl.clientesSemCompra = response.data;
+			if(ctrl.clientesSemCompra.length == 0) ctrl.clientesSemCompra = undefined;
+		});
+	}
+
+	function carregarItensNotas() {
+		$http.post("/Dasa/CarregarItensNotas.action").then(function(response) {
+			ctrl.itens = response.data;
+
+			if(ctrl.itens.length == 0) {
+				ctrl.itens = undefined;
+				return;
+			}
+
+			for (var i = 0; i < ctrl.itens.length; i++) {
+				ctrl.total += ctrl.itens[i].quantidade;
+				console.info(ctrl.total);
+			}
+		});
+	}
+
+	function limpar() {
+		ctrl.recibo = undefined;
+		ctrl.searchProduto = '';
+	}
+
 });
 
 // CONTROLLER: NOTA
@@ -150,6 +196,8 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 		$scope.notas = response.data;
 		if($scope.notas.length == 0) $scope.notas = undefined;
 	});
+
+
 
 	$scope.novo = function() {
 		$scope.isNew = true;
