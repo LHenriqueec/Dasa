@@ -22,6 +22,6 @@ public class ItemNotaTeste {
 	
 	@Test
 	public void carregar_item_pelo_produto() throws Exception {
-		System.out.println(dao.carregarItemByProduto("0010"));
+		System.out.println(dao.buscarItemByProduto("0010"));
 	}
 }

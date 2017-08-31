@@ -1,4 +1,4 @@
-package br.com.iveso.dasa.entity.teste;
+package br.com.iveso.dasa.service.teste;
 
 
 import org.junit.Before;
@@ -7,7 +7,7 @@ import org.junit.Test;
 import br.com.iveso.dasa.service.ClienteService;
 import br.com.iveso.dasa.service.ServiceFactory;
 
-public class ClienteTeste {
+public class ClienteServiceTeste {
 
 	private ClienteService service;
 	

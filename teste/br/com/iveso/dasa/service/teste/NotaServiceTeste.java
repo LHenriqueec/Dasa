@@ -1,4 +1,4 @@
-package br.com.iveso.dasa.entity.teste;
+package br.com.iveso.dasa.service.teste;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,7 +23,7 @@ import br.com.iveso.dasa.service.ServiceFactory;
 import br.com.iveso.dasa.util.ConnectionUtils;
 import br.com.iveso.dasa.util.EstrategiaExclusaoJSON;
 
-public class NotaTeste {
+public class NotaServiceTeste {
 
 	private List<ItemNota> itens;
 	private NotaService service;
