@@ -17,12 +17,16 @@ public class ItemNota extends Item {
 	public ItemNota(Produto produto, int quantidade) {
 		super(produto, quantidade);
 	}
-
+	
 	public Nota getNota() {
 		return nota;
 	}
 
 	public void setNota(Nota nota) {
 		this.nota = nota;
+	}
+
+	public void debitar(int quantidade) {
+		this.quantidade -= quantidade;
 	}
 }

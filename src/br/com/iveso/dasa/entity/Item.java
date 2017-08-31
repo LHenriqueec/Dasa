@@ -14,7 +14,7 @@ public abstract class Item {
 	
 	@ManyToOne
 	private Produto produto;
-	private int quantidade;
+	protected int quantidade;
 	
 	public Item() {}
 	
