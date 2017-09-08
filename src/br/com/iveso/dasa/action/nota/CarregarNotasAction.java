@@ -18,7 +18,10 @@ public class CarregarNotasAction extends Action {
 		NotaService service = ServiceFactory.getInstance().getService(NotaService.class);
 		List<Nota> notas = service.carregarNotas();
 		
-		Gson gson = new GsonBuilder().setExclusionStrategies(new EstrategiaExclusaoJSON()).create();
+		Gson gson = new GsonBuilder()
+				.setExclusionStrategies(new EstrategiaExclusaoJSON())
+				.setDateFormat("yyyy-MM-dd")
+				.create();
 		
 		getResponse().setContentType("application/json");
 		getResponse().getWriter().println(gson.toJson(notas));

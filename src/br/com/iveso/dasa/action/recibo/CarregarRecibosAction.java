@@ -16,7 +16,10 @@ public class CarregarRecibosAction extends Action {
 	public void process() throws Exception {
 ReciboService service = serviceFactory.getService(ReciboService.class);
 		
-		Gson gson = new GsonBuilder().setExclusionStrategies(new EstrategiaExclusaoJSON()).create();
+		Gson gson = new GsonBuilder()
+				.setExclusionStrategies(new EstrategiaExclusaoJSON())
+				.setDateFormat("yyyy-MM-dd")
+				.create();
 		
 		List<Recibo> recibos = service.carregarRecibos();
 		getResponse().setContentType("application/json");
