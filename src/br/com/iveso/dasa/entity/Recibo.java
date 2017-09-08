@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -23,7 +24,7 @@ public class Recibo {
 	@ManyToOne()
 	private Cliente cliente;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="recibo")
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER,mappedBy="recibo")
 	private List<ItemRecibo> itens;
 
 	public String getNumero() {

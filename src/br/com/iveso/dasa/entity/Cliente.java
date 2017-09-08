@@ -49,7 +49,7 @@ public class Cliente {
 		this.contato = contato;
 	}
 	
-//	TODO: Alterr toString()
+//	TODO: Reescrever método toString()
 	@Override
 	public String toString() {
 		return nome;

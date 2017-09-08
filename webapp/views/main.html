@@ -1,3 +1,4 @@
+
 <div ng-show="!main.isNew">
 	
 	<div class="col-md-6">
@@ -60,6 +61,7 @@
 					<tr>
 						<th width="10%" style="text-align:center;">Recibo</th>
 						<th>Cliente</th>
+						<th width="10%" style="text-align:center;">Quantidade</th>
 						<th width="10%" style="text-align:center;">Data</th>
 						<th width="10%"></th>
 					</tr>
@@ -68,6 +70,7 @@
 					<tr ng-repeat='recibo in main.recibos'>
 						<td style="text-align:center;">{{recibo.numero}}</td>
 						<td>{{recibo.cliente.nome | uppercase}}</td>
+						<td align="center" ng-mouseover="main.infoRecibo($index)" data-toggle="tooltip" data-placement="top" title="{{main.info}}">{{recibo.total}}</td>
 						<td style="text-align:center;">{{recibo.data | date: "dd/MM/y"}}</td>
 						<td style="text-align:center;">
 							<!-- TODO: Criar funções 'Visualizar', 'Alterar', 'Excluir' Recibos no controller angular -->
@@ -220,7 +223,6 @@
 
 		<div class="panel-footer" align="right">
 			<button class="btn btn-default" ng-click="main.cancelar()">Cancelar</button>
-			<!-- TODO: Criar função 'Salvar Recibo' no controller angular -->
 			<button class="btn btn-primary" ng-disabled="!main.itens" ng-click="main.salvar()">Salvar</button>
 		</div>
 	</div>	

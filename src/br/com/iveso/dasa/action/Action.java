@@ -19,6 +19,7 @@ public abstract class Action {
 
 	public void runAction() throws Exception {
 		try {
+			ConnectionUtils.closeEntityManager();
 			ConnectionUtils.beginTransaction();
 			process();
 			ConnectionUtils.commitTransaction();

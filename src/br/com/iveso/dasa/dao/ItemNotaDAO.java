@@ -5,12 +5,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import br.com.iveso.dasa.entity.ItemNota;
+import br.com.iveso.dasa.entity.ItemRecibo;
 import br.com.iveso.dasa.entity.Produto;
 
 public class ItemNotaDAO extends DAO<ItemNota> {
 
 	public ItemNotaDAO() {
 		super(ItemNota.class);
+	}
+	
+	public ItemNota buscarItemByNotaItemRecibo(ItemRecibo item) throws DAOException {
+		return query("from ItemNota i where i.nota = :nota and i.produto = :produto").
+				setParameter("nota", item.getNota())
+				.setParameter("produto", item.getProduto()).getSingleResult();		
 	}
 	
 	public List<ItemNota> buscarItenByProduto(Produto produto) throws DAOException {

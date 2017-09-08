@@ -19,7 +19,7 @@
 			<tr ng-repeat="nota in notas | filter: notaFilter" ng-show="notas">
 				<td style="text-align: center">{{nota.numero}}</td>
 				<td>{{nota.cliente.nome | uppercase}}</td>
-				<td style="text-align: center">{{nota.data | date: "d"}}</td>
+				<td style="text-align: center">{{nota.data | date: "dd/MM/y"}}</td>
 				<td>
 					<button class="btn btn-danger btn-sm" ng-click="deletar($index)">Excluir</button>
 				</td>

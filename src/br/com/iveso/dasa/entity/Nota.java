@@ -28,6 +28,11 @@ public class Nota {
 
 	public Nota () {}
 	
+	//TODO: Remover construr. Criado apenas paar teste
+	public Nota (String numero) {
+		this.numero = numero;
+	}
+	
 	public String getNumero() {
 		return numero;
 	}
