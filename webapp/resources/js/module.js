@@ -158,10 +158,24 @@ app.controller("mainController", function($rootScope, $http) {
 		var recibo = ctrl.recibos[index];
 		ctrl.info = '';
 		
-		for(var i = 0; i < recibo.itens.length; i++) {
-			if(i > 0) ctrl.info += "\n";
-			ctrl.info += recibo.itens[i].produto.nome + ": " + recibo.itens[i].quantidade;
-		}
+		var item_buffer;
+		recibo.itens.forEach(function(item) {
+				if(!item_buffer || item_buffer.produto.codigo != item.produto.codigo) {
+					item_buffer = {};
+					item_buffer.produto = item.produto;
+					item_buffer.quantidade = 0;
+
+					var filter_itens = recibo.itens.filter(function(itemFilter) {
+						return item_buffer.produto.codigo == itemFilter.produto.codigo;
+					});
+
+					filter_itens.forEach(function(item) {
+						item_buffer.quantidade += Number.parseInt(item.quantidade);
+					});
+
+					ctrl.info += item_buffer.produto.nome + ": " + item_buffer.quantidade + "\n";
+				}
+			});
 	}
 
 	function carregarRecibos() {
@@ -172,7 +186,7 @@ app.controller("mainController", function($rootScope, $http) {
 				return;
 			}
 
-			ctrl.recibos.forEach(atualizarData);
+			ctrl.recibos.forEach(calcularTotal);
 		});
 	}
 
@@ -211,9 +225,11 @@ app.controller("mainController", function($rootScope, $http) {
 		return itemNota.produto.codigo == ctrl.itemRecibo.produto.codigo;
 	}
 
-	function atualizarData(recibo, index) {
-		
-		console.info(new Date("2017/09/05"));
+	function calcularTotal(recibo, index) {
+		for(var i = 0; i < recibo.itens.length; i++) {
+			if(!recibo.total) recibo.total = 0;
+			recibo.total += Number.parseInt(recibo.itens[i].quantidade);
+		}
 	}
 
 	function limpar() {
