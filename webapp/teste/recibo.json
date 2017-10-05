@@ -1,0 +1,12 @@
+{
+	"recibo": {"numero":"17000", "data":"15/09/2017", "responsavel":"Wellington",
+		"cliente":{"cnpj":"21339044000110", "nome":"Ultra Frios Comercio de Produtos Industrializados Ltda.",
+			"endereco":{"uf":"DF", "cidade":"Brasília", "bairro":"Vicente Pires", "logradouro":"SHVP Chacara 134 Galpoes 02 e 03"},
+			"contato":{}
+		},
+		"itens":[
+			{"produto":{"codigo":"10", "nome":"PICOLE LIMAO"}, "quantidade":"50"},
+			{"produto":{"codigo":"12", "nome":"PICOLE MORANGO"}, "quantidade":"50"}
+		]
+	}
+}
