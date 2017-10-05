@@ -26,6 +26,8 @@ public class Recibo {
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER,mappedBy="recibo")
 	private List<ItemRecibo> itens;
+	
+	private boolean printer;
 
 	public String getNumero() {
 		return numero;
@@ -42,6 +44,10 @@ public class Recibo {
 	public List<ItemRecibo> getItens() {
 		return itens;
 	}
+	
+	public boolean isPrinter() {
+		return printer;
+	}
 
 	public void setNumero(String numero) {
 		this.numero = numero;
@@ -57,6 +63,10 @@ public class Recibo {
 
 	public void setItens(List<ItemRecibo> itens) {
 		this.itens = itens;
+	}
+	
+	public void setPrinter(boolean printer) {
+		this.printer = printer;
 	}
 
 	@Override
