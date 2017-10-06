@@ -1,10 +1,7 @@
 package br.com.iveso.dasa.util;
 
 import java.io.FileNotFoundException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,6 +20,7 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 
 import br.com.iveso.dasa.entity.ItemRecibo;
+import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.entity.Recibo;
 
 public class PdfUtil {
@@ -71,7 +69,7 @@ public class PdfUtil {
 				leftDiv.add(new Paragraph(format.format(recibo.getData())).setFontSize(12).setMargin(0));
 				
 				leftDiv.add(new Paragraph("Notas").setBold().setFontSize(12).setMargin(0));
-				exibirNotas(leftDiv, recibo.getItens());
+				exibirNotas(leftDiv, recibo);
 				
 				// Middle
 				Div middleDiv = new Div();
@@ -107,7 +105,7 @@ public class PdfUtil {
 				Table table = new Table(new float[] { 1, 99, 1 });
 				table.setWidthPercent(100).setBorder(border);
 				
-				process(table, recibo.getItens(), border);
+				process(table, recibo, border);
 				
 				Div divTable = new Div();
 				divTable.setMarginTop(30);
@@ -152,19 +150,22 @@ public class PdfUtil {
 		}
 	}
 	
-	private void exibirNotas(Div div, List<ItemRecibo> itens) {
-		Iterator<ItemRecibo> iterator = itens.iterator();
+	private void exibirNotas(Div div, Recibo recibo) {
+		Iterator<Nota> iterator = ReciboUtil.filtrarNotas(recibo).iterator();
 		StringBuffer buff = new StringBuffer();
 		
 		do {
-			buff.append(iterator.next().getNota().getNumero());
+			buff.append(iterator.next().getNumero());
 			
 			if(iterator.hasNext()) buff.append(", ");
 		} while(iterator.hasNext());
 		div.add(new Paragraph(buff.toString()).setFontSize(12).setMargin(0));
 	}
 	
-	private void process(Table table, List<ItemRecibo> itens, Border border) {
+	private void process(Table table, Recibo recibo, Border border) {
+		List<ItemRecibo> itens = ReciboUtil.processarItens(recibo);
+		int total = 0;
+		
 		table.addHeaderCell(new Cell(1, 3).add(new Paragraph("Produtos")).setFontSize(12).setBold()
 				.setFontColor(Color.GRAY).setBackgroundColor(Color.LIGHT_GRAY));
 		
@@ -186,7 +187,9 @@ public class PdfUtil {
 			table.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(border)
 					.add(new Paragraph(String.valueOf(item.getQuantidade())).setFontSize(12).setTextAlignment(TextAlignment.CENTER)));
 			
+			total += item.getQuantidade();
 		}
+		
 		
 		table.addFooterCell(new Cell(1, 2).add(new Paragraph("Total").setBold().setFontSize(12))
 				.setBorder(Border.NO_BORDER)
@@ -194,7 +197,7 @@ public class PdfUtil {
 				.setBold()
 				.setFontColor(Color.GRAY)
 				.setBackgroundColor(Color.LIGHT_GRAY));
-		table.addFooterCell(new Cell().add(new Paragraph("50").setBold().setFontSize(12).setTextAlignment(TextAlignment.CENTER))
+		table.addFooterCell(new Cell().add(new Paragraph(String.valueOf(total)).setBold().setFontSize(12).setTextAlignment(TextAlignment.CENTER))
 				.setBorder(Border.NO_BORDER)
 				.setFontSize(12)
 				.setBold()

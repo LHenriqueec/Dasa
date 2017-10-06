@@ -178,6 +178,20 @@ app.controller("mainController", function($rootScope, $http) {
 			});
 	}
 
+	ctrl.imprimirRecibo = function(numero_recibo) {
+		window.open('/Dasa/ImprimirRecibo.action?numero_recibo='+numero_recibo);
+	}
+
+	ctrl.imprimirRecibos = function() {
+		if(!ctrl.qtdRecibosNaoImpressos) {
+			//TODO: Mostra mensagem Toast: "Todos os Recibos já foram impressos!"
+		}
+
+		window.open('/Dasa/ImprimirRecibos.action');
+
+		ctrl.qtdRecibosNaoImpressos = undefined;
+	}
+
 	function carregarRecibos() {
 		$http.post('/Dasa/CarregarRecibos.action').then(function(response) {
 			ctrl.recibos = response.data;
@@ -186,7 +200,18 @@ app.controller("mainController", function($rootScope, $http) {
 				return;
 			}
 
-			ctrl.recibos.forEach(calcularTotal);
+			ctrl.qtdRecibosNaoImpressos = undefined;
+			ctrl.recibos.forEach(function(recibo, index) {
+				if (!recibo.printer) {
+					if(!ctrl.qtdRecibosNaoImpressos) ctrl.qtdRecibosNaoImpressos = 0;
+					ctrl.qtdRecibosNaoImpressos ++;
+				}
+
+				for(var i = 0; i < recibo.itens.length; i++) {
+					if(!recibo.total) recibo.total = 0;
+					recibo.total += Number.parseInt(recibo.itens[i].quantidade);
+				}
+			});
 		});
 	}
 
@@ -223,13 +248,6 @@ app.controller("mainController", function($rootScope, $http) {
 
 	function buscarItem(itemNota) {
 		return itemNota.produto.codigo == ctrl.itemRecibo.produto.codigo;
-	}
-
-	function calcularTotal(recibo, index) {
-		for(var i = 0; i < recibo.itens.length; i++) {
-			if(!recibo.total) recibo.total = 0;
-			recibo.total += Number.parseInt(recibo.itens[i].quantidade);
-		}
 	}
 
 	function limpar() {

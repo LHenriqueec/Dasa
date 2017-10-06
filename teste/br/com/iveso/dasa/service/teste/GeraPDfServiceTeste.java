@@ -72,7 +72,7 @@ public class GeraPDfServiceTeste {
 	@Test
 	public void metodo_gerar_recibo() throws Exception {
 		dao = DAOFactory.getInstance().getDAO(ReciboDAO.class);
-		recibo = dao.load("17003");
+		recibo = dao.load("17001");
 		
 		PdfUtil pdf = new PdfUtil();
 		

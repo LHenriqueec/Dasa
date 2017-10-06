@@ -13,4 +13,8 @@ public class ReciboDAO extends DAO<Recibo> {
 	public List<Recibo> carregarRecibos() throws DAOException {
 		return query("from Recibo").getResultList();
 	}
+	
+	public List<Recibo> carregarRecibosNaoGerados() throws DAOException {
+		return query("from Recibo r where r.printer = false").getResultList();
+	}
 }

@@ -1,5 +1,6 @@
 package br.com.iveso.dasa.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.iveso.dasa.dao.DAOException;
@@ -9,10 +10,37 @@ import br.com.iveso.dasa.entity.ItemNota;
 import br.com.iveso.dasa.entity.Recibo;
 import br.com.iveso.dasa.processor.ProcessorException;
 import br.com.iveso.dasa.processor.ReciboProcessor;
+import br.com.iveso.dasa.util.PdfUtil;
 
 public class ReciboService extends Service {
 
 	private ReciboDAO dao;
+	
+	public ReciboService() {
+		try {
+			dao = DAOFactory.getInstance().getDAO(ReciboDAO.class);
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void gerarReciboPDF(String numero) throws ServiceException {
+		try {
+			Recibo recibo = dao.load(numero);
+			gerarPDF(Arrays.asList(recibo));
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+	}
+	
+	public void gerarRecibosPDF() throws ServiceException {
+		try {
+			List<Recibo> recibos = dao.carregarRecibosNaoGerados();
+			gerarPDF(recibos);
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+	}
 
 	public List<Recibo> carregarRecibos() throws ServiceException {
 		try {
@@ -64,5 +92,11 @@ public class ReciboService extends Service {
 
 	public void deletar(Recibo recibo, List<ItemNota> itemNotas) throws ServiceException {
 			ReciboProcessor.getInstance().processarExclusao(recibo, itemNotas);
+	}
+	
+	private void gerarPDF(List<Recibo> recibos) {
+		PdfUtil pdf = new PdfUtil();
+		pdf.gerarPdf(recibos);
+		recibos.forEach(recibo -> recibo.setPrinter(true));
 	}
 }

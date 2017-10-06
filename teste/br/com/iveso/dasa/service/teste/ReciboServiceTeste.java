@@ -31,6 +31,11 @@ public class ReciboServiceTeste {
 	}
 	
 	@Test
+	public void carregar_recibos_nao_impressos() throws Exception {
+		service.gerarRecibosPDF();
+	}
+	
+	@Test
 	public void carregar_recibo() throws Exception {
 		List<Recibo> recibos = service.carregarRecibos();
 		Gson gson = new GsonBuilder()
