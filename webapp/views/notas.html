@@ -6,7 +6,8 @@
 			ng-model="notaFilter">
 	</div>
 	
-	<button class="btn btn-primary" ng-click="novo()">Novo</button>
+	<button class="btn btn-primary" data-toggle="modal" data-target="#modal-nova-nota" ng-click="novo()">Novo</button>
+	
 	
 	<table class="table table-hover">
 		<thead>
@@ -31,55 +32,152 @@
 		</tbody>
 	</table>
 </div>
+<!--MODAL: NOVA NOTA-->
+<div class="modal fade" id="modal-nova-nota" tabindex="-1" role="dialog" aria-labelledby="modal-nova-nota-label">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modal-nova-nota-label">Nova Nota</h4>
+				</div>
+				<div class="modal-body">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h5>Selecione o Cliente</h5>
+						</div>
+						<div class="panel-body">
+							<input class="form-control" placeholder="Pesquisar Cliente" ng-model="clienteFilter"></input>
+							<table class="table table-hover">
+								<thead>
+									<th>Cliente</th>
+									<th>Bairro</th>
+									<th>Endereço</th>
+									<th align="right"></th>
+								</thead>
+								<tbody>
+									<tr ng-repeat="cliente in clientes | filter : clienteFilter">
+										<td>{{cliente.nome | uppercase}}</td>
+										<td>{{cliente.endereco.bairro | uppercase}}</td>
+										<td>{{cliente.endereco.logradouro | uppercase}}</td>
+										<td align="right">
+											<button class="btn btn-info btn-sm" ng-click="selecionarCliente(cliente)" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span></button>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4" align="center" ng-show="!clientes">Nenhum cliente carregado!</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div ng-show="isNew">
 
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h4>Dados da Nota</h4>
-		</div>
+	
+<div class="row" style="margin: 5px;">
+		
+	<div class="panel panel-default col-md-12">
 		<div class="panel-body">
-			<label>{{nota.data | date : "dd/MM/y"}}</label>
-			<div class="form-group">
-				<label>Nº</label>
-				<input class="form-control" placeholder="Numero da Nota" ng-model="nota.numero">
+			<div class="panel panel-default col-md-12"
+				style="margin: 0px 0px 15px 0px; padding-top: 10px; text-align: center">
+				<div class="panel-body  form-inline">
+
+					<div class="col-md-3">
+
+						<div class="form-group col-md-12">
+							<label for="numero">Numero:</label>
+							<input id="numero" type="text" class="form-control" ng-model="nota.numero">
+						</div>
+
+						<div class="form-group col-md-12">
+							<label>Data:</label> {{nota.data | date : "dd/MM/y"}}
+						</div>
+
+					</div>
+					<div class="col-md-5">
+
+						<div class="form-group col-md-12">
+							<label>Cliente:</label> {{nota.cliente.nome | uppercase}}
+						</div>
+
+						<div class="form-group col-md-12">
+							<label>Endereço:</label> {{nota.cliente.endereco.logradouro | uppercase}}
+						</div>
+
+					</div>
+					<div class="col-md-4">
+
+						<div class="form-group col-md-12">
+							<label>UF:</label> {{nota.cliente.endereco.uf | uppercase}} <label>Cidade:</label> {{nota.cliente.endereco.cidade | uppercase}}
+						</div>
+
+						<div class="form-group col-md-12">
+							<label>Bairro:</label> {{nota.cliente.endereco.bairro | uppercase}}
+						</div>
+
+					</div>
+				</div>
 			</div>
 
-			<div class="form-group">
-				<label>Pesquisar Cliente</label>
-				<input class=form-control placeholder="Pesquisa Cliente" ng-model="filterCliente">
-			</div>
+			<div class="panel panel-default col-md-12"
+				style="margin: 0px; padding-top: 10px">
+				<div class="panel-body">
 
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>Cliente</th>
-						<th>Cidade</th>
-						<th>Bairro</th>
-						<th width="30%">Endereço</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="cliente in clientes | filter : filterCliente">
-						<td>{{cliente.nome | uppercase}}</td>
-						<td>{{cliente.endereco.cidade | uppercase}}</td>
-						<td>{{cliente.endereco.bairro | uppercase}}</td>
-						<td>{{cliente.endereco.logradouro | uppercase}}</td>
-						<td align="center">
-							<button class="btn btn-success btn-sm" ng-click="selecionarCliente(cliente)">
-								<span class="glyphicon glyphicon-ok"></span>
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+					<div class="col-md-8 form-inline">
+						<div class="form-group">
+							<label for="produto">Produto</label>
+							<input id="produto"	ng-model="searchProduto" ng-blur="buscarProduto()" class="form-control" placeholder="Produto">
+							
+							<label for="quantidade">Quantidade</label>
+							<input id="quantidade" ng-model="item.quantidade" class="form-control" placeholder="Quantidade">
+						</div>
+
+						<button class="btn btn-primary btn-sm" ng-click="inserir()"
+							ng-disabled="!item.produto || !item.quantidade">Inserir</button>
+					</div>
+
+					<div>
+						<table class="table table-hover">
+							<thead>
+								<th>Código</th>
+								<th width="80%">Produto</th>
+								<th align="center">Quantidade</th>
+								<th width="10%"></th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in nota.itens">
+									<td>{{item.produto.codigo}}</td>
+									<td>{{item.produto.nome}}</td>
+									<td align="center">{{item.quantidade}}</td>
+									<td align="center">
+										<button class="btn btn-danger btn-sm"
+											ng-click="remover($index)">Deletar</button>
+									</td>
+								</tr>
+								<tr ng-show="!nota.itens">
+									<td colspan="4" align="center">Nenhum produto lançado.</td>
+								</tr>
+								<tr ng-show="nota.itens">
+									<td colspan="2" style="font-weight: bold">Total</td>
+									<td colspan="1" align="center">{{total}}</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="panel-footer" align="right">
-			<button type="button" class="btn btn-default"
-				ng-click="cancelar()">Cancelar</button>
-			<a href="#!itensNota" class="btn btn-primary"
-				ng-click="confirmar()">Confirmar</a>
+
+		<div class=panel-footer align="right">
+			<button class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+			<button class="btn btn-primary" ng-disabled="!nota.itens" ng-click="salvar()">Salvar</button>
 		</div>
 	</div>
+</div>
 </div>

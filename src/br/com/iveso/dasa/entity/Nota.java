@@ -1,5 +1,6 @@
 package br.com.iveso.dasa.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,13 +32,14 @@ public class Nota {
 	//TODO: Remover construr. Criado apenas paar teste
 	public Nota (String numero) {
 		this.numero = numero;
+		itens = new ArrayList<>();
 	}
 	
 	public String getNumero() {
 		return numero;
 	}
 
-	public Date getDate() {
+	public Date getData() {
 		return data;
 	}
 
@@ -53,8 +55,8 @@ public class Nota {
 		this.numero = numero;
 	}
 
-	public void setDate(Date date) {
-		this.data = date;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	public void setCliente(Cliente cliente) {
@@ -63,6 +65,10 @@ public class Nota {
 
 	public void setItens(List<ItemNota> itens) {
 		this.itens = itens;
+	}
+	
+	public ItemNota getItemByCodigoProduto(String codigo) {
+		return itens.stream().filter(item -> item.getProduto().getCodigo().equals(codigo)).findFirst().get();
 	}
 
 	@Override

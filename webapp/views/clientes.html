@@ -126,7 +126,7 @@
 </button>
 
 <div class="panel" style="width:20%">
-		<input type="text" class="form-control" placeholder="Procurar Cliente" ng-model="nameFilter">
+		<input type="text" class="form-control" placeholder="Procurar Cliente" ng-model="clienteFilter">
 </div>
 <table class="table table-hover">
 	<thead>
@@ -139,7 +139,7 @@
 	</thead>
 
 	<tbody>
-		<tr ng-repeat="cliente in clientes  | filter : nameFilter">
+		<tr ng-repeat="cliente in clientes  | filter : clienteFilter">
 			<td>{{cliente.cnpj | uppercase}}</td>
 			<td>{{cliente.nome | uppercase}}</td>
 			<td>{{cliente.endereco.bairro | uppercase}}</td>

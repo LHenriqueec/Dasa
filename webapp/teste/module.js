@@ -21,7 +21,6 @@ app.controller("controller:main", function($scope) {
 app.controller("main:produtos", function($scope) {
 	var ctrl = this;
 
-	// TODO: Buscar Produtos lançados no banco de dados
 	ctrl.itens = [
 	{produto:{codigo:'10', nome:'PICOLE LIMAO'}, quantidade:500},
 	{produto:{codigo:'12', nome:'PICOLE MORANGO'}, quantidade:500}
@@ -39,7 +38,6 @@ app.controller("main:produtos", function($scope) {
 app.controller("main:clientes", function($scope, $http) {
 	var ctrl = this;
 	
-	// TODO: Buscar Clientes sem compra no banco de dados
 	ctrl.clientesSemCompra = [
 	{nome:'ultra frios', endereco:{bairro:'vicente pires'}, contato:{telefone:'30367789', responsavel:'wellington'}},
 	{nome:'mega frios', endereco:{bairro:'ceilandia'}, contato:{telefone:'35507721', responsavel:'andre'}}
@@ -49,7 +47,6 @@ app.controller("main:clientes", function($scope, $http) {
 app.controller("main:recibos", function($scope) {
 	var ctrl = this;
 
-	// TODO: Buscar Recibos no banco de dados
 	if(!ctrl.recibos) {
 		ctrl.recibos = [
 		{numero:'17000', cliente:{nome:'ultra frios'}, data:new Date('2017-08-21')}
@@ -57,7 +54,6 @@ app.controller("main:recibos", function($scope) {
 	}
 
 	ctrl.novo = function() {
-		// TODO: Carregar clientes do controller main:clientes
 		ctrl.recibo = {};
 		if(!ctrl.clientes) {
 			ctrl.clientes = [

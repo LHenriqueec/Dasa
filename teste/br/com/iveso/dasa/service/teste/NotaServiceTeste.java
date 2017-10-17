@@ -57,7 +57,7 @@ public class NotaServiceTeste {
 		
 		Nota nota = new Nota();
 		nota.setCliente(cliente);
-		nota.setDate(new Date());
+		nota.setData(new Date());
 		nota.setNumero("123456");
 		nota.setItens(itens);
 		

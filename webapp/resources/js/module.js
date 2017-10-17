@@ -45,6 +45,7 @@ app.controller("mainController", function($rootScope, $http) {
 	ctrl.recibo = undefined;
 	ctrl.recibos = undefined;
 	ctrl.item = {};
+	var isEdit = false;
 
 	// Carrega o total de itens disponívels lançados pelas Notas
 	carregarItensNotas();
@@ -94,17 +95,36 @@ app.controller("mainController", function($rootScope, $http) {
 	}
 
 	ctrl.salvar = function() {
-		var req = {
-			method : 'POST',
-			url : '/Dasa/SalvarRecibo.action',
-			params: {recibo:ctrl.recibo}
-		};
 
-		$rootScope.$broadcast('recibo:salvar', 'Luiz Henrique');
+		if(isEdit) {
+			//TODO: Crirar Action no backend
+			var req = {
+				method : 'POST',
+				url : '/Dasa/AtualizarRecibo.action',
+				params: {recibo:ctrl.recibo}
+			};
+			
+		} else {
+			var req = {
+				method : 'POST',
+				url : '/Dasa/SalvarRecibo.action',
+				params: {recibo:ctrl.recibo}
+			};
+
+			if(!ctrl.recibos) ctrl.recibos = [];
+			ctrl.recibos.push(ctrl.recibo);
+			
+			if(!ctrl.qtdRecibosNaoImpressos) ctrl.qtdRecibosNaoImpressos = 0;
+			ctrl.qtdRecibosNaoImpressos++;
+			ctrl.recibo.itens.forEach(debitar);
+		}
 		$http(req);
-		if(!ctrl.recibos) ctrl.recibos = [];
-		ctrl.recibos.push(ctrl.recibo);
 		limpar();
+	}
+
+	ctrl.editar = function(index) {
+		ctrl.recibo = ctrl.recibos[index];
+		ctrl.isNew = true;
 	}
 
 	ctrl.deletar_recibo = function(index) {
@@ -183,12 +203,7 @@ app.controller("mainController", function($rootScope, $http) {
 	}
 
 	ctrl.imprimirRecibos = function() {
-		if(!ctrl.qtdRecibosNaoImpressos) {
-			//TODO: Mostra mensagem Toast: "Todos os Recibos já foram impressos!"
-		}
-
 		window.open('/Dasa/ImprimirRecibos.action');
-
 		ctrl.qtdRecibosNaoImpressos = undefined;
 	}
 
@@ -246,6 +261,13 @@ app.controller("mainController", function($rootScope, $http) {
 		ctrl.total += Number.parseInt(itemRecibo.quantidade);
 	}
 
+	function debitar(itemRecibo, index) {
+		ctrl.itemRecibo = itemRecibo;
+		var itemNota = ctrl.itens.find(buscarItem);
+		itemNota.quantidade -= Number.parseInt(itemRecibo.quantidade);
+		ctrl.total -= Number.parseInt(itemRecibo.quantidade);
+	}
+
 	function buscarItem(itemNota) {
 		return itemNota.produto.codigo == ctrl.itemRecibo.produto.codigo;
 	}
@@ -262,10 +284,11 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 	$scope.isNew = false;
 	$scope.nota = undefined;
 	$scope.notas = undefined;
+	$scope.item = {};
+	$scope.searchProduto = undefined;
+	$scope.total = 0;
 	
 	$http.post('/Dasa/CarregarNotas.action').then(function(response) {
-		console.info('carregado');
-		console.info(response.data);
 		$scope.notas = response.data;
 		if($scope.notas.length == 0) $scope.notas = undefined;
 	});
@@ -273,24 +296,20 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 
 
 	$scope.novo = function() {
-		$scope.isNew = true;
+		
 		$scope.nota = {};
 		$scope.nota.data = new Date();
-		var req = {
-			method: 'POST',
-			url: '/Dasa/CarregarClientes.action',
-		};
-		$http(req).then(function(response) {
+		
+		$http.post('/Dasa/CarregarClientes.action').then(function(response) {
 			$scope.clientes = response.data;
+
+			if($scope.clientes.length == 0) $scope.clientes = undefined;
 		});
 	};
 
 	$scope.cancelar = function() {
 		$scope.isNew = false;
-	};
-
-	$scope.confirmar = function() {
-		container.nota = $scope.nota;
+		$scope.nota = undefined;
 	};
 
 	$scope.deletar = function(index) {
@@ -308,21 +327,8 @@ app.controller("notaController", function($scope, $http, $rootScope, container) 
 
 	$scope.selecionarCliente = function(cliente) {
 		$scope.nota.cliente = cliente;
+		$scope.isNew = true;
 	};
-
-});
-
-// CONTROLLER: ITENS NOTA
-app.controller("itensNotaController", function($rootScope, $scope, $http, container) {
-	$scope.item = {};
-	$scope.itens = undefined;
-	$scope.total = 0;
-	$scope.searchProduto = undefined;
-	$scope.nota = container.nota;
-	
-	var isEdit = false;
-	
-	console.info($rootScope.nota);
 
 	$scope.buscarProduto = function() {
 		if (!$scope.searchProduto)
@@ -349,9 +355,8 @@ app.controller("itensNotaController", function($rootScope, $scope, $http, contai
 	};
 
 	$scope.inserir = function() {
-		if (!$scope.itens)
-			$scope.itens = [];
-		$scope.itens.push($scope.item);
+		if (!$scope.nota.itens) $scope.nota.itens = [];
+		$scope.nota.itens.push($scope.item);
 		$scope.total = Number.parseInt($scope.total)
 		+ Number.parseInt($scope.item.quantidade);
 		limpa();
@@ -360,33 +365,47 @@ app.controller("itensNotaController", function($rootScope, $scope, $http, contai
 
 	$scope.remover = function(item) {
 		$scope.total = Number.parseInt($scope.total)
-		- Number.parseInt($scope.itens[item].quantidade);
-		$scope.itens.splice(item, 1);
+		- Number.parseInt($scope.nota.itens[item].quantidade);
+		$scope.nota.itens.splice(item, 1);
 		limpa();
-		if ($scope.itens.length == 0)
-			$scope.itens = undefined;
+		if ($scope.nota.itens.length == 0)
+			$scope.nota.itens = undefined;
 	};
 	
 	$scope.salvar = function() {
-		$scope.nota.itens = $scope.itens;
 		var req = {
 			method: 'POST',
 			url: '/Dasa/SalvarNota.action',
 			params: {nota: $scope.nota}
 		};
-		
+
 		$http(req);
-		
-		container.inserir($scope.nota);
-		container.nota = undefined;
-		$scope.nota = {};
-		$scope.itens = undefined;
+
+		if(!$scope.notas) $scope.notas = [];
+		$scope.notas.push($scope.nota);
+		$scope.nota = undefined;
 	}
 	
 	function limpa() {
 		$scope.searchProduto = undefined;
 		$scope.item = {};
 	};
+
+});
+
+// CONTROLLER: ITENS NOTA
+app.controller("itensNotaController", function($rootScope, $scope, $http, container) {
+	
+	$scope.itens = undefined;
+	
+	
+	$scope.nota = container.nota;
+	
+	var isEdit = false;
+	
+	console.info($rootScope.nota);
+
+	
 });
 
 // CONTROLLER: PRODUTO

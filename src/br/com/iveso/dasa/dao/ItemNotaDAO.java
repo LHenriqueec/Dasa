@@ -20,7 +20,7 @@ public class ItemNotaDAO extends DAO<ItemNota> {
 				.setParameter("produto", item.getProduto()).getSingleResult();		
 	}
 	
-	public List<ItemNota> buscarItenByProduto(Produto produto) throws DAOException {
+	public List<ItemNota> buscarItensByProduto(Produto produto) throws DAOException {
 		return query("from ItemNota i where i.produto = :produto")
 				.setParameter("produto", produto).getResultList();
 	}

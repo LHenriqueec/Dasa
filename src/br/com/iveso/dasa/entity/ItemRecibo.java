@@ -52,6 +52,28 @@ public class ItemRecibo extends Item {
 	
 	@Override
 	public String toString() {
-		return super.toString() + "\t" + this.nota.getNumero();
+		return super.toString() + "\t" + this.nota.getNumero() + "\n";
+	}
+	
+	public void debitar(int valor) {
+		this.quantidade -= valor;
+	}
+	
+	public void creditar(int valor) {
+		this.quantidade += valor;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
