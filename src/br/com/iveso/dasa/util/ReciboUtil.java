@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mysql.cj.api.io.Protocol.GetProfilerEventHandlerInstanceFunction;
-
 import br.com.iveso.dasa.entity.ItemRecibo;
 import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.entity.Produto;

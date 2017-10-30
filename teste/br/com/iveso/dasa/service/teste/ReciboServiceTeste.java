@@ -9,241 +9,183 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import br.com.iveso.dasa.entity.ItemNota;
 import br.com.iveso.dasa.entity.ItemRecibo;
 import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.entity.Produto;
 import br.com.iveso.dasa.entity.Recibo;
-import br.com.iveso.dasa.entity.teste.ItemReciboProcessorTeste;
-import br.com.iveso.dasa.service.ReciboService;
-import br.com.iveso.dasa.service.ServiceFactory;
-import br.com.iveso.dasa.util.EstrategiaExclusaoJSON;
+import br.com.iveso.dasa.processor.ItemReciboProcessorTeste;
 
 public class ReciboServiceTeste {
 
-	private ReciboService service;
+	private ItemReciboProcessorTeste processor;
+	
 
 	@Before
-	public void initialized() throws Exception {
-//		 service = ServiceFactory.getInstance().getService(ReciboService.class);
-
+	public void init() {
+		processor = new ItemReciboProcessorTeste();
 	}
 	
 	@Test
-	public void creditar_quantidade_item_recibo_com_mais_de_uma_nota() throws Exception {
+	public void edita_recibo_com_quantidade_maior_com_uma_nota_DAO() throws Exception {
+//		ReciboService service = ServiceFactory.getInstance().getService(ReciboService.class);
+//		try {
+//			// Recibo que será editado no Banco de Dados
+//			Recibo recibo = service.buscar("17000");
+//			
+//			
+//			
+//			// É inserido uma nova lista de itens no recibo
+//			recibo.setItens(Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10),
+//					new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 70)));
+//			
+//			ConnectionUtils.closeEntityManager();
+//			ConnectionUtils.beginTransaction();
+//			service.editar(recibo);
+//			ConnectionUtils.commitTransaction();
+//			
+//			assertEquals(2, recibo.getItens().size());
+//		
+//		} catch (Exception e) {
+//			ConnectionUtils.rollbackTransaction();
+//			e.printStackTrace();
+//		}
+		
+	}
+	
+	@Test
+	public void edita_recibo_com_quantidade_maior_com_mais_de_uma_nota() throws Exception {
+		// Recibo que será editado
 		Recibo recibo = new Recibo();
 		recibo.setItens(new ArrayList<>());
 		recibo.setNumero("17000");
 		recibo.getItens().add(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10, new Nota("123")));
 		recibo.getItens().add(new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 10, new Nota("123")));
-		/*
-		 * Estado atual do Recibo
-		 * 
-		 * RECIBO { 
-		 * 		Numero: 17000 
-		 * 		Itens: [ 
-		 * 			Item: { Produto: { Codigo: 10, Nome: PICOLE TESTE } 
-		 * 					Quantidade: 10 
-		 * 					Nota: 123 
-		 * 			}
-		 * 
-		 * 			Item: { Produto: { Codigo: 12, Nome: PICOLE TESTE2 }
-		 * 					Quantidade: 10
-		 * 					Nota: 123
-		 * 			}
-		 * 		 ] 
-		 * }
-		 */
-		
 
-		// Recibo tem a quantidade do Item alterado para mais 5.
-		List<ItemRecibo> itensNovos = Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 100),
-																	new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 60));
+		// Itens com os novos valores que serão colocados no Recibo
+		List<ItemRecibo> itensNovos = Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10),
+													new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 70));
 
-		ItemReciboProcessorTeste.alterarItens(recibo, itensNovos);
+		// Envia o Recibo e os Novos Itens para serem processados
+		processor.alterarItens(recibo, itensNovos);
 
 		int totalRecibo = recibo.getItens().stream().mapToInt(ItemRecibo::getQuantidade).sum();
 
-		assertEquals(0, ItemReciboProcessorTeste.getNota("123").getItemByCodigoProduto("0010").getQuantidade());
-		assertEquals(0, ItemReciboProcessorTeste.getNota("123").getItemByCodigoProduto("0012").getQuantidade());
-		assertEquals(10, ItemReciboProcessorTeste.getNota("456").getItemByCodigoProduto("0010").getQuantidade());
-		assertEquals(50, ItemReciboProcessorTeste.getNota("456").getItemByCodigoProduto("0012").getQuantidade());
-		assertEquals(160, totalRecibo);
+		// O Recibo é alterado com os novos valores e as Notas que foram utilizadas
+		// também têm seus valores atualizados
+		assertEquals(50, processor.getNota("123").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(50, processor.getNota("456").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(0, processor.getNota("123").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(40, processor.getNota("456").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(80, totalRecibo);
 	}
-	
+
 	@Test
-	public void creditar_quantidade_item_recibo_com_uma_nota() throws Exception {
+	public void edita_recibo_com_quantidade_maior_com_uma_nota() throws Exception {
+		// Recibo que será editado
 		Recibo recibo = new Recibo();
 		recibo.setItens(new ArrayList<>());
 		recibo.setNumero("17000");
-		recibo.getItens().add(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 15, new Nota("123")));
-		recibo.getItens().add(new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 20, new Nota("123")));
+		recibo.getItens().add(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10, new Nota("123")));
+		recibo.getItens().add(new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 10, new Nota("123")));
 
-		/*
-		 * Estado atual do Recibo
-		 * 
-		 * RECIBO { 
-		 * 		Numero: 17000 
-		 * 		Itens: [ 
-		 * 			Item: { Produto: { Codigo: 10, Nome: PICOLE TESTE } 
-		 * 					Quantidade: 15 
-		 * 					Nota: 123 
-		 * 			}
-		 * 
-		 * 			Item: { Produto: { Codigo: 12, Nome: PICOLE TESTE2 }
-		 * 					Quantidade: 20
-		 * 					Nota: 123
-		 * 			}
-		 * 		 ] 
-		 * }
-		 */
-
-		// Recibo tem a quantidade do Item alterado para mais 5.
+		// Itens com os novos valores que serão colocados no Recibo
 		List<ItemRecibo> itensNovos = Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 20),
-																	new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 10));
+													new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 20));
 
-		ItemReciboProcessorTeste.alterarItens(recibo, itensNovos);
-		
+		// Envia o Recibo e os Novos Itens para serem processados
+		processor.alterarItens(recibo, itensNovos);
+
 		int totalRecibo = recibo.getItens().stream().mapToInt(ItemRecibo::getQuantidade).sum();
 
-		assertEquals(45, ItemReciboProcessorTeste.getNota("123").getItemByCodigoProduto("0010").getQuantidade());
-		assertEquals(60, ItemReciboProcessorTeste.getNota("123").getItens().get(1).getQuantidade());
-		assertEquals(30, totalRecibo);
+		// O Recibo é alterado com os novos valores e as Notas que foram utilizadas
+		// também têm seus valores atualizados
+		assertEquals(40, processor.getNota("123").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(50, processor.getNota("456").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(40, processor.getNota("123").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(50, processor.getNota("456").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(40, totalRecibo);
 	}
 
 	@Test
-	public void carregar_recibos_nao_impressos() throws Exception {
-		service.gerarRecibosPDF();
-	}
-
-	@Test
-	public void carregar_recibo() throws Exception {
-		List<Recibo> recibos = service.carregarRecibos();
-		Gson gson = new GsonBuilder().setExclusionStrategies(new EstrategiaExclusaoJSON()).setDateFormat("yyyy-MM-dd")
-				.create();
-
-		System.out.println(gson.toJson(recibos));
-	}
-
-	@Test
-	public void deletando_recibo_com_mais_de_uma_nota() throws Exception {
-		// Ao deletar um recibo, a quantidade de cada item deve ser creditado novamente
-		// na Nota correspondente
+	public void edita_recibo_com_quantidade_igual_ao_atual() throws Exception {
+		// Recibo que será editado
 		Recibo recibo = new Recibo();
+		recibo.setItens(new ArrayList<>());
 		recibo.setNumero("17000");
+		recibo.getItens().add(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10, new Nota("123")));
+		recibo.getItens().add(new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 10, new Nota("123")));
 
-		// Nota que terá os valores devolvidos após a exclusão do recibo
-		Nota nota1 = new Nota("123");
-		List<ItemNota> itens = new ArrayList<>();
-		itens.add(new ItemNota(new Produto("10", "PICOLE LIMAO"), 10, nota1));
-		itens.add(new ItemNota(new Produto("12", "PICOLE MORANGO"), 10, nota1));
+		// Itens com os novos valores que serão colocados no Recibo
+		List<ItemRecibo> itensNovos = Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10),
+				new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 10));
 
-		Nota nota2 = new Nota("456");
-		itens.add(new ItemNota(new Produto("10", "PICOLE LIMAO"), 50, nota2));
-		itens.add(new ItemNota(new Produto("12", "PICOLE MORANGO"), 55, nota2));
+		// Envia o Recibo e os Novos Itens para serem processados
+		processor.alterarItens(recibo, itensNovos);
 
-		// Itens do Recibo com a Nota Relacionada
-		List<ItemRecibo> itensRecibo = new ArrayList<>();
-		itensRecibo.add(new ItemRecibo(new Produto("10", "PICOLE LIMAO"), 10, nota1));
-		itensRecibo.add(new ItemRecibo(new Produto("12", "PICOLE MORANGO"), 10, nota1));
-		itensRecibo.add(new ItemRecibo(new Produto("10", "PICOLE LIMAO"), 20, nota2));
-		itensRecibo.add(new ItemRecibo(new Produto("12", "PICOLE MORANGO"), 15, nota2));
-		recibo.setItens(itensRecibo);
+		int totalRecibo = recibo.getItens().stream().mapToInt(ItemRecibo::getQuantidade).sum();
 
-		//service.deletar(recibo, itens);
-
-		assertEquals(20, itens.get(0).getQuantidade());
-		assertEquals(20, itens.get(1).getQuantidade());
-		assertEquals(70, itens.get(2).getQuantidade());
-		assertEquals(70, itens.get(3).getQuantidade());
+		// O Recibo é alterado com os novos valores e as Notas que foram utilizadas
+		// também têm seus valores atualizados
+		assertEquals(50, processor.getNota("123").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(50, processor.getNota("123").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(50, processor.getNota("456").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(50, processor.getNota("456").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(20, totalRecibo);
 	}
 
 	@Test
-	public void deletando_recibo_com_uma_nota() throws Exception {
-		// Ao deletar um recibo, a quantidade de cada item deve ser creditado novamente
-		// na Nota correspondente
-
+	public void editar_recibo_com_quantidade_menor_com_mais_de_uma_nota() throws Exception {
+		// Recibo que será editado
 		Recibo recibo = new Recibo();
+		recibo.setItens(new ArrayList<>());
 		recibo.setNumero("17000");
+		recibo.getItens().add(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10, new Nota("123")));
+		recibo.getItens().add(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 2, new Nota("456")));
+		recibo.getItens().add(new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 10, new Nota("123")));
+		recibo.getItens().add(new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 3, new Nota("456")));
 
-		// Notas que terão os valores devolvidos após a exclusão do recibo
-		Nota nota1 = new Nota("123");
-		List<ItemNota> itens = new ArrayList<>();
-		itens.add(new ItemNota(new Produto("10", "PICOLE LIMAO"), 10, nota1));
-		itens.add(new ItemNota(new Produto("12", "PICOLE MORANGO"), 10, nota1));
-		nota1.setItens(itens);
+		// Itens com os novos valores que serão colocados no Recibo
+		List<ItemRecibo> itensNovos = Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 5),
+				new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 5));
 
-		// Itens do Recibo com a Nota Relacionada
-		List<ItemRecibo> itensRecibo = new ArrayList<>();
-		itensRecibo.add(new ItemRecibo(new Produto("10", "PICOLE LIMAO"), 10, nota1));
-		itensRecibo.add(new ItemRecibo(new Produto("12", "PICOLE MORANGO"), 10, nota1));
-		recibo.setItens(itensRecibo);
+		// Envia o Recibo e os Novos Itens para serem processados
+		processor.alterarItens(recibo, itensNovos);
 
-		//service.deletar(recibo, itens);
+		int totalRecibo = recibo.getItens().stream().mapToInt(ItemRecibo::getQuantidade).sum();
 
-		assertEquals(20, nota1.getItens().get(0).getQuantidade());
-		assertEquals(20, nota1.getItens().get(1).getQuantidade());
+		// O Recibo é alterado com os novos valores e as Notas que foram utilizadas
+		// também têm seus valores atualizados
+		assertEquals(55, processor.getNota("123").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(52, processor.getNota("456").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(55, processor.getNota("123").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(53, processor.getNota("456").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(10, totalRecibo);
 	}
 
 	@Test
-	public void salvar_recibo_debitando_os_valores_disponiveis_em_mais_de_uma_nota() throws Exception {
+	public void editar_recibo_com_quantidade_menor_com_uma_nota() throws Exception {
+		// Recibo que será editado
+		Recibo recibo = new Recibo();
+		recibo.setItens(new ArrayList<>());
+		recibo.setNumero("17000");
+		recibo.getItens().add(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10, new Nota("123")));
+		recibo.getItens().add(new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 10, new Nota("123")));
 
-		String json = "{'data':'2017-08-29T14:50:24.640Z','numero':'17001',"
-				+ "'cliente':{'cnpj':'21339044000110','nome':'ultra frios',"
-				+ "'endereco':{'uf':'DF','cidade':'Brasilia','bairro':'Vicente Pires','logradouro':'shvp chacara 134 galpoies 02 e 03'},"
-				+ "'contato':{'responsavel':'wellington','telefone':'6130367789','celular':'61985357721','email':'wellington@ultrafrios.com.br'}},"
-				+ "'itens':[{'produto':{'codigo':'10','nome':'PICOLE LIMAO'},'quantidade':'35'},{'produto':{'codigo':'12','nome':'PICOLE MORANGO'},'quantidade':'58'}]}";
+		// Itens com os novos valores que serão colocados no Recibo
+		List<ItemRecibo> itensNovos = Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 5),
+				new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 5));
 
-		Gson gson = new Gson();
-		Recibo recibo = gson.fromJson(json, Recibo.class);
+		// Envia o Recibo e os Novos Itens para serem processados
+		processor.alterarItens(recibo, itensNovos);
 
-		// Itens que virão do Banco de Dados
-		List<ItemNota> itens = new ArrayList<>();
+		int totalRecibo = recibo.getItens().stream().mapToInt(ItemRecibo::getQuantidade).sum();
 
-		Nota nota1 = new Nota("123");
-		itens.add(new ItemNota(new Produto("10", "PICOLE LIMAO"), 30, nota1));
-		itens.add(new ItemNota(new Produto("12", "PICOLE MORANGO"), 55, nota1));
-
-		Nota nota2 = new Nota("456");
-		itens.add(new ItemNota(new Produto("10", "PICOLE LIMAO"), 50, nota2));
-		itens.add(new ItemNota(new Produto("12", "PICOLE MORANGO"), 55, nota2));
-
-		//service.salvar(recibo, itens);
-		recibo.getItens().forEach(System.out::println);
-
-		assertEquals(0, itens.get(0).getQuantidade());
-		assertEquals(0, itens.get(1).getQuantidade());
-		assertEquals(45, itens.get(2).getQuantidade());
-		assertEquals(52, itens.get(3).getQuantidade());
-		assertEquals(4, recibo.getItens().size());
-
-	}
-
-	@Test
-	public void salvar_recibo_debitando_os_valores_disponiveis_em_uma_nota() throws Exception {
-
-		String json = "{'data':'2017-08-29T14:50:24.640Z','numero':'17001',"
-				+ "'cliente':{'cnpj':'21339044000110','nome':'ultra frios',"
-				+ "'endereco':{'uf':'DF','cidade':'Brasilia','bairro':'Vicente Pires','logradouro':'shvp chacara 134 galpoies 02 e 03'},"
-				+ "'contato':{'responsavel':'wellington','telefone':'6130367789','celular':'61985357721','email':'wellington@ultrafrios.com.br'}},"
-				+ "'itens':[{'produto':{'codigo':'10','nome':'PICOLE LIMAO'},'quantidade':'23'},{'produto':{'codigo':'12','nome':'PICOLE MORANGO'},'quantidade':'25'}]}";
-
-		Gson gson = new Gson();
-		Recibo recibo = gson.fromJson(json, Recibo.class);
-
-		// Itens que virão do Banco de Dados
-		List<ItemNota> itens = new ArrayList<>();
-
-		Nota nota = new Nota("123");
-		itens.add(new ItemNota(new Produto("10", "PICOLE LIMAO"), 30, nota));
-		itens.add(new ItemNota(new Produto("12", "PICOLE MORANGO"), 30, nota));
-
-		//service.salvar(recibo, itens);
-
-		assertEquals(7, itens.get(0).getQuantidade());
-		assertEquals(5, itens.get(1).getQuantidade());
+		// O Recibo é alterado com os novos valores e as Notas que foram utilizadas
+		// também têm seus valores atualizados
+		assertEquals(55, processor.getNota("123").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(55, processor.getNota("123").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(50, processor.getNota("456").getItemByCodigoProduto("0010").getQuantidade());
+		assertEquals(50, processor.getNota("456").getItemByCodigoProduto("0012").getQuantidade());
+		assertEquals(10, totalRecibo);
 	}
 }

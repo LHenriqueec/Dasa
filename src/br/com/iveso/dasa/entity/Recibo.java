@@ -12,6 +12,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ * Classe de Recibo
+ * @author Luiz Henrique
+ */
 @Entity
 public class Recibo {
 	

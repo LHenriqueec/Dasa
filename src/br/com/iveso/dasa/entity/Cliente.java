@@ -52,7 +52,7 @@ public class Cliente {
 //	TODO: Reescrever método toString()
 	@Override
 	public String toString() {
-		return nome;
+		return nome + endereco.toString();
 	}
 
 	@Override

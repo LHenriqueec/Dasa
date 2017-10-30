@@ -5,13 +5,6 @@
 	<persistence-unit name="Dasa">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<properties>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/dasa" />
-
-			<property name="javax.persistence.jdbc.user" value="luiz" />
-
-			<property name="javax.persistence.jdbc.password" value="200901" />
 
 			<property name="hibernate.show_sql" value="true" />
 
@@ -19,9 +12,7 @@
 
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 			
-			<!-- 
 			<property name="javax.persistence.sql-load-script-source" value="META-INF/dados.sql"/>
-			 -->
 		</properties>
 	</persistence-unit>
 </persistence>

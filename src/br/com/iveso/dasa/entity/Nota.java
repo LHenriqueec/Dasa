@@ -95,4 +95,30 @@ public class Nota {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buff = new StringBuffer();
+		
+		buff.append(numero).append("\n");
+		buff.append(itens.toString());
+		
+		return buff.toString();
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

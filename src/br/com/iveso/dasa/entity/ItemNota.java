@@ -42,6 +42,6 @@ public class ItemNota extends Item {
 	
 	@Override
 	public String toString() {
-		return super.toString() + "\t" + nota.getNumero();
+		return super.toString() + "\t" + nota.getNumero() + "\n";
 	}
 }

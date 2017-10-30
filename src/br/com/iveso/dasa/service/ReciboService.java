@@ -41,6 +41,11 @@ public class ReciboService extends Service {
 		}
 	}
 
+	/**
+	 * Atualiza os Itens do Recibo
+	 * @param reciboAtualizado Recibo com itens atualizados
+	 * @throws ServiceException 
+	 */
 	public void editar(Recibo reciboAtualizado) throws ServiceException {
 		try {
 			Recibo reciboDB = buscar(reciboAtualizado.getNumero());

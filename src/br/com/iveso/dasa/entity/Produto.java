@@ -3,6 +3,10 @@ package br.com.iveso.dasa.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * Classe de Produto
+ * @author Luiz Henrique
+ */
 @Entity
 public class Produto {
 
@@ -14,7 +18,7 @@ public class Produto {
 	
 	public Produto(String codigo, String nome) {
 		this.codigo = codigo;
-		this.nome = nome;
+		this.nome = nome.toUpperCase();
 	}
 
 	public String getCodigo() {

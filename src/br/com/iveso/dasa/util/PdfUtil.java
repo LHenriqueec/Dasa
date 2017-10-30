@@ -23,6 +23,11 @@ import br.com.iveso.dasa.entity.ItemRecibo;
 import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.entity.Recibo;
 
+/**
+ * Casse de utilidades para gerar os Recibos em PDF
+ * @author Luiz Henrique
+ *
+ */
 public class PdfUtil {
 	
 	private static final String DEST = "/tmp/recibo.pdf";
@@ -42,9 +47,11 @@ public class PdfUtil {
 		}
 	}
 
+	/**
+	 * Gera o PDF dos Recibos
+	 * @param recibos Lista de Recibos que seram gerados em PDF
+	 */
 	public void gerarPdf(List<Recibo> recibos) {
-		//TODO: Formatar Data no padrão: dd/MM/yyyy
-		//TODO: Color textos em Uppercase
 		Iterator<Recibo> iterator = recibos.iterator();
 		try {
 			
@@ -150,6 +157,11 @@ public class PdfUtil {
 		}
 	}
 	
+	/**
+	 * Exibe as Notas do Recibo no PDF
+	 * @param div Container que exibe as Notas do Recibo
+	 * @param recibo Objeto que terá as Noas exibidas
+	 */
 	private void exibirNotas(Div div, Recibo recibo) {
 		Iterator<Nota> iterator = ReciboUtil.filtrarNotas(recibo).iterator();
 		StringBuffer buff = new StringBuffer();
@@ -162,6 +174,12 @@ public class PdfUtil {
 		div.add(new Paragraph(buff.toString()).setFontSize(12).setMargin(0));
 	}
 	
+	/**
+	 * Processa uma Tabela com todos os itens do Recibo
+	 * @param table Tabela de itens do Recibo
+	 * @param recibo Recibo que terá os itens apresentados
+	 * @param border Estilo da borda que será utilizada
+	 */
 	private void process(Table table, Recibo recibo, Border border) {
 		List<ItemRecibo> itens = ReciboUtil.processarItens(recibo);
 		int total = 0;

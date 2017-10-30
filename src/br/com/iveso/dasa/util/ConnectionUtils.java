@@ -6,7 +6,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 public class ConnectionUtils {
-//TODO: A página tem que aguardar até a o commit esteja completo!
+//TODO: A página tem que aguardar até que o commit esteja completo!
 	
 	private static EntityManagerFactory factory;
 	private static ThreadLocal<EntityManager> threadEntityManager;
