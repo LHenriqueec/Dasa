@@ -1,7 +1,5 @@
 package br.com.iveso.dasa.dao;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class DAOFactory {
 
 	private static DAOFactory instance;
@@ -16,9 +14,9 @@ public class DAOFactory {
 	
 	public <T extends DAO<?>> T getDAO(Class<T> clazz) throws DAOException {
 		try {
-			return clazz.getDeclaredConstructor().newInstance();
+			return clazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				| SecurityException e) {
 			throw new DAOException(e);
 		}
 			

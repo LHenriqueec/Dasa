@@ -14,6 +14,9 @@ import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.entity.Produto;
 import br.com.iveso.dasa.entity.Recibo;
 import br.com.iveso.dasa.processor.ItemReciboProcessorTeste;
+import br.com.iveso.dasa.service.ReciboService;
+import br.com.iveso.dasa.service.ServiceFactory;
+import br.com.iveso.dasa.util.ConnectionUtils;
 
 public class ReciboServiceTeste {
 
@@ -27,28 +30,29 @@ public class ReciboServiceTeste {
 	
 	@Test
 	public void edita_recibo_com_quantidade_maior_com_uma_nota_DAO() throws Exception {
-//		ReciboService service = ServiceFactory.getInstance().getService(ReciboService.class);
-//		try {
-//			// Recibo que será editado no Banco de Dados
-//			Recibo recibo = service.buscar("17000");
-//			
-//			
-//			
-//			// É inserido uma nova lista de itens no recibo
-//			recibo.setItens(Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10),
-//					new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 70)));
-//			
-//			ConnectionUtils.closeEntityManager();
-//			ConnectionUtils.beginTransaction();
-//			service.editar(recibo);
-//			ConnectionUtils.commitTransaction();
-//			
-//			assertEquals(2, recibo.getItens().size());
-//		
-//		} catch (Exception e) {
-//			ConnectionUtils.rollbackTransaction();
-//			e.printStackTrace();
-//		}
+		ReciboService service = ServiceFactory.getInstance().getService(ReciboService.class);
+		
+		try {
+			// Recibo que será editado no Banco de Dados
+			Recibo recibo = service.buscar("17000");
+			
+			
+			
+			// É inserido uma nova lista de itens no recibo
+			recibo.setItens(Arrays.asList(new ItemRecibo(new Produto("0010", "PICOLE TESTE"), 10),
+					new ItemRecibo(new Produto("0012", "PICOLE TESTE2"), 70)));
+			
+			ConnectionUtils.closeEntityManager();
+			ConnectionUtils.beginTransaction();
+			service.salvar(recibo);
+			ConnectionUtils.commitTransaction();
+			
+			assertEquals(2, recibo.getItens().size());
+		
+		} catch (Exception e) {
+			ConnectionUtils.rollbackTransaction();
+			e.printStackTrace();
+		}
 		
 	}
 	

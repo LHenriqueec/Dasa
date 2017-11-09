@@ -50,8 +50,7 @@ public class ReciboService extends Service {
 		try {
 			Recibo reciboDB = buscar(reciboAtualizado.getNumero());
 			ReciboProcessor.getInstance().processarEdicao(reciboDB, reciboAtualizado.getItens());
-			dao.save(reciboDB);
-		} catch (ProcessorException | DAOException e) {
+		} catch (ProcessorException e) {
 			throw new ServiceException(e);
 		}
 	}

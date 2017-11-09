@@ -1,7 +1,5 @@
 package br.com.iveso.dasa.service;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class ServiceFactory {
 
 	private static ServiceFactory instance;
@@ -16,10 +14,10 @@ public class ServiceFactory {
 	
 	public <T extends Service> T getService(Class<T> clazz) throws ServiceException {
 		try {
-			T service = clazz.getDeclaredConstructor().newInstance();
+			T service = clazz.newInstance();
 			return service;
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException 
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				| SecurityException e) {
 			throw new ServiceException(e);
 		} 
 	}

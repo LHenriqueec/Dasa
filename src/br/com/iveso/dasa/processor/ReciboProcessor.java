@@ -102,7 +102,7 @@ public class ReciboProcessor {
 			int quantidade = quantidadeAtual - quantidadeNova;
 			itensNovos.addAll(debitarQuantidadeRecibo(quantidade, itens));
 
-			// Credita a diferença
+		// Credita a diferença
 		} else {
 			int quantidade = quantidadeNova - quantidadeAtual;
 			itensNovos.addAll(creditarQuantidadeRecibo(quantidade, itens));

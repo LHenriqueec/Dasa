@@ -95,17 +95,18 @@ app.controller("mainController", function($rootScope, $http) {
 	}
 
 	ctrl.salvar = function() {
-
+		console.log(isEdit);
+		var req = '';
 		if(isEdit) {
 			//TODO: Crirar Action no backend
-			var req = {
+				req = {
 				method : 'POST',
-				url : '/Dasa/AtualizarRecibo.action',
+				url : '/Dasa/EditarRecibo.action',
 				params: {recibo:ctrl.recibo}
 			};
 			
 		} else {
-			var req = {
+			req = {
 				method : 'POST',
 				url : '/Dasa/SalvarRecibo.action',
 				params: {recibo:ctrl.recibo}
@@ -118,12 +119,14 @@ app.controller("mainController", function($rootScope, $http) {
 			ctrl.qtdRecibosNaoImpressos++;
 			ctrl.recibo.itens.forEach(debitar);
 		}
+		console.log(req);
 		$http(req);
 		limpar();
 	}
 
 	ctrl.editar = function(index) {
 		ctrl.recibo = ctrl.recibos[index];
+		isEdit = true;
 		ctrl.isNew = true;
 	}
 
