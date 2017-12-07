@@ -13,6 +13,7 @@ public class Produto {
 	@Id
 	private String codigo;
 	private String nome;
+	private int saldo;
 	
 	public Produto() {}
 	
@@ -28,6 +29,10 @@ public class Produto {
 	public String getNome() {
 		return nome == null ? "" : nome.toUpperCase();
 	}
+	
+	public int getSaldo() {
+		return saldo;
+	}
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
@@ -35,6 +40,14 @@ public class Produto {
 
 	public void setNome(String nome) {
 		this.nome = nome.toUpperCase();
+	}
+	
+	public void creditar(int valor) {
+		saldo += valor;
+	}
+	
+	public void debitar(int valor) {
+		saldo -= valor;
 	}
 	
 	@Override
@@ -64,7 +77,7 @@ public class Produto {
 	
 	@Override
 	public String toString() {
-		return "Codigo: " + codigo + "\t Nome: " + nome;
+		return "Codigo: " + codigo + "\tNome: " + nome + "\tSaldo: " + saldo;
 	}
 
 	

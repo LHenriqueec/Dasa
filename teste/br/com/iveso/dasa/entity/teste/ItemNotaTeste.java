@@ -16,11 +16,6 @@ public class ItemNotaTeste {
 	}
 	
 	@Test
-	public void carregar_soma_itens() throws Exception {
-		dao.carregarItens().forEach(item -> System.out.println(item.getProduto() + " - " + item.getQuantidade()));
-	}
-	
-	@Test
 	public void carregar_item_pelo_produto() throws Exception {
 		System.out.println(dao.buscarItemByProduto("0010"));
 	}

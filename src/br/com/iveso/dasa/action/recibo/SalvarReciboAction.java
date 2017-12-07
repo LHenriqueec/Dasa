@@ -11,12 +11,14 @@ public class SalvarReciboAction extends Action {
 	@Override
 	public void process() throws Exception {
 
-		ReciboService service = serviceFactory.getService(ReciboService.class);
-
+		ReciboService service = serviceFactory.getReciboService();
+		
 		String json = getRequest().getParameter("recibo");
 		Gson gson = new Gson();
 
 		Recibo recibo = gson.fromJson(json, Recibo.class);
+		recibo.getItens().forEach(item -> item.setRecibo(recibo));
+		
 		service.salvar(recibo);
 
 	}

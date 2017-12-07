@@ -47,7 +47,7 @@ public class ProdutoTeste {
 	
 	@Test
 	public void deletando_produto() throws ServiceException {
-		ProdutoService service = ServiceFactory.getInstance().getService(ProdutoService.class);
+		ProdutoService service = ServiceFactory.getInstance().getProdutoService();
 		try { 
 			ConnectionUtils.beginTransaction();
 			service.deletar("13");
@@ -59,7 +59,7 @@ public class ProdutoTeste {
 	
 	@Test
 	public void alterando_produto() throws ServiceException {
-		ProdutoService service = ServiceFactory.getInstance().getService(ProdutoService.class);
+		ProdutoService service = ServiceFactory.getInstance().getProdutoService();
 		Produto limao = new Produto("0010", "PICOLE LIMOES");
 		Produto morango = service.getProduto("0012");
 		morango.setNome("PICOLE MORANGOS");

@@ -10,7 +10,7 @@ public class EditarReciboAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		ReciboService service = serviceFactory.getService(ReciboService.class);
+		ReciboService service = serviceFactory.getReciboService();
 
 		String json = getRequest().getParameter("recibo");
 		Gson gson = new Gson();

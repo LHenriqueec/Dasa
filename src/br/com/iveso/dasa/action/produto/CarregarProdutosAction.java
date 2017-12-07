@@ -13,7 +13,7 @@ public class CarregarProdutosAction extends Action {
 	@Override
 	public void process() throws Exception {
 		getResponse().setContentType("application/json");
-		ProdutoService service = serviceFactory.getService(ProdutoService.class);
+		ProdutoService service = serviceFactory.getProdutoService();
 		
 		List<Produto> produtos = service.carregarProdutos();
 		String json = new Gson().toJson(produtos);

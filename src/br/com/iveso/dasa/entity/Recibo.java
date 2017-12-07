@@ -28,7 +28,7 @@ public class Recibo {
 	@ManyToOne()
 	private Cliente cliente;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER,mappedBy="recibo")
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="recibo")
 	private List<ItemRecibo> itens;
 	
 	private boolean printer;
@@ -72,7 +72,7 @@ public class Recibo {
 	public void setPrinter(boolean printer) {
 		this.printer = printer;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

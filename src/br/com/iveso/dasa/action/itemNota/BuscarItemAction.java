@@ -10,7 +10,7 @@ public class BuscarItemAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		ItemNotaService service = serviceFactory.getService(ItemNotaService.class);
+		ItemNotaService service = serviceFactory.getItemNotaService();
 		String search = getRequest().getParameter("search");
 		ItemNota item = service.carregarItemByProduto(search);
 		

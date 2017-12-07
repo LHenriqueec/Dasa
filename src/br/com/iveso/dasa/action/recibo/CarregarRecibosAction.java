@@ -14,7 +14,7 @@ public class CarregarRecibosAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-ReciboService service = serviceFactory.getService(ReciboService.class);
+ReciboService service = serviceFactory.getReciboService();
 		
 		Gson gson = new GsonBuilder()
 				.setExclusionStrategies(new EstrategiaExclusaoJSON())

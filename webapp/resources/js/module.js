@@ -39,7 +39,7 @@ app.service("container", function() {
 app.controller("mainController", function($rootScope, $http) {
 	var ctrl = this;
 	ctrl.total = 0;
-	ctrl.itens = [];
+	ctrl.produtos = [];
 	ctrl.isNew = false;
 	ctrl.clientes = undefined;
 	ctrl.recibo = undefined;
@@ -47,8 +47,8 @@ app.controller("mainController", function($rootScope, $http) {
 	ctrl.item = {};
 	var isEdit = false;
 
-	// Carrega o total de itens disponívels lançados pelas Notas
-	carregarItensNotas();
+	// Carrega o estoque
+	carregarEstoque();
 
 	// Carrega os clientes que não compraram na semana
 	carregarClientesSemCompra();
@@ -79,7 +79,7 @@ app.controller("mainController", function($rootScope, $http) {
 	ctrl.cancelar = function() {
 		ctrl.total = 0;
 		carregarClientesSemCompra();
-		carregarItensNotas();
+		carregarEstoque();
 		ctrl.isNew = false;
 	};
 
@@ -95,10 +95,8 @@ app.controller("mainController", function($rootScope, $http) {
 	}
 
 	ctrl.salvar = function() {
-		console.log(isEdit);
 		var req = '';
 		if(isEdit) {
-			//TODO: Crirar Action no backend
 				req = {
 				method : 'POST',
 				url : '/Dasa/EditarRecibo.action',
@@ -119,7 +117,7 @@ app.controller("mainController", function($rootScope, $http) {
 			ctrl.qtdRecibosNaoImpressos++;
 			ctrl.recibo.itens.forEach(debitar);
 		}
-		console.log(req);
+		
 		$http(req);
 		limpar();
 	}
@@ -140,7 +138,8 @@ app.controller("mainController", function($rootScope, $http) {
 	}
 
 	ctrl.deletar_item_recibo = function(index) {
-		// TODO: Caso seja uma lateração do recibo, deletar item no banco de dados, caso contrário, apenas remover da lista
+		let quantidade = ctrl.recibo.itens[index].quantidade;
+		ctrl.recibo.total -= quantidade;
 		ctrl.recibo.itens.splice(index, 1);
 		if(ctrl.recibo.itens.length == 0) ctrl.recibo.itens = undefined;
 		
@@ -241,17 +240,17 @@ app.controller("mainController", function($rootScope, $http) {
 		});
 	}
 
-	function carregarItensNotas() {
-		$http.post("/Dasa/CarregarItensNotas.action").then(function(response) {
-			ctrl.itens = response.data;
+	function carregarEstoque() {
+		$http.post("/Dasa/CarregarProdutos.action").then(function(response) {
+			ctrl.produtos = response.data;
 
-			if(ctrl.itens.length == 0) {
-				ctrl.itens = undefined;
+			if(ctrl.produtos.length == 0) {
+				ctrl.produtos = undefined;
 				return;
 			}
 
-			for (var i = 0; i < ctrl.itens.length; i++) {
-				ctrl.total += ctrl.itens[i].quantidade;
+			for (var i = 0; i < ctrl.produtos.length; i++) {
+				ctrl.total += ctrl.produtos[i].quantidade;
 				console.info(ctrl.total);
 			}
 		});

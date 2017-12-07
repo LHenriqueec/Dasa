@@ -12,7 +12,7 @@ public class ImprimirRecibosAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		ReciboService service = serviceFactory.getService(ReciboService.class);
+		ReciboService service = serviceFactory.getReciboService();
 		service.gerarRecibosPDF();
 		byte[] arquivo = Files.readAllBytes(Paths.get("/tmp/recibo.pdf"));
 		

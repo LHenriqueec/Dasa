@@ -7,7 +7,7 @@ public class DeletarProdutoAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		ProdutoService service = serviceFactory.getService(ProdutoService.class);
+		ProdutoService service = serviceFactory.getProdutoService();
 		String codigo = getRequest().getParameter("codigo");
 		
 		service.deletar(codigo);

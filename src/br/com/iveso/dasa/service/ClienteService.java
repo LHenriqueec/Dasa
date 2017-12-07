@@ -5,16 +5,18 @@ import java.util.Set;
 
 import br.com.iveso.dasa.dao.ClienteDAO;
 import br.com.iveso.dasa.dao.DAOException;
-import br.com.iveso.dasa.dao.DAOFactory;
 import br.com.iveso.dasa.entity.Cliente;
 
 public class ClienteService extends Service {
 	
-	ClienteDAO dao;
+	private ClienteDAO dao;
+	
+	public ClienteService(ClienteDAO dao) {
+		this.dao = dao;
+	}
 	
 	public Cliente carregarByNome(String nome) throws ServiceException {
 		try {
-			ClienteDAO dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
 			return dao.carregarByNome(nome);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -23,7 +25,6 @@ public class ClienteService extends Service {
 	
 	public Set<Cliente> carregarClientesSemCompra() throws ServiceException {
 		try {
-			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
 			return dao.carregarClientesSemCompra();
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -32,7 +33,6 @@ public class ClienteService extends Service {
 	
 	public List<Cliente> carregarClientes() throws ServiceException {
 		try {
-			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
 			return dao.carregarClientes();
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -41,7 +41,6 @@ public class ClienteService extends Service {
 
 	public void salvar(Cliente cliente) throws ServiceException {
 		try {
-			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
 			dao.save(cliente);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -51,7 +50,6 @@ public class ClienteService extends Service {
 	
 	public void alterar(Cliente cliente) throws ServiceException {
 		try {
-			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
 			dao.update(cliente);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -60,7 +58,6 @@ public class ClienteService extends Service {
 	
 	public void deletar(String cnpj) throws ServiceException {
 		try {
-			dao = DAOFactory.getInstance().getDAO(ClienteDAO.class);
 			Cliente cliente = dao.load(cnpj);
 			dao.delete(cliente);
 		} catch (DAOException e) {

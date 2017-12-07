@@ -1,6 +1,7 @@
 package br.com.iveso.dasa.service.teste;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,11 +13,10 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import br.com.iveso.dasa.entity.Cliente;
+import br.com.iveso.dasa.dao.NotaDAO;
 import br.com.iveso.dasa.entity.ItemNota;
 import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.entity.Produto;
-import br.com.iveso.dasa.service.ClienteService;
 import br.com.iveso.dasa.service.NotaService;
 import br.com.iveso.dasa.service.ServiceException;
 import br.com.iveso.dasa.service.ServiceFactory;
@@ -27,12 +27,14 @@ public class NotaServiceTeste {
 
 	private List<ItemNota> itens;
 	private NotaService service;
+	private NotaDAO dao;
 	
 	
 	@Before
 	public void initialize() {
+		dao = mock(NotaDAO.class);
 		itens = new ArrayList<>();
-		service = new NotaService();
+		service = new NotaService(dao);
 	}
 	
 	@Test
@@ -46,24 +48,24 @@ public class NotaServiceTeste {
 	
 	@Test
 	public void salvar_nota_banco() throws Exception {
+		
 		itens = new ArrayList<>();
 		ItemNota i1 = new ItemNota(new Produto("0010", "PICOLE LIMAO"), 50);
 		ItemNota i2 = new ItemNota(new Produto("0012", "PICOLE MORANGO"), 50);
 		
 		itens.add(i1);
 		itens.add(i2);
-		
-		Cliente cliente = ServiceFactory.getInstance().getService(ClienteService.class).carregarByNome("ULTRA FRIOS");
-		
+				
 		Nota nota = new Nota();
-		nota.setCliente(cliente);
+		nota.setCliente(null);
 		nota.setData(new Date());
 		nota.setNumero("123456");
 		nota.setItens(itens);
 		
 		try {
+			
 			ConnectionUtils.beginTransaction();
-			service.salvar(nota);
+			service.salvar(nota, ServiceFactory.getInstance().getProdutoService());
 			i1.setNota(nota);
 			i2.setNota(nota);
 			ConnectionUtils.commitTransaction();
@@ -134,7 +136,7 @@ public class NotaServiceTeste {
 		itens.add(i3);
 		itens.add(i4);
 		
-		assertEquals(2, service.totalItensDiferentes(itens));
+		assertEquals(2, service.totalItensDiferentes((itens)));
 		assertEquals(4, itens.size());
 	}
 	

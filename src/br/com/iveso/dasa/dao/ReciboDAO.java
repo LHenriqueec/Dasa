@@ -10,13 +10,6 @@ public class ReciboDAO extends DAO<Recibo> {
 		super(Recibo.class);
 	}
 	
-	@Override
-	public void update(Recibo recibo) throws DAOException {
-		System.out.println("Atualização Recibo Chamada");
-		em.detach(recibo);
-		super.update(recibo);
-	}
-	
 	public List<Recibo> carregarRecibos() throws DAOException {
 		return query("from Recibo").getResultList();
 	}

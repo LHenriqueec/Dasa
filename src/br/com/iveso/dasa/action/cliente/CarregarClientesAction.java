@@ -14,7 +14,7 @@ public class CarregarClientesAction extends Action {
 	@Override
 	public void process() throws Exception {
 		getResponse().setContentType("application/json");
-		ClienteService service = serviceFactory.getService(ClienteService.class);
+		ClienteService service = serviceFactory.getClienteService();
 		
 		List<Cliente> clientes = service.carregarClientes();
 		String json = new Gson().toJson(clientes);

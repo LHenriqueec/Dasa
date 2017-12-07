@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import br.com.iveso.dasa.action.Action;
 import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.service.NotaService;
-import br.com.iveso.dasa.service.ServiceFactory;
+import br.com.iveso.dasa.service.ProdutoService;
 
 public class SalvarNotaAction extends Action {
 
@@ -14,10 +14,11 @@ public class SalvarNotaAction extends Action {
 		Gson gson = new Gson();
 		Nota nota = gson.fromJson(getRequest().getParameter("nota"), Nota.class);
 		
-		NotaService service = ServiceFactory.getInstance().getService(NotaService.class);
-		service.salvar(nota);
-		nota.getItens().forEach(item -> item.setNota(nota));
+		nota.getItens().forEach(Item -> Item.setNota(nota));
 		
+		NotaService service = serviceFactory.getNotaService();
+		ProdutoService produtoService = serviceFactory.getProdutoService();
+		service.salvar(nota, produtoService);
 	}
 
 }

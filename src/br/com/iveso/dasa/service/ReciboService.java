@@ -6,21 +6,18 @@ import java.util.List;
 import br.com.iveso.dasa.dao.DAOException;
 import br.com.iveso.dasa.dao.DAOFactory;
 import br.com.iveso.dasa.dao.ReciboDAO;
+import br.com.iveso.dasa.entity.Item;
+import br.com.iveso.dasa.entity.ItemRecibo;
+import br.com.iveso.dasa.entity.Produto;
 import br.com.iveso.dasa.entity.Recibo;
-import br.com.iveso.dasa.processor.ProcessorException;
-import br.com.iveso.dasa.processor.ReciboProcessor;
 import br.com.iveso.dasa.util.PdfUtil;
 
 public class ReciboService extends Service {
 
 	private ReciboDAO dao;
 
-	public ReciboService() {
-		try {
-			dao = DAOFactory.getInstance().getDAO(ReciboDAO.class);
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+	public ReciboService(ReciboDAO dao) {
+		this.dao = dao;
 	}
 
 	public void gerarReciboPDF(String numero) throws ServiceException {
@@ -43,14 +40,28 @@ public class ReciboService extends Service {
 
 	/**
 	 * Atualiza os Itens do Recibo
-	 * @param reciboAtualizado Recibo com itens atualizados
-	 * @throws ServiceException 
+	 * 
+	 * @param reciboAtualizado
+	 *            Recibo com itens atualizados
+	 * @throws ServiceException
 	 */
 	public void editar(Recibo reciboAtualizado) throws ServiceException {
 		try {
-			Recibo reciboDB = buscar(reciboAtualizado.getNumero());
-			ReciboProcessor.getInstance().processarEdicao(reciboDB, reciboAtualizado.getItens());
-		} catch (ProcessorException e) {
+			Recibo reciboDB = dao.load(reciboAtualizado.getNumero());
+			
+			for(Item item : reciboDB.getItens()) {
+				ItemRecibo itemAtualizado = reciboAtualizado.getItens().stream().filter(itemNew -> itemNew.getProduto().equals(item.getProduto())).findFirst().get();
+				int diferenca = 0;
+				
+				if(itemAtualizado.getQuantidade() > item.getQuantidade()) {
+					diferenca = itemAtualizado.getQuantidade() - item.getQuantidade();
+					item.creditar(diferenca);
+				} else {
+					diferenca = item.getQuantidade() - itemAtualizado.getQuantidade();
+					item.debitar(diferenca);
+				}
+			}
+		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}
 	}
@@ -74,21 +85,33 @@ public class ReciboService extends Service {
 
 	public void salvar(Recibo recibo) throws ServiceException {
 		try {
-			ReciboProcessor.getInstance().processarSalvamento(recibo);
+			debitarSaldoProduto(recibo.getItens());
 			dao.save(recibo);
-		} catch (ProcessorException | DAOException e) {
+		} catch(DAOException e) {
 			throw new ServiceException(e);
 		}
 	}
 
-	public void deletar(String numero) throws ServiceException {
+	public void deletar(String numero, ProdutoService produtoService) throws ServiceException {
 		try {
-			dao = DAOFactory.getInstance().getDAO(ReciboDAO.class);
-			Recibo recibo = dao.load(numero);
-			ReciboProcessor.getInstance().processarExclusao(recibo);
-			dao.delete(recibo);
-		} catch (ProcessorException | DAOException e) {
+			Recibo reciboDB = dao.load(numero);
+			creditarSaldoProduto(reciboDB.getItens(), produtoService);
+			dao.delete(reciboDB);
+		} catch(DAOException e) {
 			throw new ServiceException(e);
+		}
+	}
+	
+	private void debitarSaldoProduto(List<? extends Item> itens) throws ServiceException {
+		for(Item item : itens) {
+			item.getProduto().debitar(item.getQuantidade());
+		}
+	}
+	
+	private void creditarSaldoProduto(List<? extends Item> itens, ProdutoService produtoService) throws ServiceException {
+		for(Item item : itens) {
+			Produto produtoDB = produtoService.buscar(item.getProduto().getCodigo());
+			produtoDB.creditar(item.getQuantidade());
 		}
 	}
 

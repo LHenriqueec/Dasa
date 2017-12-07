@@ -8,14 +8,13 @@ import com.google.gson.GsonBuilder;
 import br.com.iveso.dasa.action.Action;
 import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.service.NotaService;
-import br.com.iveso.dasa.service.ServiceFactory;
 import br.com.iveso.dasa.util.EstrategiaExclusaoJSON;
 
 public class CarregarNotasAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		NotaService service = ServiceFactory.getInstance().getService(NotaService.class);
+		NotaService service = serviceFactory.getNotaService();
 		List<Nota> notas = service.carregarNotas();
 		
 		Gson gson = new GsonBuilder()

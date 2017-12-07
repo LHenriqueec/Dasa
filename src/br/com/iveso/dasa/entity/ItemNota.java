@@ -18,12 +18,6 @@ public class ItemNota extends Item {
 		super(produto, quantidade);
 	}
 	
-	//TODO: Remover construr. Criado apenas paar teste
-	public ItemNota(Produto produto, int quantidade, Nota nota) {
-		super(produto, quantidade);
-		this.nota = nota;
-	}
-	
 	public Nota getNota() {
 		return nota;
 	}
@@ -32,14 +26,6 @@ public class ItemNota extends Item {
 		this.nota = nota;
 	}
 
-	public void debitar(int quantidade) {
-		this.quantidade -= quantidade;
-	}
-	
-	public void creditar(int quantidade) {
-		this.quantidade += quantidade;
-	}
-	
 	@Override
 	public String toString() {
 		return super.toString() + "\t" + nota.getNumero() + "\n";

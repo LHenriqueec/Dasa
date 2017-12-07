@@ -10,7 +10,7 @@ public class SalvarProdutoAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		ProdutoService service = serviceFactory.getService(ProdutoService.class);
+		ProdutoService service = serviceFactory.getProdutoService();
 		Produto produto = new Gson().fromJson(getRequest().getParameter("produto"), Produto.class);
 		service.salvar(produto);
 		System.out.println("Produto:" + produto + " salvo!");

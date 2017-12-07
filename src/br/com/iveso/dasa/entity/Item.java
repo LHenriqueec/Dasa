@@ -13,7 +13,7 @@ public abstract class Item {
 	private int id;
 	
 	@ManyToOne
-	private Produto produto;
+	protected Produto produto;
 	protected int quantidade;
 	
 	public Item() {}
@@ -37,6 +37,16 @@ public abstract class Item {
 
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
+	}
+	
+	public void creditar(int quantidade) {
+		produto.debitar(quantidade);
+		this.quantidade += quantidade;
+	}
+	
+	public void debitar(int quantidade) {
+		produto.creditar(quantidade);
+		this.quantidade -= quantidade;
 	}
 	
 	@Override

@@ -67,10 +67,6 @@ public class Nota {
 		this.itens = itens;
 	}
 	
-	public ItemNota getItemByCodigoProduto(String codigo) {
-		return itens.stream().filter(item -> item.getProduto().getCodigo().equals(codigo)).findFirst().get();
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

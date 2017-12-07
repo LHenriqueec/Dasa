@@ -6,23 +6,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.border.Border;
-import com.itextpdf.layout.border.SolidBorder;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.List;
 import com.itextpdf.layout.element.ListItem;
 import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Text;
-import com.itextpdf.layout.property.TextAlignment;
 
 import br.com.iveso.dasa.dao.DAOFactory;
 import br.com.iveso.dasa.dao.ReciboDAO;
@@ -37,12 +28,19 @@ public class GeraPDfServiceTeste {
 	private Document doc;
 	private Recibo recibo;
 	private ReciboDAO dao;
+	private PdfUtil pdfUtil;
 
 	@Before
 	public void init() throws Exception {
 		write = new PdfWriter(DEST);
 		pdf = new PdfDocument(write);
 		doc = new Document(pdf);
+		pdfUtil = new PdfUtil();
+	}
+	
+	@Test
+	public void gerar_comodato_pdf() throws Exception {
+		pdfUtil.gerarComodato();
 	}
 
 	@Test

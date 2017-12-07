@@ -7,13 +7,12 @@ import com.google.gson.Gson;
 import br.com.iveso.dasa.action.Action;
 import br.com.iveso.dasa.entity.Cliente;
 import br.com.iveso.dasa.service.ClienteService;
-import br.com.iveso.dasa.service.ServiceFactory;
 
 public class CarregarClientesSemCompraAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		ClienteService service = ServiceFactory.getInstance().getService(ClienteService.class);
+		ClienteService service = serviceFactory.getClienteService();
 		Set<Cliente> clientes = service.carregarClientesSemCompra();
 		
 		Gson gson = new Gson();

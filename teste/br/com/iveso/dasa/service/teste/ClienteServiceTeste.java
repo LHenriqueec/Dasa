@@ -13,7 +13,7 @@ public class ClienteServiceTeste {
 	
 	@Before
 	public void initialized() throws Exception {
-		service = ServiceFactory.getInstance().getService(ClienteService.class);
+		service = ServiceFactory.getInstance().getClienteService();
 	}
 	
 	@Test

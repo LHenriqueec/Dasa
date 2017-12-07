@@ -10,9 +10,12 @@ public class ProdutoService extends Service {
 	
 	private ProdutoDAO dao;
 	
+	public ProdutoService(ProdutoDAO dao) {
+		this.dao = dao;
+	}
+	
 	public Produto getProduto(String codigo) throws ServiceException {
 		try {
-			dao = daoFactory.getDAO(ProdutoDAO.class);
 			return dao.load(codigo);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -21,7 +24,6 @@ public class ProdutoService extends Service {
 	
 	public List<Produto> carregarProdutos() throws ServiceException {
 		try {
-			dao = daoFactory.getDAO(ProdutoDAO.class);
 			return dao.carregarProdutos();
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -30,7 +32,6 @@ public class ProdutoService extends Service {
 	
 	public void salvar(Produto produto) throws ServiceException {
 		try {
-			dao = daoFactory.getDAO(ProdutoDAO.class);
 			dao.save(produto);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -39,7 +40,6 @@ public class ProdutoService extends Service {
 	
 	public void alterar(Produto produto) throws ServiceException {
 		try {
-			dao = daoFactory.getDAO(ProdutoDAO.class);
 			dao.update(produto);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
@@ -48,7 +48,6 @@ public class ProdutoService extends Service {
 	
 	public void deletar(String codigo) throws ServiceException {
 		try {
-			dao = daoFactory.getDAO(ProdutoDAO.class);
 			Produto produto = dao.load(codigo);
 			dao.delete(produto);
 		} catch (DAOException e) {
@@ -59,7 +58,6 @@ public class ProdutoService extends Service {
 	public Produto buscar(String search) throws ServiceException {
 		Produto produto = null;
 		try {
-			dao = daoFactory.getDAO(ProdutoDAO.class);
 			produto = dao.buscar(search);
 		} catch (DAOException e) {
 			throw new ServiceException(e);

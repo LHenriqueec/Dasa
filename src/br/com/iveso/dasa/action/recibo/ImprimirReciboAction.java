@@ -13,7 +13,7 @@ public class ImprimirReciboAction extends Action {
 	@Override
 	public void process() throws Exception {
 		String numero= getRequest().getParameter("numero_recibo");
-		ReciboService service = serviceFactory.getService(ReciboService.class);
+		ReciboService service = serviceFactory.getReciboService();
 		
 		service.gerarReciboPDF(numero);
 		byte[] arquivo = Files.readAllBytes(Paths.get("/tmp/recibo.pdf"));

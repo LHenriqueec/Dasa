@@ -7,7 +7,7 @@ public class DeletarClienteAction extends Action {
 
 	@Override
 	public void process() throws Exception {
-		ClienteService service = serviceFactory.getService(ClienteService.class);
+		ClienteService service = serviceFactory.getClienteService();
 		String cnpj = getRequest().getParameter("cnpj");
 		
 		service.deletar(cnpj);
