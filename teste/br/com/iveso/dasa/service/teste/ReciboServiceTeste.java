@@ -1,5 +1,6 @@
 package br.com.iveso.dasa.service.teste;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -26,12 +27,34 @@ public class ReciboServiceTeste {
 	}
 	
 	@Test
-	public void gerarRecibo() throws ServiceException {
+	public void carregar_recibos() throws ServiceException {
+		service.carregarRecibos();
+	}
+	
+	@Test
+	public void gerar_recibo() throws ServiceException {
 		service.gerarReciboPDF("1234");
+	}
+	
+	@Test
+	public void editar_recibo_removendo_item() throws Exception {
+		Recibo reciboAtualizado = new Recibo();
+		reciboAtualizado.setNumero("17001");
+		reciboAtualizado.setItens(new ArrayList<>());
+		reciboAtualizado.addItem(new ItemRecibo(reciboAtualizado, new Produto("10", "PICOLE LIMAO"), 20));
+		
+		try {
+			ConnectionUtils.beginTransaction();
+			service.editar(reciboAtualizado, null);
+			ConnectionUtils.commitTransaction();
+		} catch(Exception e) {
+			e.printStackTrace();
+			ConnectionUtils.rollbackTransaction();
+		}
 	}
 
 	@Test
-	public void editarRecibo() throws ServiceException {
+	public void editar_recibo() throws ServiceException {
 		Recibo recibo = new Recibo();
 
 		List<ItemRecibo> itens = Arrays.asList(new ItemRecibo(recibo, new Produto("0010", "picole limao"), 75),
@@ -43,7 +66,7 @@ public class ReciboServiceTeste {
 
 		try {
 			ConnectionUtils.beginTransaction();
-			service.editar(recibo);
+			service.editar(recibo, null);
 			ConnectionUtils.commitTransaction();
 		} catch (Exception e) {
 			ConnectionUtils.rollbackTransaction();
@@ -51,7 +74,7 @@ public class ReciboServiceTeste {
 	}
 
 	@Test
-	public void deletarRecibo() throws ServiceException {
+	public void deletar_recibo() throws ServiceException {
 		ProdutoService produtoService = ServiceFactory.getInstance().getProdutoService();
 		try {
 			ConnectionUtils.beginTransaction();
@@ -63,7 +86,7 @@ public class ReciboServiceTeste {
 	}
 
 	@Test
-	public void salvarRecibo() throws ServiceException {
+	public void salvar_recibo() throws ServiceException {
 		Recibo recibo = new Recibo();
 
 		List<ItemRecibo> itens = Arrays.asList(new ItemRecibo(recibo, new Produto("0010", "picole limao"), 25),
@@ -75,7 +98,7 @@ public class ReciboServiceTeste {
 
 		try {
 			ConnectionUtils.beginTransaction();
-			service.salvar(recibo);
+			service.salvar(recibo, null);
 			ConnectionUtils.commitTransaction();
 		} catch (Exception e) {
 			ConnectionUtils.rollbackTransaction();

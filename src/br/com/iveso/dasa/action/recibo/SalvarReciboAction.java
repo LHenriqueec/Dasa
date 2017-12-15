@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import br.com.iveso.dasa.action.Action;
 import br.com.iveso.dasa.entity.Recibo;
+import br.com.iveso.dasa.service.ProdutoService;
 import br.com.iveso.dasa.service.ReciboService;
 
 public class SalvarReciboAction extends Action {
@@ -12,6 +13,7 @@ public class SalvarReciboAction extends Action {
 	public void process() throws Exception {
 
 		ReciboService service = serviceFactory.getReciboService();
+		ProdutoService produtoService = serviceFactory.getProdutoService();
 		
 		String json = getRequest().getParameter("recibo");
 		Gson gson = new Gson();
@@ -19,7 +21,7 @@ public class SalvarReciboAction extends Action {
 		Recibo recibo = gson.fromJson(json, Recibo.class);
 		recibo.getItens().forEach(item -> item.setRecibo(recibo));
 		
-		service.salvar(recibo);
+		service.salvar(recibo, produtoService);
 
 	}
 

@@ -73,6 +73,19 @@ public class Recibo {
 		this.printer = printer;
 	}
 	
+	public void addItem(ItemRecibo item) {
+		item.setRecibo(this);
+		itens.add(item);
+	}
+	
+	public void removeItem(Item item) {
+		item.getProduto().creditar(item.getQuantidade());
+	}
+	
+	public boolean contem(Item item) {
+		return this.itens.contains(item);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

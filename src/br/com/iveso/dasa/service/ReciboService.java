@@ -1,6 +1,7 @@
 package br.com.iveso.dasa.service;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import br.com.iveso.dasa.dao.DAOException;
@@ -45,22 +46,34 @@ public class ReciboService extends Service {
 	 *            Recibo com itens atualizados
 	 * @throws ServiceException
 	 */
-	public void editar(Recibo reciboAtualizado) throws ServiceException {
+	public void editar(Recibo reciboAtualizado, ProdutoService produtoService) throws ServiceException {
+		Recibo reciboDB = null;
+		
 		try {
-			Recibo reciboDB = dao.load(reciboAtualizado.getNumero());
+			reciboDB = dao.load(reciboAtualizado.getNumero());
 			
-			for(Item item : reciboDB.getItens()) {
-				ItemRecibo itemAtualizado = reciboAtualizado.getItens().stream().filter(itemNew -> itemNew.getProduto().equals(item.getProduto())).findFirst().get();
-				int diferenca = 0;
-				
-				if(itemAtualizado.getQuantidade() > item.getQuantidade()) {
-					diferenca = itemAtualizado.getQuantidade() - item.getQuantidade();
-					item.creditar(diferenca);
-				} else {
-					diferenca = item.getQuantidade() - itemAtualizado.getQuantidade();
-					item.debitar(diferenca);
+			// Verifica se algum item foi excluído do Recibo
+			if(reciboAtualizado.getItens().size() < reciboDB.getItens().size()) {
+				for(Iterator<ItemRecibo> i = reciboDB.getItens().iterator(); i.hasNext();) {
+					ItemRecibo item = i.next();
+					if(!reciboAtualizado.contem(item)) {
+						reciboDB.removeItem(item);
+						dao.removeItem(item);
+						i.remove();
+					}
 				}
 			}
+			
+			for(ItemRecibo itemAtualizado : reciboAtualizado.getItens()) {
+				if(reciboDB.getItens().contains(itemAtualizado)) {
+					Item itemRecibo = reciboDB.getItens().stream().filter(itemDB -> itemDB.equals(itemAtualizado)).findFirst().get();
+					atualizarItem(itemRecibo, itemAtualizado);
+				} else {
+					reciboDB.addItem(itemAtualizado);
+					debitarSaldoProduto(Arrays.asList(itemAtualizado), produtoService);
+				}
+			}
+			
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}
@@ -83,9 +96,9 @@ public class ReciboService extends Service {
 		}
 	}
 
-	public void salvar(Recibo recibo) throws ServiceException {
+	public void salvar(Recibo recibo, ProdutoService produtoService) throws ServiceException {
 		try {
-			debitarSaldoProduto(recibo.getItens());
+			debitarSaldoProduto(recibo.getItens(), produtoService);
 			dao.save(recibo);
 		} catch(DAOException e) {
 			throw new ServiceException(e);
@@ -102,9 +115,22 @@ public class ReciboService extends Service {
 		}
 	}
 	
-	private void debitarSaldoProduto(List<? extends Item> itens) throws ServiceException {
+	private void atualizarItem(Item itemRecibo, Item updateItem) {
+		int diferenca = 0;
+		
+		if(updateItem.getQuantidade() > itemRecibo.getQuantidade()) {
+			diferenca = updateItem.getQuantidade() - itemRecibo.getQuantidade();
+			itemRecibo.creditar(diferenca);
+		} else {
+			diferenca = itemRecibo.getQuantidade() - updateItem.getQuantidade();
+			itemRecibo.debitar(diferenca);
+		}
+	}
+	
+	private void debitarSaldoProduto(List<? extends Item> itens, ProdutoService produtoService) throws ServiceException {
 		for(Item item : itens) {
-			item.getProduto().debitar(item.getQuantidade());
+			Produto produtoDB = produtoService.buscar(item.getProduto().getCodigo());
+			produtoDB.debitar(item.getQuantidade());
 		}
 	}
 	

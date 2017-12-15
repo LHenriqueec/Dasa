@@ -10,16 +10,16 @@
 				<table class="table table-hover table-condensed">
 					<tbody>
 						<tr ng-repeat="produto in main.produtos">
-							<td>{{produto.codigo}}</td>
-							<td>{{produto.nome | uppercase}}</td>
-							<td>{{produto.saldo}}</td>
+							<td>{{ produto.codigo }}</td>
+							<td>{{ produto.nome | uppercase }}</td>
+							<td>{{ produto.saldo }}</td>
 						</tr>
-						<tr ng-show="!main.itens">
+						<tr ng-show="!main.produtos">
 							<td colspan="4" align="center">Nenhum item lançado</td>
 						</tr>
-						<tr ng-show="main.itens">
+						<tr ng-show="main.produtos">
 							<th colspan="2">Total:</th>
-							<th>{{main.total}}</th>
+							<th>{{ main.total }}</th>
 						</tr>
 					</tbody>
 				</table>
@@ -36,10 +36,10 @@
 				<table class="table table-hover table-condensed">
 					<tbody>
 						<tr ng-repeat="cliente in main.clientesSemCompra">
-							<td>{{cliente.nome | uppercase}}</td>
-							<td>{{cliente.endereco.bairro | uppercase}}</td>
-							<td>{{cliente.contato.telefone}}</td>
-							<td>{{cliente.contato.responsavel | uppercase}}</td>
+							<td>{{ cliente.nome | uppercase }}</td>
+							<td>{{ cliente.endereco.bairro | uppercase }}</td>
+							<td>{{ cliente.contato.telefone }}</td>
+							<td>{{ cliente.contato.responsavel | uppercase }}</td>
 						</tr>
 						<tr>
 							<td ng-show='!main.clientesSemCompra' colspan="4" align="center">Nenhum cliente sem compra</td>
@@ -69,13 +69,12 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat='recibo in main.recibos'>
-						<td style="text-align:center;">{{recibo.numero}}</td>
-						<td>{{recibo.cliente.nome | uppercase}}</td>
+						<td style="text-align:center;">{{ recibo.numero }}</td>
+						<td>{{ recibo.cliente.nome | uppercase }}</td>
 						<td align="center" ng-mouseover="main.infoRecibo($index)" data-toggle="tooltip" data-placement="top" title="{{main.info}}">{{recibo.total}}</td>
-						<td style="text-align:center;">{{recibo.data | date: "dd/MM/y"}}</td>
+						<td style="text-align:center;">{{ recibo.data | date: "dd/MM/y" }}</td>
 						<td style="text-align:center;">
 							<button class="btn btn-info btn-sm" ng-click="main.imprimirRecibo(recibo.numero)"><span class="glyphicon glyphicon-print"></span></button>
-							<!-- TODO: Criar função para editar Recibo -->
 							<button class="btn btn-warning btn-sm" ng-click="main.editar($index)"><span class="glyphicon glyphicon-pencil"></span></button>
 							<button class="btn btn-danger btn-sm" ng-click="main.deletar_recibo($index)"><span class="glyphicon glyphicon-trash"></span></button>
 						</td>
@@ -112,9 +111,9 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="cliente in main.clientes | filter : clienteFilter">
-									<td>{{cliente.nome | uppercase}}</td>
-									<td>{{cliente.endereco.bairro | uppercase}}</td>
-									<td>{{cliente.endereco.logradouro | uppercase}}</td>
+									<td>{{ cliente.nome | uppercase }}</td>
+									<td>{{ cliente.endereco.bairro | uppercase }}</td>
+									<td>{{ cliente.endereco.logradouro | uppercase }}</td>
 									<td align="right">
 										<button class="btn btn-info btn-sm" ng-click="main.selecionarCliente(cliente)" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span></button>
 									</td>
@@ -143,10 +142,10 @@
 				<div class="panel-body">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label>Nº</label> {{main.recibo.numero}}
+							<label>Nº</label> {{ main.recibo.numero }}
 						</div>
 						<div class="form-group">
-							<label>Data</label> {{main.recibo.data | date : "dd/MM/y"}}
+							<label>Data</label> {{ main.recibo.data | date : "dd/MM/y" }}
 						</div>
 						<div class="form-group" ng-show="false">
 							<label>Notas</label> 17123, 17358 <!-- TODO: Exiber notas do Recibo, caso seja uma visualização do recibo -->
@@ -155,25 +154,25 @@
 
 					<div class="col-md-4">
 						<div class="form-group">
-							<label>Cliente</label> {{main.recibo.cliente.nome | uppercase}}
+							<label>Cliente</label> {{ main.recibo.cliente.nome | uppercase }}
 						</div>
 						<div class="form-group">
-							<label>Bairro</label> {{main.recibo.cliente.endereco.bairro | uppercase}}
+							<label>Bairro</label> {{ main.recibo.cliente.endereco.bairro | uppercase }}
 						</div>
 						<div class="form-group">
-							<label>Endereço</label> {{main.recibo.cliente.endereco.logradouro | uppercase}}
+							<label>Endereço</label> {{ main.recibo.cliente.endereco.logradouro | uppercase }}
 						</div>
 					</div>
 
 					<div class="col-md-4">
 						<div class="form-group">
-							<label>Responsável</label> {{main.recibo.cliente.contato.responsavel | uppercase}}
+							<label>Responsável</label> {{ main.recibo.cliente.contato.responsavel | uppercase }}
 						</div>
 						<div class="form-group">
-							<label>Telefone</label> {{main.recibo.cliente.contato.telefone}} / {{main.cliente.contato.celular}}
+							<label>Telefone</label> {{ main.recibo.cliente.contato.telefone }} / {{ main.cliente.contato.celular }}
 						</div>
 						<div class="form-group">
-							<label>E-mail</label> {{main.recibo.cliente.contato.email}}
+							<label>E-mail</label> {{ main.recibo.cliente.contato.email }}
 						</div>
 					</div>
 				</div>
@@ -190,8 +189,8 @@
 					</div>
 					<button class="btn btn-info btn-sm" ng-disabled='!main.item.produto || !main.item.quantidade' ng-click="main.inserir()">Inserir</button>
 
-					<div style="float:right" ng-show='main.item.produto'>
-						<label>Disponível:</label>  {{main.disponivel}}
+					<div style="float:right" ng-show='main.item'>
+						<label>Disponível:</label>  {{ main.item.produto.saldo }}
 					</div>
 				</div>
 				<div class="panel-body">
@@ -204,9 +203,9 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat='item in main.recibo.itens'>
-								<td>{{item.produto.codigo}}</td>
-								<td>{{item.produto.nome}}</td>
-								<td>{{item.quantidade}}</td>
+								<td>{{ item.produto.codigo }}</td>
+								<td>{{ item.produto.nome }}</td>
+								<td>{{ item.quantidade }}</td>
 								<td align="right">
 									<button class="btn btn-danger btn-sm" ng-click='main.deletar_item_recibo($index)'>Excluír</button>
 								</td>
@@ -222,7 +221,7 @@
 
 		<div class="panel-footer" align="right">
 			<button class="btn btn-default" ng-click="main.cancelar()">Cancelar</button>
-			<button class="btn btn-primary" ng-disabled="!main.itens" ng-click="main.salvar()">Salvar</button>
+			<button class="btn btn-primary" ng-disabled="!main.recibo.itens" ng-click="main.salvar()">Salvar</button>
 		</div>
 	</div>	
 </div>

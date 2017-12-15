@@ -156,24 +156,23 @@ app.controller("mainController", function($rootScope, $http) {
 
 		var req = {
 			method : 'GET',
-			url : '/Dasa/BuscarItem.action',
+			url : '/Dasa/BuscarProduto.action',
 			params : {
 				search : ctrl.searchProduto
 			}
 		};
 		$http(req).then(
 			function(response) {
-				var item = response.data;
-				ctrl.item.produto = item.produto;
-				ctrl.disponivel = item.quantidade;
-
-				if (!ctrl.item.produto) {
+				ctrl.item.produto = response.data;
+				
+				if (!ctrl.item) {
 					ctrl.searchProduto = 'Não encontrado';
 				} else {
 					ctrl.searchProduto = ctrl.item.produto.codigo
 					+ " - " + ctrl.item.produto.nome;
 				}
 			});
+
 	};
 
 	ctrl.infoRecibo = function(index) {
@@ -243,35 +242,34 @@ app.controller("mainController", function($rootScope, $http) {
 	function carregarEstoque() {
 		$http.post("/Dasa/CarregarProdutos.action").then(function(response) {
 			ctrl.produtos = response.data;
-
+			
 			if(ctrl.produtos.length == 0) {
 				ctrl.produtos = undefined;
 				return;
 			}
-
+			
 			for (var i = 0; i < ctrl.produtos.length; i++) {
-				ctrl.total += ctrl.produtos[i].quantidade;
-				console.info(ctrl.total);
+				ctrl.total += ctrl.produtos[i].saldo;
 			}
 		});
 	}
 
 	function creditar(itemRecibo, index) {
-		ctrl.itemRecibo = itemRecibo;
-		var itemNota = ctrl.itens.find(buscarItem);
-		itemNota.quantidade += Number.parseInt(itemRecibo.quantidade);
+		ctrl.item = itemRecibo;
+		var produto = ctrl.produtos.find(buscarItem);
+		produto.saldo += Number.parseInt(itemRecibo.quantidade);
 		ctrl.total += Number.parseInt(itemRecibo.quantidade);
 	}
 
 	function debitar(itemRecibo, index) {
-		ctrl.itemRecibo = itemRecibo;
-		var itemNota = ctrl.itens.find(buscarItem);
-		itemNota.quantidade -= Number.parseInt(itemRecibo.quantidade);
+		ctrl.item = itemRecibo;
+		var produto = ctrl.produtos.find(buscarItem);
+		produto.saldo -= Number.parseInt(itemRecibo.quantidade);
 		ctrl.total -= Number.parseInt(itemRecibo.quantidade);
 	}
 
-	function buscarItem(itemNota) {
-		return itemNota.produto.codigo == ctrl.itemRecibo.produto.codigo;
+	function buscarItem(produto) {
+		return produto.codigo == ctrl.item.produto.codigo;
 	}
 
 	function limpar() {
