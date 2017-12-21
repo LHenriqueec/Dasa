@@ -1,5 +1,6 @@
 package br.com.iveso.dasa.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.iveso.dasa.entity.ItemRecibo;
@@ -21,5 +22,11 @@ public class ReciboDAO extends DAO<Recibo> {
 	
 	public List<Recibo> carregarRecibosNaoGerados() throws DAOException {
 		return query("from Recibo r where r.printer = false").getResultList();
+	}
+	
+	public List<ItemRecibo> carregarItensRecibos(Date data) throws DAOException {
+		return em.createQuery("from ItemRecibo i where i.recibo.data > :data", ItemRecibo.class)
+				.setParameter("data", data)
+				.getResultList();
 	}
 }

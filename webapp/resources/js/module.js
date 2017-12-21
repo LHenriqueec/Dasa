@@ -94,6 +94,18 @@ app.controller("mainController", function($rootScope, $http) {
 		ctrl.searchProduto = '';
 	}
 
+	ctrl.gerarArquivo = function() {
+		$http.get('/Dasa/GerarArquivoRecibos.action').then(function(response) {
+			response = Number.parseInt(response.data);
+			if(response) {
+				alert('Arquivo Exportado!');
+			} else {
+				alert('Erro ao exportar o arquivo!');
+			}
+			
+		});
+	}
+
 	ctrl.salvar = function() {
 		var req = '';
 		if(isEdit) {

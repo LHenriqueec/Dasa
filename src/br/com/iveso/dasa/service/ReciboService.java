@@ -1,6 +1,9 @@
 package br.com.iveso.dasa.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import br.com.iveso.dasa.entity.Item;
 import br.com.iveso.dasa.entity.ItemRecibo;
 import br.com.iveso.dasa.entity.Produto;
 import br.com.iveso.dasa.entity.Recibo;
+import br.com.iveso.dasa.util.Exportador;
 import br.com.iveso.dasa.util.PdfUtil;
 
 public class ReciboService extends Service {
@@ -37,6 +41,17 @@ public class ReciboService extends Service {
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}
+	}
+	
+	/**
+	 * Gera um arquivo .csv com os Recibos emitidos nos últimos 30 dias
+	 * @param ex Classe que exporta o arquivo .csv
+	 * @throws ServiceException
+	 */
+	public boolean gerarArquivoCSV(Exportador ex) throws ServiceException {
+		Date data = Date.from(LocalDate.now().minusDays(30).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		List<ItemRecibo> itens = carregarItensRecibos(data);
+		return ex.paraCSV(itens);
 	}
 
 	/**
@@ -82,6 +97,14 @@ public class ReciboService extends Service {
 	public List<Recibo> carregarRecibos() throws ServiceException {
 		try {
 			return dao.carregarRecibos();
+		} catch (DAOException e) {
+			throw new ServiceException(e);
+		}
+	}
+	
+	public List<ItemRecibo> carregarItensRecibos(Date data) throws ServiceException {
+		try {
+			return dao.carregarItensRecibos(data);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

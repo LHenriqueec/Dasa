@@ -53,7 +53,20 @@
 
 	<div class="panel panel-success col-md-12" style="padding:10px">
 		<div class="panel-heading">
-			<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal-novo-recibo" ng-click="main.novoRecibo()"><span class="glyphicon glyphicon-plus"></span></button>
+			<ul>
+				<li>
+					<div>
+							<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal-novo-recibo" ng-click="main.novoRecibo()"><span class="glyphicon glyphicon-plus"></span></button>
+					</div>
+				</li>
+				<li>
+						<div>
+								<button class="btn btn-primary btn-sm pull-right" ng-click="main.gerarArquivo()"><span class="glyphicon glyphicon-download-alt"></span></button>
+						</div>
+					</li>
+			</ul>
+			
+			
 			<h4>Recibo</h4>
 		</div>
 		<div class="panel-body">
@@ -146,9 +159,6 @@
 						</div>
 						<div class="form-group">
 							<label>Data</label> {{ main.recibo.data | date : "dd/MM/y" }}
-						</div>
-						<div class="form-group" ng-show="false">
-							<label>Notas</label> 17123, 17358 <!-- TODO: Exiber notas do Recibo, caso seja uma visualização do recibo -->
 						</div>
 					</div>
 

@@ -2,8 +2,18 @@
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
-
 .navbar {
 	border-radius: 0px;
 	box-shadow: 0px 1px 9px 0px black;
+}
+ul {
+	display: inline-flex;
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	float: right;
+}
+ul li div {
+	padding-left: 5px;
+	display: inline-block;
 }

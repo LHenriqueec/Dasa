@@ -16,6 +16,7 @@ import br.com.iveso.dasa.service.ReciboService;
 import br.com.iveso.dasa.service.ServiceException;
 import br.com.iveso.dasa.service.ServiceFactory;
 import br.com.iveso.dasa.util.ConnectionUtils;
+import br.com.iveso.dasa.util.Exportador;
 
 public class ReciboServiceTeste {
 
@@ -24,6 +25,11 @@ public class ReciboServiceTeste {
 	@Before
 	public void init() throws ServiceException {
 		service = ServiceFactory.getInstance().getReciboService();
+	}
+	
+	@Test
+	public void gerar_arquivo_csv() throws ServiceException {
+		service.gerarArquivoCSV(new Exportador());
 	}
 	
 	@Test
