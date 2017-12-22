@@ -51,7 +51,7 @@ app.controller("mainController", function($rootScope, $http) {
 	carregarEstoque();
 
 	// Carrega os clientes que não compraram na semana
-	carregarClientesSemCompra();
+	carregarClientesSemCompra(0);
 	// Carrega Recibos Gerados
 	carregarRecibos();
 
@@ -78,7 +78,7 @@ app.controller("mainController", function($rootScope, $http) {
 
 	ctrl.cancelar = function() {
 		ctrl.total = 0;
-		carregarClientesSemCompra();
+		carregarClientesSemCompra(0);
 		carregarEstoque();
 		ctrl.isNew = false;
 	};
@@ -220,6 +220,10 @@ app.controller("mainController", function($rootScope, $http) {
 		ctrl.qtdRecibosNaoImpressos = undefined;
 	}
 
+	ctrl.updateClientesSemCompra = function(index) {
+		carregarClientesSemCompra(index);
+	}
+
 	function carregarRecibos() {
 		$http.post('/Dasa/CarregarRecibos.action').then(function(response) {
 			ctrl.recibos = response.data;
@@ -243,12 +247,19 @@ app.controller("mainController", function($rootScope, $http) {
 		});
 	}
 
-	function carregarClientesSemCompra() {
+	function carregarClientesSemCompra(index) {
+		$("#table-clientes").fadeOut("fast").fadeIn("fast");
 		ctrl.clientesSemCompra = undefined;
-		$http.post('/Dasa/CarregarClientesSemCompra.action').then(function(response) {
+		var req = {
+			method: 'POST',
+			url: '/Dasa/CarregarClientesSemCompra.action',
+			params: {index:index}
+		}
+		$http(req).then(function(response) {
 			ctrl.clientesSemCompra = response.data;
 			if(ctrl.clientesSemCompra.length == 0) ctrl.clientesSemCompra = undefined;
 		});
+
 	}
 
 	function carregarEstoque() {

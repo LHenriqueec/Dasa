@@ -13,7 +13,9 @@ public class CarregarClientesSemCompraAction extends Action {
 	@Override
 	public void process() throws Exception {
 		ClienteService service = serviceFactory.getClienteService();
-		Set<Cliente> clientes = service.carregarClientesSemCompra();
+		
+		int index = Integer.parseInt(getRequest().getParameter("index"));
+		Set<Cliente> clientes = service.carregarClientesSemCompra(index);
 		
 		Gson gson = new Gson();
 		

@@ -23,9 +23,9 @@ public class ClienteService extends Service {
 		}
 	}
 	
-	public Set<Cliente> carregarClientesSemCompra() throws ServiceException {
+	public Set<Cliente> carregarClientesSemCompra(int index) throws ServiceException {
 		try {
-			return dao.carregarClientesSemCompra();
+			return dao.carregarClientesSemCompra(index);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

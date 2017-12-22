@@ -18,7 +18,7 @@ public class ClienteServiceTeste {
 	
 	@Test
 	public void carregar_clientes_sem_compra() throws Exception {
-		service.carregarClientesSemCompra().forEach(System.out::println);
+		service.carregarClientesSemCompra(2).forEach(System.out::println);
 	}
 	
 }

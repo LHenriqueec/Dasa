@@ -20,14 +20,14 @@ public class ClienteDAO extends DAO<Cliente> {
 		return query("from Cliente").getResultList();
 	}
 
-	public Set<Cliente> carregarClientesSemCompra() throws DAOException {
+	public Set<Cliente> carregarClientesSemCompra(int index) throws DAOException {
 		Set<Cliente> clientes = new HashSet<>();
 		
 		clientes.addAll(query("select c from Cliente c where not exists (select r.numero from Recibo r where r.cliente = c and week(r.data) = week(now()))")
-			.getResultList());
+			.setMaxResults(5).setFirstResult(index).getResultList());
 		
 		clientes.addAll(query("select c from Cliente c where not exists (select r.numero from Recibo r where r.cliente = c)")
-			.getResultList());
+			.setMaxResults(5).setFirstResult(index).getResultList());
 		
 		return clientes;
 	}
