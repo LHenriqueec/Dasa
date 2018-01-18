@@ -1,7 +1,6 @@
 package br.com.iveso.dasa.service;
 
 import java.util.List;
-import java.util.Set;
 
 import br.com.iveso.dasa.dao.ClienteDAO;
 import br.com.iveso.dasa.dao.DAOException;
@@ -23,9 +22,12 @@ public class ClienteService extends Service {
 		}
 	}
 	
-	public Set<Cliente> carregarClientesSemCompra(int index) throws ServiceException {
+	public List<Cliente> carregarClientesSemCompra(int index) throws ServiceException {
 		try {
-			return dao.carregarClientesSemCompra(index);
+			int offset = 5;
+			
+			index *= offset;
+			return dao.carregarClientesSemCompra(index, offset);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

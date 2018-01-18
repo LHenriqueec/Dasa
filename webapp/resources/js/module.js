@@ -45,6 +45,7 @@ app.controller("mainController", function($rootScope, $http) {
 	ctrl.recibo = undefined;
 	ctrl.recibos = undefined;
 	ctrl.item = {};
+	var pagination = 0;
 	var isEdit = false;
 
 	// Carrega o estoque
@@ -220,8 +221,33 @@ app.controller("mainController", function($rootScope, $http) {
 		ctrl.qtdRecibosNaoImpressos = undefined;
 	}
 
-	ctrl.updateClientesSemCompra = function(index) {
-		carregarClientesSemCompra(index);
+	ctrl.nextPage = function() {
+		pagination++;
+		var req = {
+			method: 'post',
+			url: '/Dasa/CarregarClientesSemCompra.action',
+			params: {index:pagination}
+		}
+		$http(req).then(
+			function (response) {
+				ctrl.clientesSemCompra = response.data;
+			}
+		);
+		
+	}
+
+	ctrl.previousPage = function() {
+		pagination = --pagination == -1 ? 0 : pagination--;
+		var req = {
+			method: 'post',
+			url: '/Dasa/CarregarClientesSemCompra.action',
+			params: {index:pagination}
+		}
+		$http(req).then(
+			function (response) {
+				ctrl.clientesSemCompra = response.data;
+			}
+		);
 	}
 
 	function carregarRecibos() {
@@ -257,9 +283,9 @@ app.controller("mainController", function($rootScope, $http) {
 		}
 		$http(req).then(function(response) {
 			ctrl.clientesSemCompra = response.data;
+			console.log(ctrl.clientesSemCompra);
 			if(ctrl.clientesSemCompra.length == 0) ctrl.clientesSemCompra = undefined;
 		});
-
 	}
 
 	function carregarEstoque() {

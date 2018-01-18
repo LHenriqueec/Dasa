@@ -17,8 +17,7 @@ public class ControllerServlet extends HttpServlet {
 	private static Properties actions;
 	
 	static {
-		try (InputStream is = ControllerServlet.class.getResourceAsStream("/action.properties");){
-			
+		try (InputStream is = ControllerServlet.class.getResourceAsStream("/action.properties")){
 			actions = new Properties();
 			actions.load(is);
 			

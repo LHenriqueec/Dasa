@@ -1,8 +1,10 @@
 package br.com.iveso.dasa.dao;
 
-import java.util.HashSet;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
-import java.util.Set;
 
 import br.com.iveso.dasa.entity.Cliente;
 
@@ -20,14 +22,21 @@ public class ClienteDAO extends DAO<Cliente> {
 		return query("from Cliente").getResultList();
 	}
 
-	public Set<Cliente> carregarClientesSemCompra(int index) throws DAOException {
-		Set<Cliente> clientes = new HashSet<>();
+	public List<Cliente> carregarClientesSemCompra(int index, int offset) throws DAOException {
+		List<Cliente> clientes = null;
 		
-		clientes.addAll(query("select c from Cliente c where not exists (select r.numero from Recibo r where r.cliente = c and week(r.data) = week(now()))")
-			.setMaxResults(5).setFirstResult(index).getResultList());
+		LocalDate dt = LocalDate.now().minusDays(7);
+		Instant instant = dt.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
 		
-		clientes.addAll(query("select c from Cliente c where not exists (select r.numero from Recibo r where r.cliente = c)")
-			.setMaxResults(5).setFirstResult(index).getResultList());
+		String hql = "SELECT c FROM Cliente c LEFT JOIN Recibo r ON c = r.cliente "
+				+ "WHERE r.data <= :data OR r.cliente IS NULL ORDER BY c.endereco.bairro";
+		
+		clientes = query(hql)
+				.setParameter("data", Date.from(instant))
+				.setFirstResult(index)
+				.setMaxResults(offset)
+				.getResultList();
+		clientes.sort((c1, c2) -> c1.getEndereco().getBairro().compareToIgnoreCase(c2.getEndereco().getBairro()));
 		
 		return clientes;
 	}

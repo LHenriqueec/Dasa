@@ -17,3 +17,6 @@ ul li div {
 	padding-left: 5px;
 	display: inline-block;
 }
+.pager {
+	margin: 0px;
+}

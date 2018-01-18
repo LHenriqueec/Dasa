@@ -28,7 +28,7 @@
 	</div>
 	
 	<div class="col-md-6">
-		<div class="panel panel-danger">
+		<div id="clientesSemCompra" class="panel panel-danger">
 			<div class="panel-heading">
 				<h4>Clientes sem compra na semana</h4>
 			</div>
@@ -47,9 +47,13 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="panel-footer">
-				<button class="next-page" ng-click="main.updateClientesSemCompra(0)">1</button>
-				<button class="next-page" ng-click="main.updateClientesSemCompra(6)">2</button>
+			<div class="panel-footer clearfix">
+				<nav role="navigation" aria-label="...">
+					<div class="pull-right">
+						<button class="btn btn-danger btn-sm" ng-click="main.previousPage()">Anterior</button>
+						<button class="btn btn-danger btn-sm" ng-click="main.nextPage()">Próximo</button>
+					</div>
+				</nav>
 			</div>
 		</div>
 	</div>
@@ -60,17 +64,16 @@
 			<ul>
 				<li>
 					<div>
-							<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal-novo-recibo" ng-click="main.novoRecibo()"><span class="glyphicon glyphicon-plus"></span></button>
+						<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal-novo-recibo" ng-click="main.novoRecibo()"><span class="glyphicon glyphicon-plus"></span></button>
 					</div>
 				</li>
 				<li>
-						<div>
-								<button class="btn btn-primary btn-sm pull-right" ng-click="main.gerarArquivo()"><span class="glyphicon glyphicon-download-alt"></span></button>
-						</div>
-					</li>
+					<div>
+						<button class="btn btn-primary btn-sm pull-right" ng-click="main.gerarArquivo()"><span class="glyphicon glyphicon-download-alt"></span></button>
+					</div>
+				</li>
 			</ul>
-			
-			
+
 			<h4>Recibo</h4>
 		</div>
 		<div class="panel-body">
@@ -218,7 +221,7 @@
 						<tbody>
 							<tr ng-repeat='item in main.recibo.itens'>
 								<td>{{ item.produto.codigo }}</td>
-								<td>{{ item.produto.nome }}</td>
+								<td>{{ item.produto.nome | uppercase }}</td>
 								<td>{{ item.quantidade }}</td>
 								<td align="right">
 									<button class="btn btn-danger btn-sm" ng-click='main.deletar_item_recibo($index)'>Excluír</button>

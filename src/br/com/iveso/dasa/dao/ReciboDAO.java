@@ -7,7 +7,7 @@ import br.com.iveso.dasa.entity.ItemRecibo;
 import br.com.iveso.dasa.entity.Recibo;
 
 public class ReciboDAO extends DAO<Recibo> {
-
+	
 	public ReciboDAO() {
 		super(Recibo.class);
 	}

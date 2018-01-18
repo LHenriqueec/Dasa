@@ -47,4 +47,9 @@ public class Endereco {
 	public void setLogradouro(String logradouro) {
 		this.logradouro = logradouro;
 	}
+	
+	@Override
+	public String toString() {
+		return "\t" + bairro;
+	}
 }
