@@ -3,7 +3,7 @@ package br.com.iveso.dasa.entity;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import br.com.iveso.dasa.annotaion.ExcluirJSON;
+import br.com.iveso.dasa.annotation.ExcluirJSON;
 
 @Entity
 public class ItemRecibo extends Item {

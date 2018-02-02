@@ -3,7 +3,7 @@ package br.com.iveso.dasa.util;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 
-import br.com.iveso.dasa.annotaion.ExcluirJSON;
+import br.com.iveso.dasa.annotation.ExcluirJSON;
 
 public class EstrategiaExclusaoJSON implements ExclusionStrategy {
 
