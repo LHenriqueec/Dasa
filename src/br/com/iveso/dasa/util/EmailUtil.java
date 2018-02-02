@@ -28,7 +28,7 @@ public class EmailUtil {
 	public void enviar() {
 		Session session = Session.getDefaultInstance(props, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("henrique.aredual@gmail.com", "henriquearedual");
+				return new PasswordAuthentication("email@email.com.br", "password");
 			}
 		});
 		
@@ -36,9 +36,9 @@ public class EmailUtil {
 		
 		try {
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("henrique.aredual@gmail.com"));
+			message.setFrom(new InternetAddress("email@email.com.br"));
 			
-			Address[] toUser = InternetAddress.parse("henrique.aredual@gmail.com");
+			Address[] toUser = InternetAddress.parse("email@email.com.br");
 			
 			message.setRecipients(Message.RecipientType.TO, toUser);
 			message.setSubject("Enviando email com JavaMail");
