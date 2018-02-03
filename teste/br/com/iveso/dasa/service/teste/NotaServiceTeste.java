@@ -2,26 +2,20 @@ package br.com.iveso.dasa.service.teste;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import br.com.iveso.dasa.dao.NotaDAO;
 import br.com.iveso.dasa.entity.ItemNota;
 import br.com.iveso.dasa.entity.Nota;
 import br.com.iveso.dasa.entity.Produto;
 import br.com.iveso.dasa.service.NotaService;
-import br.com.iveso.dasa.service.ServiceException;
-import br.com.iveso.dasa.service.ServiceFactory;
-import br.com.iveso.dasa.util.ConnectionUtils;
-import br.com.iveso.dasa.util.EstrategiaExclusaoJSON;
+import br.com.iveso.dasa.service.ProdutoService;
 
 public class NotaServiceTeste {
 
@@ -38,45 +32,52 @@ public class NotaServiceTeste {
 	}
 	
 	@Test
-	public void carregar_notas_banco() throws Exception {
-		List<Nota> notas = service.carregarNotas();
+	public void debitar_saldo_produtos_ao_deletar_nota() throws Exception {
+		
+		//Representa o Produto no Banco de Dados
+		Produto p1 = new Produto("0010", "PICOLE TESTE");
+		p1.creditar(135);
 
-		Gson gson = new GsonBuilder().setExclusionStrategies(new EstrategiaExclusaoJSON()).create();
-		String json = gson.toJson(notas);
-		System.out.println(json);
+		// Nota que será 'deletada' 
+		Nota nota = new Nota("123");
+		nota.getItens().add(new ItemNota(p1, 50));
+
+		when(dao.load("123")).thenReturn(nota);
+		service = new NotaService(dao);
+		
+		
+		//Debita saldo do estoque ao deletar Nota
+		service.deletar(nota.getNumero());
+		
+		assertEquals(85, p1.getSaldo());
 	}
 	
 	@Test
-	public void salvar_nota_banco() throws Exception {
+	public void creditar_saldo_produtos_ao_salvar_nota() throws Exception {
+		ProdutoService produtoServiceMock = mock(ProdutoService.class);
 		
-		itens = new ArrayList<>();
-		ItemNota i1 = new ItemNota(new Produto("0010", "PICOLE LIMAO"), 50);
-		ItemNota i2 = new ItemNota(new Produto("0012", "PICOLE MORANGO"), 50);
+		//Produtos Mock que serão modificados ao inserir Nota
+		Produto produtoDB1 = new Produto("0010", "PICOLE TESTE");
+		Produto produtoDB2 = new Produto("0012", "PICOLE TESTE2");
 		
-		itens.add(i1);
-		itens.add(i2);
-				
-		Nota nota = new Nota();
-		nota.setCliente(null);
-		nota.setData(new Date());
-		nota.setNumero("123456");
-		nota.setItens(itens);
+		when(produtoServiceMock.buscar("0010")).thenReturn(produtoDB1);
+		when(produtoServiceMock.buscar("0012")).thenReturn(produtoDB2);
 		
-		try {
-			
-			ConnectionUtils.beginTransaction();
-			service.salvar(nota, ServiceFactory.getInstance().getProdutoService());
-			i1.setNota(nota);
-			i2.setNota(nota);
-			ConnectionUtils.commitTransaction();
-		} catch(ServiceException e) {
-			ConnectionUtils.rollbackTransaction();
-			e.printStackTrace();
-		}
+		//Nota que será inserida no sistema
+		Nota nota = new Nota("123");
+		nota.getItens().add(new ItemNota(new Produto("0010", "PICOLE TESTE"), 50));
+		nota.getItens().add(new ItemNota(new Produto("0012", "PICOLE TESTE2"), 75));
+		
+		service.salvar(nota, produtoServiceMock);
+		
+		//Verifica se o saldo dos produtos foi atualizado
+		assertEquals(50, produtoDB1.getSaldo());
+		assertEquals(75, produtoDB2.getSaldo());
 	}
 	
 	@Test
 	public void total_por_produto() {
+		//Produtos inseridos através das Notas
 		Produto p1 = new Produto("0010", "PICOLE LIMAO");
 		int qtd1 = 50;
 		
@@ -101,8 +102,6 @@ public class NotaServiceTeste {
 		itens.add(i4);
 		
 		List<ItemNota> itensTotal = service.totalPorItem(itens);
-		
-		itensTotal.forEach(System.out::println);
 		
 		//Item Codigo: 0010 Nome: PICOLE LIMAO
 		assertEquals(63, itensTotal.get(0).getQuantidade());

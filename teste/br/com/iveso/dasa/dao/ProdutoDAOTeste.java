@@ -1,4 +1,4 @@
-package br.com.iveso.dasa.entity.teste;
+package br.com.iveso.dasa.dao;
 
 import javax.persistence.EntityManager;
 
@@ -13,7 +13,7 @@ import br.com.iveso.dasa.service.ServiceException;
 import br.com.iveso.dasa.service.ServiceFactory;
 import br.com.iveso.dasa.util.ConnectionUtils;
 
-public class ProdutoTeste {
+public class ProdutoDAOTeste {
 	
 	private ProdutoDAO dao;
 	
