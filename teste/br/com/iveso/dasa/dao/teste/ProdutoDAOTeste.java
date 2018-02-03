@@ -1,4 +1,4 @@
-package br.com.iveso.dasa.dao;
+package br.com.iveso.dasa.dao.teste;
 
 import javax.persistence.EntityManager;
 

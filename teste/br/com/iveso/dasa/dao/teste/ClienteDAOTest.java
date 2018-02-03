@@ -1,7 +1,10 @@
-package br.com.iveso.dasa.dao;
+package br.com.iveso.dasa.dao.teste;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import br.com.iveso.dasa.dao.ClienteDAO;
+import br.com.iveso.dasa.dao.DAOFactory;
 
 public class ClienteDAOTest {
 
