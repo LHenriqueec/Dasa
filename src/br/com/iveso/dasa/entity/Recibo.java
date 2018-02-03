@@ -1,5 +1,6 @@
 package br.com.iveso.dasa.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class Recibo {
 	private List<ItemRecibo> itens;
 	
 	private boolean printer;
+	
+	public Recibo() {
+		this.itens = new ArrayList<>();
+	}
 
 	public String getNumero() {
 		return numero;
