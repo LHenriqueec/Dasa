@@ -25,6 +25,11 @@ public class ReciboService extends Service {
 		this.dao = dao;
 	}
 
+	/**
+	 * Gera o PDf de Recibo específico
+	 * @param numero Número do Recibo que será gerado
+	 * @throws ServiceException
+	 */
 	public void gerarReciboPDF(String numero) throws ServiceException {
 		try {
 			Recibo recibo = dao.load(numero);
@@ -34,6 +39,10 @@ public class ReciboService extends Service {
 		}
 	}
 
+	/**
+	 * Gera o PDF de todos os Recibos que não possuem PDF gerado
+	 * @throws ServiceException
+	 */
 	public void gerarRecibosPDF() throws ServiceException {
 		try {
 			List<Recibo> recibos = dao.carregarRecibosNaoGerados();
